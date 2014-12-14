@@ -33,10 +33,10 @@ body.noFrame {
 
 /*Define meteocal logo */
 #logo { 
-    width: 300px;
+    width: 320px;
     margin: 0px;
-    padding-top: 40px; 
-    padding-left: 46px;
+    padding-top: 5px; 
+    padding-left: 50px;
     background: #00A4FF;
     font-family: "Comic Sans MS", cursive sans-serif;
     float : left;
