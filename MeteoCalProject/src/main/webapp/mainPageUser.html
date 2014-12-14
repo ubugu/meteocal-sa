@@ -10,32 +10,21 @@
         <!--Element of the first line on the top bar-->
         <div id="topHeader">
             <img id="logo" src="Images/meteocal.png" alt="meteocalLogo"  name="meteocallogo" title="meteocallogo">
-                
-            <div class="loginForm"> 
-                
-                <span>Username</span>
-                <span id="passwordInput">Password</span>
+            
+                <h1 id="userCalendar">User Calendar</h1>   
+              
+            <div class="logoutForm"> 
                 
                 <div >
-                    
-                    <input  type=text name=username placeholder=Username>
-                    <input  type=text name=password placeholder=Password>   
-                    <input  type=button value=Login onclick="return loadPage('ciao.html','_blank')">       
+                    <input  type="button" value="Logout" onclick="return loadPage('index.html','_blank')">       
                 </div>
-            
-                  <div id="forgotten">
-                      <a href="create.html">  Forgotten password? </a>  
-                  </div>   
+  
             </div>
         </div>
         
         <div id="LeftHeader">
             <ul class="buttonList">
-                 <li><input id="leftBarButton" type=button value=Home onclick="return loadPage('info.html','centralFrame')">  </li>
-                 <li><input id="leftBarButton" type=button value=Register onclick="return loadPage('register.html','centralFrame'')">  </li>
-                 <li><input id="leftBarButton" type=button value=Contacts onclick="return loadPage('contacts.html','centralFrame')">  </li>
-                 <li><input id="leftBarButton" type=button value=AboutUs onclick="return loadPage('aboutUs.html','centralFrame')">  </li>  
-                      
+                 <li><input id="leftBarButton" type=button value=AddEvent onclick="return loadPage('addEvent.html','centralFrame')">  </li>                      
             </ul>
 
         </div>
