@@ -20,8 +20,8 @@
                 
                 <div >
                     
-                    <input  type=”text” name=sername placeholder=Username>
-                    <input  type=”text” name=password placeholder=Password>   
+                    <input  type=text name=username placeholder=Username>
+                    <input  type=text name=password placeholder=Password>   
                     <input  type=button value=Login onclick="return loadPage('ciao.html','_blank')">       
                 </div>
             
@@ -33,16 +33,17 @@
         </div>
         
         <div id="LeftHeader">
-            <ul class="guestPage">
-                 <li><input id="guestHomeBtn" type=button value=Home onclick="return loadPage('info.html','centralFrame')">  </li>
-                 <li><input id="guestHomeBtn" type=button value=Register onclick="return loadPage('register.html','centralFrame'')">  </li>
-                 <li><input id="guestHomeBtn" type=button value=Contacts onclick="return loadPage('contacts.html','centralFrame')">  </li>
-                 <li><input id="guestHomeBtn" type=button value=AboutUs onclick="return loadPage('aboutUs.html','centralFrame')">  </li>        
+            <ul class="buttonList">
+                 <li><input id="leftBarButton" type=button value=Home onclick="return loadPage('info.html','centralFrame')">  </li>
+                 <li><input id="leftBarButton" type=button value=Register onclick="return loadPage('register.html','centralFrame'')">  </li>
+                 <li><input id="leftBarButton" type=button value=Contacts onclick="return loadPage('contacts.html','centralFrame')">  </li>
+                 <li><input id="leftBarButton" type=button value=AboutUs onclick="return loadPage('aboutUs.html','centralFrame')">  </li>  
+                      
             </ul>
 
         </div>
         
-        <iframe id="guestFrame" name="centralFrame" src="info.html"  >
+        <iframe id="centralFrame" name="centralFrame" src="info.html"  >
             No frame support.
         </iframe>
   
