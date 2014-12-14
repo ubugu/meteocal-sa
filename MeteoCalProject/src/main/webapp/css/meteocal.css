@@ -42,6 +42,46 @@ body.noFrame {
     float : left;
 }
 
+/*define max size for the central frame*/
+#centralFrame {
+    border: none;
+    width: 82%; 
+    height : 500px;    
+}
+
+/*define padding for the button lists*/
+ul.buttonList {
+    list-style-type: none;
+    margin: 0;
+    padding-left: 10px;
+    padding-top:  50px;
+}
+
+/*define button style*/
+
+#leftBarButton {
+    background: #141314;
+    background-image: -webkit-linear-gradient(top, #141314, #425f70);
+    background-image: -moz-linear-gradient(top, #141314, #425f70);
+    background-image: -ms-linear-gradient(top, #141314, #425f70);
+    background-image: -o-linear-gradient(top, #141314, #425f70);
+    background-image: linear-gradient(to bottom, #141314, #425f70);
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0px;
+    font-family: Georgia;
+    color: #ffffff;
+    font-size: 20px;
+    width: 130px;
+    padding: 10px 20px 10px 20px;
+    border: solid #3c454a 1px;
+    text-decoration: none;
+}
+
+#leftBarButton:hover {
+    background: #949ca1;
+    text-decoration: none;
+}
 
 
 
@@ -75,42 +115,5 @@ div.guestFrame {
 #forgotten {
     padding-left: 155px;
     font-size: 13px;
-}
-
-#guestFrame {
-    border: none;
-    width: 80%; 
-    height : 500px;
-}
-
-ul.guestPage {
-    list-style-type: none;
-    margin: 0;
-    padding-left: 10px;
-    padding-top:  50px;
-}
-
-#guestHomeBtn {
-    background: #141314;
-    background-image: -webkit-linear-gradient(top, #141314, #425f70);
-    background-image: -moz-linear-gradient(top, #141314, #425f70);
-    background-image: -ms-linear-gradient(top, #141314, #425f70);
-    background-image: -o-linear-gradient(top, #141314, #425f70);
-    background-image: linear-gradient(to bottom, #141314, #425f70);
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0px;
-    font-family: Georgia;
-    color: #ffffff;
-    font-size: 20px;
-    width: 130px;
-    padding: 10px 20px 10px 20px;
-    border: solid #3c454a 1px;
-    text-decoration: none;
-}
-
-#guestHomeBtn:hover {
-    background: #949ca1;
-    text-decoration: none;
 }
 
