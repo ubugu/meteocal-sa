@@ -138,7 +138,7 @@ div.logoutForm {
 /* ############# REGISTRATION ELEMENTS ######################## */
 
 #registrationForm {  
-    width:380px;
+    width:400px;
 }
 
 /* ############# ADD EVENT ELEMENTS ######################## */
@@ -148,7 +148,7 @@ div.logoutForm {
     display:block; 
     width:600px; 
     height:800px; 
-    background-color: #3c454a; 
+    background-color: #FFFFFF; 
     text-align: center;
 }
 
@@ -157,7 +157,7 @@ div.logoutForm {
     width:400px; 
     height:700px; 
     margin-left: 600px;
-    background-color:firebrick;    
+    background-color:#FFFFFF;    
     text-align: center
 }
 
