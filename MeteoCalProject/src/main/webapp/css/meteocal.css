@@ -152,13 +152,34 @@ div.logoutForm {
     text-align: center;
 }
 
-#weatherForm {     
+#weatherForm { 
+    float:right;
     display:block; 
     width:400px; 
     height:700px; 
-    margin-left: 600px;
     background-color:#FFFFFF;    
-    text-align: center
+    text-align: center;
+}
+
+#badConditions {     
+    float:left; 
+    display:block; 
+    width:300px; 
+    height:30px; 
+    background-color: #FFFFFF; 
+    text-align: right;
+    padding-top: 6px;
+}
+
+#badConditionsButton { 
+    float:left;
+    display:block;
+    background-color:#FFFFFF;    
+    text-align: left;
+}
+
+#invitationcheck{
+   padding-bottom: 18px;
 }
 
 /* ### Button onOff ### */
