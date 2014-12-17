@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity;
+package session.bean;
 
-import jpaentities.Notification;
+import entity.bean.Badconditions;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author Walter
  */
 @Stateless
-public class NotificationFacade extends AbstractFacade<Notification> {
+public class BadconditionsFacade extends AbstractFacade<Badconditions> {
     @PersistenceContext(unitName = "com.mycompany_MeteoCalProject_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
@@ -24,8 +24,8 @@ public class NotificationFacade extends AbstractFacade<Notification> {
         return em;
     }
 
-    public NotificationFacade() {
-        super(Notification.class);
+    public BadconditionsFacade() {
+        super(Badconditions.class);
     }
     
 }

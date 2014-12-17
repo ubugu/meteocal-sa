@@ -1,6 +1,7 @@
-package entity;
+package controller.bean;
 
-import jpaentities.Weather;
+import session.bean.ParticipantFacade;
+import entity.bean.Participant;
 import entity.util.JsfUtil;
 import entity.util.PaginationHelper;
 
@@ -17,30 +18,30 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@Named("weatherController")
+@Named("participantController")
 @SessionScoped
-public class WeatherController implements Serializable {
+public class ParticipantController implements Serializable {
 
-    private Weather current;
+    private Participant current;
     private DataModel items = null;
     @EJB
-    private entity.WeatherFacade ejbFacade;
+    private session.bean.ParticipantFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public WeatherController() {
+    public ParticipantController() {
     }
 
-    public Weather getSelected() {
+    public Participant getSelected() {
         if (current == null) {
-            current = new Weather();
-            current.setWeatherPK(new jpaentities.WeatherPK());
+            current = new Participant();
+            current.setParticipantPK(new entity.bean.ParticipantPK());
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private WeatherFacade getFacade() {
+    private ParticipantFacade getFacade() {
         return ejbFacade;
     }
 
@@ -68,22 +69,24 @@ public class WeatherController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Weather) getItems().getRowData();
+        current = (Participant) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
-        current = new Weather();
-        current.setWeatherPK(new jpaentities.WeatherPK());
+        current = new Participant();
+        current.setParticipantPK(new entity.bean.ParticipantPK());
         selectedItemIndex = -1;
         return "Create";
     }
 
     public String create() {
         try {
+            current.getParticipantPK().setEvent(current.getEvent1().getId());
+            current.getParticipantPK().setUser(current.getUser1().getUsername());
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("WeatherCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ParticipantCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -92,15 +95,17 @@ public class WeatherController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Weather) getItems().getRowData();
+        current = (Participant) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
 
     public String update() {
         try {
+            current.getParticipantPK().setEvent(current.getEvent1().getId());
+            current.getParticipantPK().setUser(current.getUser1().getUsername());
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("WeatherUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ParticipantUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -109,7 +114,7 @@ public class WeatherController implements Serializable {
     }
 
     public String destroy() {
-        current = (Weather) getItems().getRowData();
+        current = (Participant) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -133,7 +138,7 @@ public class WeatherController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("WeatherDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ParticipantDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -189,12 +194,12 @@ public class WeatherController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Weather getWeather(jpaentities.WeatherPK id) {
+    public Participant getParticipant(entity.bean.ParticipantPK id) {
         return ejbFacade.find(id);
     }
 
-    @FacesConverter(forClass = Weather.class)
-    public static class WeatherControllerConverter implements Converter {
+    @FacesConverter(forClass = Participant.class)
+    public static class ParticipantControllerConverter implements Converter {
 
         private static final String SEPARATOR = "#";
         private static final String SEPARATOR_ESCAPED = "\\#";
@@ -204,25 +209,25 @@ public class WeatherController implements Serializable {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            WeatherController controller = (WeatherController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "weatherController");
-            return controller.getWeather(getKey(value));
+            ParticipantController controller = (ParticipantController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "participantController");
+            return controller.getParticipant(getKey(value));
         }
 
-        jpaentities.WeatherPK getKey(String value) {
-            jpaentities.WeatherPK key;
+        entity.bean.ParticipantPK getKey(String value) {
+            entity.bean.ParticipantPK key;
             String values[] = value.split(SEPARATOR_ESCAPED);
-            key = new jpaentities.WeatherPK();
-            key.setCity(values[0]);
-            key.setDate(java.sql.Date.valueOf(values[1]));
+            key = new entity.bean.ParticipantPK();
+            key.setUser(values[0]);
+            key.setEvent(Integer.parseInt(values[1]));
             return key;
         }
 
-        String getStringKey(jpaentities.WeatherPK value) {
+        String getStringKey(entity.bean.ParticipantPK value) {
             StringBuilder sb = new StringBuilder();
-            sb.append(value.getCity());
+            sb.append(value.getUser());
             sb.append(SEPARATOR);
-            sb.append(value.getDate());
+            sb.append(value.getEvent());
             return sb.toString();
         }
 
@@ -231,11 +236,11 @@ public class WeatherController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Weather) {
-                Weather o = (Weather) object;
-                return getStringKey(o.getWeatherPK());
+            if (object instanceof Participant) {
+                Participant o = (Participant) object;
+                return getStringKey(o.getParticipantPK());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Weather.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Participant.class.getName());
             }
         }
 

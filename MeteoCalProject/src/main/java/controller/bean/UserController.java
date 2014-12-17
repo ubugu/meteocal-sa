@@ -1,6 +1,7 @@
-package entity;
+package controller.bean;
 
-import jpaentities.Calendar;
+import session.bean.UserFacade;
+import entity.bean.User;
 import entity.util.JsfUtil;
 import entity.util.PaginationHelper;
 
@@ -17,29 +18,29 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@Named("calendarController")
+@Named("userController")
 @SessionScoped
-public class CalendarController implements Serializable {
+public class UserController implements Serializable {
 
-    private Calendar current;
+    private User current;
     private DataModel items = null;
     @EJB
-    private entity.CalendarFacade ejbFacade;
+    private session.bean.UserFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public CalendarController() {
+    public UserController() {
     }
 
-    public Calendar getSelected() {
+    public User getSelected() {
         if (current == null) {
-            current = new Calendar();
+            current = new User();
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private CalendarFacade getFacade() {
+    private UserFacade getFacade() {
         return ejbFacade;
     }
 
@@ -67,13 +68,13 @@ public class CalendarController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Calendar) getItems().getRowData();
+        current = (User) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
-        current = new Calendar();
+        current = new User();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -81,7 +82,7 @@ public class CalendarController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CalendarCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UserCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -90,7 +91,7 @@ public class CalendarController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Calendar) getItems().getRowData();
+        current = (User) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -98,7 +99,7 @@ public class CalendarController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CalendarUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UserUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -107,7 +108,7 @@ public class CalendarController implements Serializable {
     }
 
     public String destroy() {
-        current = (Calendar) getItems().getRowData();
+        current = (User) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -131,7 +132,7 @@ public class CalendarController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CalendarDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UserDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -187,30 +188,30 @@ public class CalendarController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Calendar getCalendar(java.lang.Integer id) {
+    public User getUser(java.lang.String id) {
         return ejbFacade.find(id);
     }
 
-    @FacesConverter(forClass = Calendar.class)
-    public static class CalendarControllerConverter implements Converter {
+    @FacesConverter(forClass = User.class)
+    public static class UserControllerConverter implements Converter {
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            CalendarController controller = (CalendarController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "calendarController");
-            return controller.getCalendar(getKey(value));
+            UserController controller = (UserController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "userController");
+            return controller.getUser(getKey(value));
         }
 
-        java.lang.Integer getKey(String value) {
-            java.lang.Integer key;
-            key = Integer.valueOf(value);
+        java.lang.String getKey(String value) {
+            java.lang.String key;
+            key = value;
             return key;
         }
 
-        String getStringKey(java.lang.Integer value) {
+        String getStringKey(java.lang.String value) {
             StringBuilder sb = new StringBuilder();
             sb.append(value);
             return sb.toString();
@@ -221,11 +222,11 @@ public class CalendarController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Calendar) {
-                Calendar o = (Calendar) object;
-                return getStringKey(o.getId());
+            if (object instanceof User) {
+                User o = (User) object;
+                return getStringKey(o.getUsername());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Calendar.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + User.class.getName());
             }
         }
 

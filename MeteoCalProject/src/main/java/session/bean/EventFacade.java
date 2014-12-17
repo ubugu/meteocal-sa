@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity;
+package session.bean;
 
-import jpaentities.Calendar;
+import entity.bean.Event;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author Walter
  */
 @Stateless
-public class CalendarFacade extends AbstractFacade<Calendar> {
+public class EventFacade extends AbstractFacade<Event> {
     @PersistenceContext(unitName = "com.mycompany_MeteoCalProject_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
@@ -24,8 +24,8 @@ public class CalendarFacade extends AbstractFacade<Calendar> {
         return em;
     }
 
-    public CalendarFacade() {
-        super(Calendar.class);
+    public EventFacade() {
+        super(Event.class);
     }
     
 }

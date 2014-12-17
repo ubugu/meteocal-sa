@@ -1,6 +1,7 @@
-package entity;
+package controller.bean;
 
-import jpaentities.Badconditions;
+import session.bean.BadconditionsFacade;
+import entity.bean.Badconditions;
 import entity.util.JsfUtil;
 import entity.util.PaginationHelper;
 
@@ -24,7 +25,7 @@ public class BadconditionsController implements Serializable {
     private Badconditions current;
     private DataModel items = null;
     @EJB
-    private entity.BadconditionsFacade ejbFacade;
+    private session.bean.BadconditionsFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
