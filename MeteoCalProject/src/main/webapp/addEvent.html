@@ -12,36 +12,36 @@
 
                     <h1> Event Creation</h1>
 
-                    <label for=title>Title</label>
+                    <label for=title>Title &nbsp;</label>
                     <input id=title name=title type=text placeholder="Title of the event" required >
                     <br>
                     <br>
 
-                    <label for=location>Location</label>           
+                    <label for=location>Location &nbsp;</label>           
                     <input id=location name=location type=text placeholder="Location of the event" required>
 
-                    <label for=city>City</label>
+                    <label for=city>City &nbsp;</label>
                     <input id=city name=city type=text placeholder="City forecast interested">
                     <br>
                     <br>
 
-                    <label for=startingTime>Starting Time:</label>
+                    <label for=startingTime>Starting Time &nbsp;</label>
                     <input id=startingTime value=00:00 name=startingTime type=time min='00:00' max='23:59' step='1' required>
 
-                    <label for=endingTime>Ending Time:</label>
+                    <label for=endingTime>Ending Time &nbsp;</label>
                     <input id=endingTime value=23:59 name=endingTime type=time min='00:00' max='23:59' step='1' required>
                     <br>
                     <br>
 
-                    <label for=startingDate>Starting Date:</label>
+                    <label for=startingDate>Starting Date &nbsp;</label>
                     <input id=startingDate value=2014-12-25 name=startingDate type=date required>
 
-                    <label for=endingDate>Ending Date:</label>
+                    <label for=endingDate>Ending Date &nbsp;</label>
                     <input id=endingDate value=2014-12-26 name=endingDate type=date required>
                     <br>
                     <br>
 
-                    <label for=repeat>Repeat type:</label>
+                    <label for=repeat>Repeat type &nbsp;</label>
                     <select id=repeat name=repeat>
                         <option value="no">No</option>
                         <option value="everyday">Everyday</option>
@@ -49,19 +49,18 @@
                         <option value="everymonth">Everymonth</option>
                     </select>
 
-                    <label for=untillDate>Untill:</label>
+                    <label for=untillDate>Untill &nbsp;</label>
                     <input id=untillDate value=2015-02-22 name=UntillDate type=date>
                     <br>
                     <br>
 
-                    <label for=description>Description:</label>
+                    <label for=description id=descriptionLabel>Description &nbsp;</label>
 
                     <textarea id=description name=description form=createEvent rows="4" cols="50" >Write an optional Description of the event
                     </textarea>
 
                     <br>
                     <br>
-
 
                     <div id="badConditions"> Bad Conditions &nbsp;&nbsp;</div> 
                     <div id="badConditionsButton" class="onoffswitch">
@@ -76,8 +75,8 @@
                     <br>
                     <br>
                     
-                    <label style="padding-bottom: 35px;" for=invitationcheck><input id="invitationcheck" type="checkbox" name="invitationcheck">
-                        Send an Invitation to:</label>
+                    <label for=invitationcheck><input id="invitationcheck" type="checkbox" name="invitationcheck">
+                        Send an Invitation to &nbsp;</label>
 
                     <textarea id=invitation name=invitation form=createEvent rows="4" cols="50" disabled>Write all the User you want to invite separated by a semicolon (';')
                     </textarea>

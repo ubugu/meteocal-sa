@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditBadconditionsTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditBadconditionsLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{badconditionsController.selected.id}" title="#{bundle.EditBadconditionsTitle_id}" required="true" requiredMessage="#{bundle.EditBadconditionsRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.EditBadconditionsLabel_layer}" for="layer" />
+                    <h:inputText id="layer" value="#{badconditionsController.selected.layer}" title="#{bundle.EditBadconditionsTitle_layer}" required="true" requiredMessage="#{bundle.EditBadconditionsRequiredMessage_layer}"/>
+                    <h:outputLabel value="#{bundle.EditBadconditionsLabel_precipitations}" for="precipitations" />
+                    <h:inputText id="precipitations" value="#{badconditionsController.selected.precipitations}" title="#{bundle.EditBadconditionsTitle_precipitations}" />
+                    <h:outputLabel value="#{bundle.EditBadconditionsLabel_temperature}" for="temperature" />
+                    <h:inputText id="temperature" value="#{badconditionsController.selected.temperature}" title="#{bundle.EditBadconditionsTitle_temperature}" />
+                    <h:outputLabel value="#{bundle.EditBadconditionsLabel_eventID}" for="eventID" />
+                    <h:selectOneMenu id="eventID" value="#{badconditionsController.selected.eventID}" title="#{bundle.EditBadconditionsTitle_eventID}" required="true" requiredMessage="#{bundle.EditBadconditionsRequiredMessage_eventID}">
+                        <f:selectItems value="#{eventController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{badconditionsController.update}" value="#{bundle.EditBadconditionsSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditBadconditionsViewLink}"/>
+                <br />
+                <h:commandLink action="#{badconditionsController.prepareList}" value="#{bundle.EditBadconditionsShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditBadconditionsIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

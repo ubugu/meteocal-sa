@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateCalendarTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateCalendarLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{calendarController.selected.id}" title="#{bundle.CreateCalendarTitle_id}" required="true" requiredMessage="#{bundle.CreateCalendarRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateCalendarLabel_privacy}" for="privacy" />
+                    <h:inputText id="privacy" value="#{calendarController.selected.privacy}" title="#{bundle.CreateCalendarTitle_privacy}" required="true" requiredMessage="#{bundle.CreateCalendarRequiredMessage_privacy}"/>
+                    <h:outputLabel value="#{bundle.CreateCalendarLabel_owner}" for="owner" />
+                    <h:selectOneMenu id="owner" value="#{calendarController.selected.owner}" title="#{bundle.CreateCalendarTitle_owner}" required="true" requiredMessage="#{bundle.CreateCalendarRequiredMessage_owner}">
+                        <f:selectItems value="#{userController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{calendarController.create}" value="#{bundle.CreateCalendarSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{calendarController.prepareList}" value="#{bundle.CreateCalendarShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateCalendarIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
