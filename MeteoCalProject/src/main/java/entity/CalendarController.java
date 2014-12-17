@@ -1,5 +1,6 @@
 package entity;
 
+import jpaentities.Calendar;
 import entity.util.JsfUtil;
 import entity.util.PaginationHelper;
 
