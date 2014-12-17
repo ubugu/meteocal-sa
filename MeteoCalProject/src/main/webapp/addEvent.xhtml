@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <head jsf:id="head">     
+        <title>Add Event</title>
+        <h:outputStylesheet name="css/jsfcrud.css"/>
+        <script jsf:target="body" jsf:name="story-page.js"/>
+        <link jsf:name="styles.css" rel="stylesheet" type="text/css" />
+        <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body jsf:id="body" >   
+            <form name="createEvent" >
+                <div id="eventForm">
+
+                    <h1> Event Creation</h1>
+
+                    <label for="title">Title &nbsp;</label>
+                    <input id="title" name="title" type="text" placeholder="Title of the event" required="true"/>
+                    <br />
+                    <br />
+
+                    <label for="location">Location &nbsp;</label>           
+                    <input id="location" name="location" type="text" placeholder="Location of the event" required="true"/>
+
+                    <label for="city">City &nbsp;</label>
+                    <input id="city" name="city" type="text" placeholder="City forecast interested"/>
+                    <br />
+                    <br />
+
+                    <label for="startingTime">Starting Time &nbsp;</label>
+                    <input id="startingTime" value="00:00" name="startingTime" type="time" min='00:00' max='23:59' step='1' required="true"/>
+
+                    <label for="endingTime">Ending Time &nbsp;</label>
+                    <input id="endingTime" value="23:59" name="endingTime" type="time" min='00:00' max='23:59' step='1' required="true"/>
+                    <br />
+                    <br />
+
+                    <label for="startingDate">Starting Date &nbsp;</label>
+                    <input id="startingDate" value="2014-12-25" name="startingDate" type="date" required="true"/>
+
+                    <label for="endingDate">Ending Date &nbsp;</label>
+                    <input id="endingDate" value="2014-12-26" name="endingDate" type="date" required="true"/>
+                    <br />
+                    <br />
+
+                    <label for="repeat">Repeat type &nbsp;</label>
+                    <select id="repeat" name="repeat">
+                        <option value="no">No</option>
+                        <option value="everyday">Everyday</option>
+                        <option value="everyweek">Everyweek</option>
+                        <option value="everymonth">Everymonth</option>
+                    </select>
+
+                    <label for="untillDate">Untill &nbsp;</label>
+                    <input id="untillDate" value="2015-02-22" name="UntillDate" type="date"/>
+                    <br />
+                    <br />
+
+                    <label for="description" id="descriptionLabel">Description &nbsp;</label>
+
+                    <textarea id="description" name="description" form="createEvent" rows="4" cols="50" >Write an optional Description of the event
+                    </textarea>
+
+                    <br />
+                    <br />
+
+                    <div id="badConditions"> Bad Conditions &nbsp;&nbsp;</div> 
+                    <div id="badConditionsButton" class="onoffswitch">
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked="true"/>
+                        <label class="onoffswitch-label" for="myonoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                    </div>
+
+                    <br />
+                    <br /> 
+                    <br />
+                    
+                    <label for="invitationcheck"><input id="invitationcheck" type="checkbox" name="invitationcheck"/>
+                        Send an Invitation to &nbsp;</label>
+
+                    <textarea id="invitation" name="invitation" form="createEvent" rows="4" cols="50" disabled="true">Write all the User you want to invite separated by a semicolon (';')
+                    </textarea>
+                    <br />
+                </div>
+
+                <div id="weatherForm">
+                    <h1> Weather Preview</h1>
+                </div> 
+            </form>  
+    </body>
+</html>

@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <head jsf:id="head">     
+        <title>Settings</title>
+        <h:outputStylesheet name="css/jsfcrud.css"/>
+        <script jsf:target="body" jsf:name="story-page.js"/>
+        <link jsf:name="styles.css" rel="stylesheet" type="text/css" />
+        <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body jsf:id="body">   
+        <div id="registrationForm" class="guestFrame">
+            <form>
+                <fieldset>
+                    <legend>Settings</legend>
+                    <ol>
+                        <li>
+                            <label for="newEmail">
+                                   <input type="checkbox" name="newEmail" checked="true"/>
+                                   Change Email : 
+                            </label>
+                            <input id="email" name="email" type="email" placeholder="example@domain.com"/>
+                        </li>
+                        <li>
+                            <label for="newPassword">
+                                <input type="checkbox" name="newPassword" checked="true"/>
+                                Change password : 
+                            </label>
+                            <input id="password" name="password" type="password" pattern=".{5,}" />
+                        </li>
+                        <li>
+                            <label>Calendar's privacy : </label>
+                            <br />
+                            <input id="private" name="privacy" type="radio" checked="true"/>
+                            <label for="private">Private</label> 
+                            <br />
+                            <input id="public" name="privacy" type="radio"/>
+                            <label for="public" >Public </label>
+                            <br />
+                            <input id="shared" name="privacy" type="radio"/>
+                            <label for="shared">Shared</label> 
+                            <textarea name="shareduser" rows="4" cols="50" disable="true">Write all the User you want to share with separated by a semicolon (';')
+                             </textarea>
+                        </li> 
+                    </ol>
+                    <label>Insert old passwod : </label> 
+                    <input id="oldPassword" name="oldPassword" type="password" required="true"/>  
+                    <br />
+                    <button type="submit">Save</button>
+                </fieldset>
+            </form>
+        </div>
+    </body>
+        
+</html>
+

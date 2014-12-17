@@ -108,12 +108,12 @@ div.guestFrame {
 
 /*In this section are define singular elements throught the id model.*/
 
-#passwordInput {
-    padding-left: 90px;
+#passwordLabel {
+    padding-left: 109px;
 }
 
 #forgotten {
-    padding-left: 155px;
+    padding-left: 178px;
     font-size: 13px;
 }
 
@@ -135,11 +135,6 @@ div.logoutForm {
     float : left;
 }
 
-/* ############# REGISTRATION ELEMENTS ######################## */
-
-#registrationForm {  
-    width:400px;
-}
 
 /* ############# ADD EVENT ELEMENTS ######################## */
 
