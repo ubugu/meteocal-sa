@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditWeatherTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditWeatherLabel_weatherPK_city}" for="weatherPK_city" />
+                    <h:inputText id="weatherPK_city" value="#{weatherController.selected.weatherPK.city}" title="#{bundle.EditWeatherTitle_weatherPK_city}" required="true" requiredMessage="#{bundle.EditWeatherRequiredMessage_weatherPK_city}"/>
+                    <h:outputLabel value="#{bundle.EditWeatherLabel_weatherPK_date}" for="weatherPK_date" />
+                    <h:inputText id="weatherPK_date" value="#{weatherController.selected.weatherPK.date}" title="#{bundle.EditWeatherTitle_weatherPK_date}" required="true" requiredMessage="#{bundle.EditWeatherRequiredMessage_weatherPK_date}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditWeatherLabel_precipitations}" for="precipitations" />
+                    <h:inputText id="precipitations" value="#{weatherController.selected.precipitations}" title="#{bundle.EditWeatherTitle_precipitations}" />
+                    <h:outputLabel value="#{bundle.EditWeatherLabel_temperature}" for="temperature" />
+                    <h:inputText id="temperature" value="#{weatherController.selected.temperature}" title="#{bundle.EditWeatherTitle_temperature}" />
+                    <h:outputLabel value="#{bundle.EditWeatherLabel_wind}" for="wind" />
+                    <h:inputText id="wind" value="#{weatherController.selected.wind}" title="#{bundle.EditWeatherTitle_wind}" />
+                    <h:outputLabel value="#{bundle.EditWeatherLabel_pressure}" for="pressure" />
+                    <h:inputText id="pressure" value="#{weatherController.selected.pressure}" title="#{bundle.EditWeatherTitle_pressure}" />
+                    <h:outputLabel value="#{bundle.EditWeatherLabel_humidity}" for="humidity" />
+                    <h:inputText id="humidity" value="#{weatherController.selected.humidity}" title="#{bundle.EditWeatherTitle_humidity}" />
+                    <h:outputLabel value="#{bundle.EditWeatherLabel_clouds}" for="clouds" />
+                    <h:inputText id="clouds" value="#{weatherController.selected.clouds}" title="#{bundle.EditWeatherTitle_clouds}" />
+                </h:panelGrid>
+                <h:commandLink action="#{weatherController.update}" value="#{bundle.EditWeatherSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditWeatherViewLink}"/>
+                <br />
+                <h:commandLink action="#{weatherController.prepareList}" value="#{bundle.EditWeatherShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditWeatherIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateParticipantTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateParticipantLabel_organiser}" for="organiser" />
+                    <h:inputText id="organiser" value="#{participantController.selected.organiser}" title="#{bundle.CreateParticipantTitle_organiser}" required="true" requiredMessage="#{bundle.CreateParticipantRequiredMessage_organiser}"/>
+                    <h:outputLabel value="#{bundle.CreateParticipantLabel_participant}" for="participant" />
+                    <h:inputText id="participant" value="#{participantController.selected.participant}" title="#{bundle.CreateParticipantTitle_participant}" required="true" requiredMessage="#{bundle.CreateParticipantRequiredMessage_participant}"/>
+                    <h:outputLabel value="#{bundle.CreateParticipantLabel_user1}" for="user1" />
+                    <h:selectOneMenu id="user1" value="#{participantController.selected.user1}" title="#{bundle.CreateParticipantTitle_user1}" required="true" requiredMessage="#{bundle.CreateParticipantRequiredMessage_user1}">
+                        <f:selectItems value="#{userController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateParticipantLabel_event1}" for="event1" />
+                    <h:selectOneMenu id="event1" value="#{participantController.selected.event1}" title="#{bundle.CreateParticipantTitle_event1}" required="true" requiredMessage="#{bundle.CreateParticipantRequiredMessage_event1}">
+                        <f:selectItems value="#{eventController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{participantController.create}" value="#{bundle.CreateParticipantSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{participantController.prepareList}" value="#{bundle.CreateParticipantShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateParticipantIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
