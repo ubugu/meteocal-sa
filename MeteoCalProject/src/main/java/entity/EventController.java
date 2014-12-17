@@ -1,5 +1,6 @@
 package entity;
 
+import jpaentities.Event;
 import entity.util.JsfUtil;
 import entity.util.PaginationHelper;
 

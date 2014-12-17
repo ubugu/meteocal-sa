@@ -1,5 +1,6 @@
 package entity;
 
+import jpaentities.Weather;
 import entity.util.JsfUtil;
 import entity.util.PaginationHelper;
 
@@ -33,7 +34,7 @@ public class WeatherController implements Serializable {
     public Weather getSelected() {
         if (current == null) {
             current = new Weather();
-            current.setWeatherPK(new entity.WeatherPK());
+            current.setWeatherPK(new jpaentities.WeatherPK());
             selectedItemIndex = -1;
         }
         return current;
@@ -74,7 +75,7 @@ public class WeatherController implements Serializable {
 
     public String prepareCreate() {
         current = new Weather();
-        current.setWeatherPK(new entity.WeatherPK());
+        current.setWeatherPK(new jpaentities.WeatherPK());
         selectedItemIndex = -1;
         return "Create";
     }
@@ -188,7 +189,7 @@ public class WeatherController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Weather getWeather(entity.WeatherPK id) {
+    public Weather getWeather(jpaentities.WeatherPK id) {
         return ejbFacade.find(id);
     }
 
@@ -208,16 +209,16 @@ public class WeatherController implements Serializable {
             return controller.getWeather(getKey(value));
         }
 
-        entity.WeatherPK getKey(String value) {
-            entity.WeatherPK key;
+        jpaentities.WeatherPK getKey(String value) {
+            jpaentities.WeatherPK key;
             String values[] = value.split(SEPARATOR_ESCAPED);
-            key = new entity.WeatherPK();
+            key = new jpaentities.WeatherPK();
             key.setCity(values[0]);
             key.setDate(java.sql.Date.valueOf(values[1]));
             return key;
         }
 
-        String getStringKey(entity.WeatherPK value) {
+        String getStringKey(jpaentities.WeatherPK value) {
             StringBuilder sb = new StringBuilder();
             sb.append(value.getCity());
             sb.append(SEPARATOR);

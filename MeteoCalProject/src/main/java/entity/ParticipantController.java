@@ -1,5 +1,6 @@
 package entity;
 
+import jpaentities.Participant;
 import entity.util.JsfUtil;
 import entity.util.PaginationHelper;
 
@@ -33,7 +34,7 @@ public class ParticipantController implements Serializable {
     public Participant getSelected() {
         if (current == null) {
             current = new Participant();
-            current.setParticipantPK(new entity.ParticipantPK());
+            current.setParticipantPK(new jpaentities.ParticipantPK());
             selectedItemIndex = -1;
         }
         return current;
@@ -74,7 +75,7 @@ public class ParticipantController implements Serializable {
 
     public String prepareCreate() {
         current = new Participant();
-        current.setParticipantPK(new entity.ParticipantPK());
+        current.setParticipantPK(new jpaentities.ParticipantPK());
         selectedItemIndex = -1;
         return "Create";
     }
@@ -192,7 +193,7 @@ public class ParticipantController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Participant getParticipant(entity.ParticipantPK id) {
+    public Participant getParticipant(jpaentities.ParticipantPK id) {
         return ejbFacade.find(id);
     }
 
@@ -212,16 +213,16 @@ public class ParticipantController implements Serializable {
             return controller.getParticipant(getKey(value));
         }
 
-        entity.ParticipantPK getKey(String value) {
-            entity.ParticipantPK key;
+        jpaentities.ParticipantPK getKey(String value) {
+            jpaentities.ParticipantPK key;
             String values[] = value.split(SEPARATOR_ESCAPED);
-            key = new entity.ParticipantPK();
+            key = new jpaentities.ParticipantPK();
             key.setUser(values[0]);
             key.setEvent(Integer.parseInt(values[1]));
             return key;
         }
 
-        String getStringKey(entity.ParticipantPK value) {
+        String getStringKey(jpaentities.ParticipantPK value) {
             StringBuilder sb = new StringBuilder();
             sb.append(value.getUser());
             sb.append(SEPARATOR);

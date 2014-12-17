@@ -5,6 +5,7 @@
  */
 package entity;
 
+import jpaentities.Notification;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
