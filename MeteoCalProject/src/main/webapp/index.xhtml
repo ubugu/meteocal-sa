@@ -8,48 +8,54 @@
         <h:outputStylesheet name="css/jsfcrud.css"/>
         <script jsf:target="body" jsf:name="story-page.js"/>
         <link jsf:name="styles.css" rel="stylesheet" type="text/css" />
+        <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
     </head>
-    <body jsf:id="body">      
-        Hello from Facelets
-         <h:form>
-                <fieldset>
-                    <legend>Registration Form</legend>
-                    <ol>
-                        <li>
-                            <label for="name">Name</label>
-                            <input id="name" name="name" type="text" placeholder="Username" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" required="true" autofocus="true">
-                        </li>
-                        <li>
-                            <label for="email">Email</label>
-                            <input id="email" name="email" type="email" placeholder="example@domain.com" required="true"/>
-                        </li>
-                        <li>
-                            <label for="password">Password</label>
-                            <input id="password" name="password" type="password" pattern=".{5,}" required="true">
-                        </li>
-                        <li>
-                            <label>Calendar's privacy : </label>
-                            <br>
-                            <input id="private" name="privacy" type="radio" checked="true">
-                            <label for="private">Private</label> 
-                            <br>
-                            <input id="shared" name="privacy" type="radio">
-                            <label for="shared">Shared</label> 
-                            <br>
-                            <input id="public" name="privacy" type="radio">
-                            <label for="public" >Public </label>
-                        </li>
-                    </ol>
-                    <button type="submit">Register</button>
-                </fieldset>
-            </h:form>
+    <body jsf:id="body" class="noFrame">      
+        <!--Element of the first line on the top bar-->
+        <div id="topHeader">
+            <img id="logo" src="Images/meteocalneve.png"  name="meteocalLogo" title="meteocallogo"/>
+              
+            <div class="loginForm"> 
+                
+                <span>Username</span>
+                <span id="passwordInput">Password</span>
+                
+                <div> 
+                    <input  type="text" name="username" placeholder="Username"/>
+                    <input  type="text" name="password" placeholder="Password"/>   
+                    <input  type="button" value="Login" onclick="return loadPage('ciao.html','_blank')"/>       
+                </div>
+            
+                  <div id="forgotten">
+                      <a href="create.html">  Forgotten password? </a>  
+                  </div>   
+            </div>
+        </div>
+        
+        <div id="LeftHeader">
+            <ul class="buttonList">
+                 <li><input id="leftBarButton" type="button" value="Home" onclick="return loadPage('info.xhtml','centralFrame')"/>  </li>
+                 <li><input id="leftBarButton" type="button" value="Register" onclick="return loadPage('register.xhtml','centralFrame')"/>  </li>
+                 <li><input id="leftBarButton" type="button" value="Contacts" onclick="return loadPage('contacts.xhtml','centralFrame')"/>  </li>
+                 <li><input id="leftBarButton" type="button" value="AboutUs" onclick="return loadPage('aboutUs.xhtml','centralFrame')"/>  </li>  
+            </ul>
+
+        </div>
+        <iframe id="centralFrame" name="centralFrame" src="info.html"  >
+            No frame support.
+        </iframe>
+  
+        <div  class="rights">
+            All right reserved 2014 @ Claudio Sanna, Walter samà 
+        </div>
+        
+        <script language="javascript" type="text/javascript">
+            <!--Function to load a page indicated with the string value.-->
+            function loadPage(page, target) 
+            {
+                window.open(page, target);
+            }
+        </script>
     </body>
-
-
-
-
-
-
-
 </html>
 
