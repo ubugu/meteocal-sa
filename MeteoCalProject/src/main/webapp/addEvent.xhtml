@@ -68,18 +68,26 @@
 
                     <div id="badConditions"> Bad Conditions &nbsp;&nbsp;</div> 
                     <div id="badConditionsButton" class="onoffswitch">
-                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked="true"/>
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked="true" onclick="show('badConditionsDiv')"/>
                         <label class="onoffswitch-label" for="myonoffswitch">
                             <span class="onoffswitch-inner"></span>
                             <span class="onoffswitch-switch"></span>
                         </label>
+                    </div>
+               
+                    <div id="badConditionsDiv" >
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        sono una div a scomparsa :D
                     </div>
 
                     <br />
                     <br /> 
                     <br />
                     
-                    <label for="invitationcheck"><input id="invitationcheck" type="checkbox" name="invitationcheck"/>
+                    <label for="invitationcheck"><input id="invitationcheck" type="checkbox" name="invitationcheck" onclick="enable('invitation')"/>
                         Send an Invitation to &nbsp;</label>
 
                     <textarea id="invitation" name="invitation" form="createEvent" rows="4" cols="50" disabled="true">Write all the User you want to invite separated by a semicolon (';')
@@ -90,6 +98,33 @@
                 <div id="weatherForm">
                     <h1> Weather Preview</h1>
                 </div> 
-            </form>  
+            </form>
+        
+            <!--Function to show element on click-->
+            <script type="text/javascript" language="javascript">
+                function show(id){
+                  if (document.getElementById){
+                    if(document.getElementById(id).style.display == 'none'){
+                      document.getElementById(id).style.display = 'block';
+                    }else{
+                      document.getElementById(id).style.display = 'none';
+                    }
+                  }
+                }
+            </script>
+            
+             <!--Function to enable text-->
+            <script type="text/javascript" language="javascript">
+                
+                function enable(id){
+                  if (document.getElementById){
+                    if(document.getElementById(id).disabled == true){
+                      document.getElementById(id).disabled = false;
+                    }else{
+                      document.getElementById(id).disabled = true;
+                    }
+                  }
+                }
+            </script>
     </body>
 </html>
