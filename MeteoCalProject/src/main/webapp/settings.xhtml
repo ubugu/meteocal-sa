@@ -18,30 +18,30 @@
                     <ol>
                         <li>
                             <label for="newEmail">
-                                   <input type="checkbox" name="newEmail" checked="true"/>
+                                   <input type="checkbox" name="newEmail" onclick="enable('email')"/>
                                    Change Email : 
                             </label>
-                            <input id="email" name="email" type="email" placeholder="example@domain.com"/>
+                            <input id="email" name="email" type="email" placeholder="example@domain.com" disabled="true"/>
                         </li>
                         <li>
                             <label for="newPassword">
-                                <input type="checkbox" name="newPassword" checked="true"/>
+                                <input type="checkbox" name="newPassword" onclick="enable('password')" />
                                 Change password : 
                             </label>
-                            <input id="password" name="password" type="password" pattern=".{5,}" />
+                            <input id="password" name="password" type="password" pattern=".{5,}"  disabled="true"/>
                         </li>
                         <li>
                             <label>Calendar's privacy : </label>
                             <br />
-                            <input id="private" name="privacy" type="radio" checked="true"/>
+                            <input id="private" name="privacy" type="radio" checked="true" onclick="enableOnButton('sharedUser','shared')"/>
                             <label for="private">Private</label> 
                             <br />
-                            <input id="public" name="privacy" type="radio"/>
+                            <input id="public" name="privacy" type="radio" onclick="enableOnButton('sharedUser','shared')"/>
                             <label for="public" >Public </label>
                             <br />
-                            <input id="shared" name="privacy" type="radio"/>
+                            <input id="shared" name="privacy" type="radio" onclick="enableOnButton('sharedUser','shared')"/>
                             <label for="shared">Shared</label> 
-                            <textarea name="shareduser" rows="4" cols="50" disable="true">Write all the User you want to share with separated by a semicolon (';')
+                            <textarea id="sharedUser" rows="4" cols="50" disabled="true">Write all the User you want to share with separated by a semicolon (';')
                              </textarea>
                         </li> 
                     </ol>
@@ -52,6 +52,34 @@
                 </fieldset>
             </form>
         </div>
+        
+         <!--Function to enable text-->
+         <script type="text/javascript" language="javascript">
+                
+             function enable(id){
+               if (document.getElementById){
+                 if(document.getElementById(id).disabled == true){
+                   document.getElementById(id).disabled = false;
+                 }else{
+                   document.getElementById(id).disabled = true;
+                 }
+               }
+             }
+         </script>
+         
+         <!--Function to enable text when an input is chosen-->
+         <script type="text/javascript" language="javascript">
+                
+             function enableOnButton(id,buttonID){
+              if (document.getElementById){
+                 if(document.getElementById(buttonID).checked == true){
+                   document.getElementById(id).disabled = false;
+                 }else{
+                   document.getElementById(id).disabled = true;
+                 }
+               }
+             }
+         </script>
     </body>
         
 </html>
