@@ -1,6 +1,7 @@
-package entity;
+package controller.bean;
 
-import jpaentities.Notification;
+import session.bean.WeatherFacade;
+import entity.bean.Weather;
 import entity.util.JsfUtil;
 import entity.util.PaginationHelper;
 
@@ -17,29 +18,30 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@Named("notificationController")
+@Named("weatherController")
 @SessionScoped
-public class NotificationController implements Serializable {
+public class WeatherController implements Serializable {
 
-    private Notification current;
+    private Weather current;
     private DataModel items = null;
     @EJB
-    private entity.NotificationFacade ejbFacade;
+    private session.bean.WeatherFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public NotificationController() {
+    public WeatherController() {
     }
 
-    public Notification getSelected() {
+    public Weather getSelected() {
         if (current == null) {
-            current = new Notification();
+            current = new Weather();
+            current.setWeatherPK(new entity.bean.WeatherPK());
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private NotificationFacade getFacade() {
+    private WeatherFacade getFacade() {
         return ejbFacade;
     }
 
@@ -67,13 +69,14 @@ public class NotificationController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Notification) getItems().getRowData();
+        current = (Weather) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
-        current = new Notification();
+        current = new Weather();
+        current.setWeatherPK(new entity.bean.WeatherPK());
         selectedItemIndex = -1;
         return "Create";
     }
@@ -81,7 +84,7 @@ public class NotificationController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("NotificationCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("WeatherCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -90,7 +93,7 @@ public class NotificationController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Notification) getItems().getRowData();
+        current = (Weather) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -98,7 +101,7 @@ public class NotificationController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("NotificationUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("WeatherUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -107,7 +110,7 @@ public class NotificationController implements Serializable {
     }
 
     public String destroy() {
-        current = (Notification) getItems().getRowData();
+        current = (Weather) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -131,7 +134,7 @@ public class NotificationController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("NotificationDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("WeatherDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -187,32 +190,40 @@ public class NotificationController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Notification getNotification(java.lang.Integer id) {
+    public Weather getWeather(entity.bean.WeatherPK id) {
         return ejbFacade.find(id);
     }
 
-    @FacesConverter(forClass = Notification.class)
-    public static class NotificationControllerConverter implements Converter {
+    @FacesConverter(forClass = Weather.class)
+    public static class WeatherControllerConverter implements Converter {
+
+        private static final String SEPARATOR = "#";
+        private static final String SEPARATOR_ESCAPED = "\\#";
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            NotificationController controller = (NotificationController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "notificationController");
-            return controller.getNotification(getKey(value));
+            WeatherController controller = (WeatherController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "weatherController");
+            return controller.getWeather(getKey(value));
         }
 
-        java.lang.Integer getKey(String value) {
-            java.lang.Integer key;
-            key = Integer.valueOf(value);
+        entity.bean.WeatherPK getKey(String value) {
+            entity.bean.WeatherPK key;
+            String values[] = value.split(SEPARATOR_ESCAPED);
+            key = new entity.bean.WeatherPK();
+            key.setCity(values[0]);
+            key.setDate(java.sql.Date.valueOf(values[1]));
             return key;
         }
 
-        String getStringKey(java.lang.Integer value) {
+        String getStringKey(entity.bean.WeatherPK value) {
             StringBuilder sb = new StringBuilder();
-            sb.append(value);
+            sb.append(value.getCity());
+            sb.append(SEPARATOR);
+            sb.append(value.getDate());
             return sb.toString();
         }
 
@@ -221,11 +232,11 @@ public class NotificationController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Notification) {
-                Notification o = (Notification) object;
-                return getStringKey(o.getId());
+            if (object instanceof Weather) {
+                Weather o = (Weather) object;
+                return getStringKey(o.getWeatherPK());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Notification.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Weather.class.getName());
             }
         }
 

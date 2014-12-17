@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity;
+package session.bean;
 
-import jpaentities.User;
+import entity.bean.Weather;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author Walter
  */
 @Stateless
-public class UserFacade extends AbstractFacade<User> {
+public class WeatherFacade extends AbstractFacade<Weather> {
     @PersistenceContext(unitName = "com.mycompany_MeteoCalProject_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
@@ -24,8 +24,8 @@ public class UserFacade extends AbstractFacade<User> {
         return em;
     }
 
-    public UserFacade() {
-        super(User.class);
+    public WeatherFacade() {
+        super(Weather.class);
     }
     
 }

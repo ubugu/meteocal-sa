@@ -1,6 +1,7 @@
-package entity;
+package controller.bean;
 
-import jpaentities.Event;
+import session.bean.EventFacade;
+import entity.bean.Event;
 import entity.util.JsfUtil;
 import entity.util.PaginationHelper;
 
@@ -24,7 +25,7 @@ public class EventController implements Serializable {
     private Event current;
     private DataModel items = null;
     @EJB
-    private entity.EventFacade ejbFacade;
+    private session.bean.EventFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 

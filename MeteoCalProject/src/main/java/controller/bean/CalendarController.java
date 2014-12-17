@@ -1,6 +1,7 @@
-package entity;
+package controller.bean;
 
-import jpaentities.Participant;
+import session.bean.CalendarFacade;
+import entity.bean.Calendar;
 import entity.util.JsfUtil;
 import entity.util.PaginationHelper;
 
@@ -17,30 +18,29 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@Named("participantController")
+@Named("calendarController")
 @SessionScoped
-public class ParticipantController implements Serializable {
+public class CalendarController implements Serializable {
 
-    private Participant current;
+    private Calendar current;
     private DataModel items = null;
     @EJB
-    private entity.ParticipantFacade ejbFacade;
+    private session.bean.CalendarFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public ParticipantController() {
+    public CalendarController() {
     }
 
-    public Participant getSelected() {
+    public Calendar getSelected() {
         if (current == null) {
-            current = new Participant();
-            current.setParticipantPK(new jpaentities.ParticipantPK());
+            current = new Calendar();
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private ParticipantFacade getFacade() {
+    private CalendarFacade getFacade() {
         return ejbFacade;
     }
 
@@ -68,24 +68,21 @@ public class ParticipantController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Participant) getItems().getRowData();
+        current = (Calendar) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
-        current = new Participant();
-        current.setParticipantPK(new jpaentities.ParticipantPK());
+        current = new Calendar();
         selectedItemIndex = -1;
         return "Create";
     }
 
     public String create() {
         try {
-            current.getParticipantPK().setEvent(current.getEvent1().getId());
-            current.getParticipantPK().setUser(current.getUser1().getUsername());
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ParticipantCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CalendarCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -94,17 +91,15 @@ public class ParticipantController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Participant) getItems().getRowData();
+        current = (Calendar) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
 
     public String update() {
         try {
-            current.getParticipantPK().setEvent(current.getEvent1().getId());
-            current.getParticipantPK().setUser(current.getUser1().getUsername());
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ParticipantUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CalendarUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -113,7 +108,7 @@ public class ParticipantController implements Serializable {
     }
 
     public String destroy() {
-        current = (Participant) getItems().getRowData();
+        current = (Calendar) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -137,7 +132,7 @@ public class ParticipantController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ParticipantDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CalendarDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -193,40 +188,32 @@ public class ParticipantController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Participant getParticipant(jpaentities.ParticipantPK id) {
+    public Calendar getCalendar(java.lang.Integer id) {
         return ejbFacade.find(id);
     }
 
-    @FacesConverter(forClass = Participant.class)
-    public static class ParticipantControllerConverter implements Converter {
-
-        private static final String SEPARATOR = "#";
-        private static final String SEPARATOR_ESCAPED = "\\#";
+    @FacesConverter(forClass = Calendar.class)
+    public static class CalendarControllerConverter implements Converter {
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            ParticipantController controller = (ParticipantController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "participantController");
-            return controller.getParticipant(getKey(value));
+            CalendarController controller = (CalendarController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "calendarController");
+            return controller.getCalendar(getKey(value));
         }
 
-        jpaentities.ParticipantPK getKey(String value) {
-            jpaentities.ParticipantPK key;
-            String values[] = value.split(SEPARATOR_ESCAPED);
-            key = new jpaentities.ParticipantPK();
-            key.setUser(values[0]);
-            key.setEvent(Integer.parseInt(values[1]));
+        java.lang.Integer getKey(String value) {
+            java.lang.Integer key;
+            key = Integer.valueOf(value);
             return key;
         }
 
-        String getStringKey(jpaentities.ParticipantPK value) {
+        String getStringKey(java.lang.Integer value) {
             StringBuilder sb = new StringBuilder();
-            sb.append(value.getUser());
-            sb.append(SEPARATOR);
-            sb.append(value.getEvent());
+            sb.append(value);
             return sb.toString();
         }
 
@@ -235,11 +222,11 @@ public class ParticipantController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Participant) {
-                Participant o = (Participant) object;
-                return getStringKey(o.getParticipantPK());
+            if (object instanceof Calendar) {
+                Calendar o = (Calendar) object;
+                return getStringKey(o.getId());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Participant.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Calendar.class.getName());
             }
         }
 
