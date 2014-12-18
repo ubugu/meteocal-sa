@@ -132,7 +132,7 @@ public class Participant implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Participant[ participantPK=" + participantPK + " ]";
+        return "entity.bean.Participant[ participantPK=" + participantPK + " ]";
     }
     
 }

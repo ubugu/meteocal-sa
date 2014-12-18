@@ -245,7 +245,7 @@ public class Event implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Event[ id=" + id + " ]";
+        return "entity.bean.Event[ id=" + id + " ]";
     }
     
 }

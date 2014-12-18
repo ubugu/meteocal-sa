@@ -127,7 +127,7 @@ public class Badconditions implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Badconditions[ id=" + id + " ]";
+        return "entity.bean.Badconditions[ id=" + id + " ]";
     }
     
 }
