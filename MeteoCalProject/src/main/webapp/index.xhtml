@@ -24,7 +24,7 @@
                 <div> 
                     <input  type="text" name="username" placeholder="Username"/>
                     <input  type="text" name="password" placeholder="Password"/>   
-                    <input  type="button" value="Login" onclick="return loadPage('ciao.html', '_blank')"/>       
+                    <input  type="button" value="Login" onclick="return loadPage('mainPageUser.xhtml')"/>       
                 </div>
 
                 <div id="forgotten">
@@ -35,26 +35,41 @@
 
         <div id="LeftHeader">
             <ul class="buttonList">
-                <li><input id="leftBarButton" type="button" value="Home" onclick="return loadPage('info.xhtml', 'centralFrame')"/>  </li>
-                <li><input id="leftBarButton" type="button" value="Register" onclick="return loadPage('register.xhtml', 'centralFrame')"/>  </li>
-                <li><input id="leftBarButton" type="button" value="Contacts" onclick="return loadPage('contacts.xhtml', 'centralFrame')"/>  </li>
-                <li><input id="leftBarButton" type="button" value="AboutUs" onclick="return loadPage('aboutUs.xhtml', 'centralFrame')"/>  </li>  
+                <li><input id="leftBarButton" type="button" value="Home" onclick="return loadPage('index.xhtml')"/>  </li>
+                <li><input id="leftBarButton" type="button" value="Register" onclick="return loadPage('register.xhtml')"/>  </li>
+                <li><input id="leftBarButton" type="button" value="Contacts" onclick="return loadPage('contacts.xhtml')"/>  </li>
+                <li><input id="leftBarButton" type="button" value="AboutUs" onclick="return loadPage('aboutUs.xhtml')"/>  </li>  
             </ul>
 
         </div>
-        <iframe id="centralFrame" name="centralFrame" src="info.xhtml"  >
-            No frame support.
-        </iframe>
+        
+        <div class="guestFrame">
+            <h2 >Meteocal: the meteo in your calendar!</h2>
+            <h5>What is meteocal?</h5>
+            <p class="informations">
+                Meteocal is an applications that provides a meteo and a calendar all stick together. <br />
+                Bad weather will not ruin your free time activity anymore! <br />
+                You will be provided with:    <br />
+                - A full-optional calendar!   <br />
+                - Weather forecast for each event you create!  <br />
+                -weather advertising if rain is coming to ruin your day!  <br />
+                -date suggestion into switch yous event!
+
+            </p>
+              <p class="informations">
+               What are you waiting for? register now it's free!
+            </p>
+        </div>
 
         <div  class="rights">
             All right reserved 2014 @ Claudio Sanna, Walter samà 
         </div>
 
         <script language="javascript" type="text/javascript">
-<!--Function to load a page indicated with the string value.-->
-            function loadPage(page, target)
+        <!--Function to load a page indicated with the string value.-->
+            function loadPage(page)
             {
-                window.open(page, target);
+                window.open(page);
             }
         </script>
 
@@ -80,12 +95,5 @@
             <h:commandLink action="#{weather.listSetup}" value="Show All Weather Items"/>
         </h:form>
     </body>
-
-
-
-
-
-
-
 </html>
 
