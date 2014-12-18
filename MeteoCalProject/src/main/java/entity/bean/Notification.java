@@ -142,7 +142,7 @@ public class Notification implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Notification[ id=" + id + " ]";
+        return "entity.bean.Notification[ id=" + id + " ]";
     }
     
 }

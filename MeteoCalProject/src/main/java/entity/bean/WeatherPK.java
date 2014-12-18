@@ -82,7 +82,7 @@ public class WeatherPK implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.WeatherPK[ city=" + city + ", date=" + date + " ]";
+        return "entity.bean.WeatherPK[ city=" + city + ", date=" + date + " ]";
     }
     
 }

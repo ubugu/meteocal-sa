@@ -131,7 +131,7 @@ public class Calendar implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Calendar[ id=" + id + " ]";
+        return "entity.bean.Calendar[ id=" + id + " ]";
     }
     
 }

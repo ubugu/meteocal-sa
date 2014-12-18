@@ -78,7 +78,7 @@ public class ParticipantPK implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.ParticipantPK[ user=" + user + ", event=" + event + " ]";
+        return "entity.bean.ParticipantPK[ user=" + user + ", event=" + event + " ]";
     }
     
 }

@@ -162,7 +162,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.User[ username=" + username + " ]";
+        return "entity.bean.User[ username=" + username + " ]";
     }
     
 }

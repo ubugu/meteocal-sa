@@ -154,7 +154,7 @@ public class Weather implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Weather[ weatherPK=" + weatherPK + " ]";
+        return "entity.bean.Weather[ weatherPK=" + weatherPK + " ]";
     }
     
 }
