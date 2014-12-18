@@ -4,16 +4,83 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:jsf="http://xmlns.jcp.org/jsf">
     <head jsf:id="head">     
-        <title>Contacts</title>
+        <title>Guest Home</title>
+        <link rel="stylesheet" type="text/css" href="/MeteoCalProject/faces/jsfcrud.css" />
         <h:outputStylesheet name="css/jsfcrud.css"/>
         <script jsf:target="body" jsf:name="story-page.js"/>
         <link jsf:name="styles.css" rel="stylesheet" type="text/css" />
         <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
     </head>
-    <body jsf:id="body">   
-       <div class="guestFrame">
+    <body jsf:id="body" class="noFrame">      
+        <!--Element of the first line on the top bar-->
+        <div id="topHeader">
+            <img id="logo" src="Images/meteocalneve.png"  name="meteocalLogo" title="meteocallogo"/>
+
+            <div class="loginForm"> 
+
+                <span>Username</span>
+                <span id="passwordLabel">Password</span>
+
+                <div> 
+                    <input  type="text" name="username" placeholder="Username"/>
+                    <input  type="text" name="password" placeholder="Password"/>   
+                    <input  type="button" value="Login" onclick="return loadPage('ciao.html', '_blank')"/>       
+                </div>
+
+                <div id="forgotten">
+                    <a href="create.html">  Forgotten password? </a>  
+                </div>   
+            </div>
+        </div>
+
+        <div id="LeftHeader">
+            <ul class="buttonList">
+                <li><input id="leftBarButton" type="button" value="Home" onclick="return loadPage('index.xhtml')"/>  </li>
+                <li><input id="leftBarButton" type="button" value="Register" onclick="return loadPage('register.xhtml')"/>  </li>
+                <li><input id="leftBarButton" type="button" value="Contacts" onclick="return loadPage('contacts.xhtml')"/>  </li>
+                <li><input id="leftBarButton" type="button" value="AboutUs" onclick="return loadPage('aboutUs.xhtml')"/>  </li>  
+            </ul>
+
+        </div>
+        
+        <div class="guestFrame">
             You can contact us at meteocal@gmail.com.<br />
             thanks for your support.
         </div>
+
+        <div  class="rights">
+            All right reserved 2014 @ Claudio Sanna, Walter samà 
+        </div>
+
+        <script language="javascript" type="text/javascript">
+        <!--Function to load a page indicated with the string value.-->
+            function loadPage(page)
+            {
+                window.open(page);
+            }
+        </script>
+
+        <h:form>
+            <h:commandLink action="#{badconditions.listSetup}" value="Show All Badconditions Items"/>
+        </h:form>
+        <h:form>
+            <h:commandLink action="#{calendar.listSetup}" value="Show All Calendar Items"/>
+        </h:form>
+        <h:form>
+            <h:commandLink action="#{event.listSetup}" value="Show All Event Items"/>
+        </h:form>
+        <h:form>
+            <h:commandLink action="#{notification.listSetup}" value="Show All Notification Items"/>
+        </h:form>
+        <h:form>
+            <h:commandLink action="#{participant.listSetup}" value="Show All Participant Items"/>
+        </h:form>
+        <h:form>
+            <h:commandLink action="#{user.listSetup}" value="Show All User Items"/>
+        </h:form>
+        <h:form>
+            <h:commandLink action="#{weather.listSetup}" value="Show All Weather Items"/>
+        </h:form>
     </body>
 </html>
+
