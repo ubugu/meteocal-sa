@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:jsf="http://xmlns.jcp.org/jsf">
     <head jsf:id="head">     
         <title>Home</title>
@@ -19,15 +20,16 @@
               
             <div class="logoutForm">         
                 <div >
-                    <input  type="button" value="Logout" onclick="return loadPage('index.html')"/>       
+                    <p:button value="Logout" outcome="index"/>    
                 </div>
             </div>
         </div>
         
         <div id="LeftHeader">
             <ul class="buttonList">
-                 <li><input id="leftBarButton" type="button" value="AddEvent" onclick="return loadPage('addEvent.xhtml')"/>  </li>                      
-                 <li><input id="leftBarButton" type="button" value="Settings" onclick="return loadPage('settings.xhtml')"/>  </li>  
+                 <li><p:button class="leftBarButton"  value="Home" outcome="mainUserPage"/></li>   
+                 <li><p:button class="leftBarButton"  value="AddEvent" outcome="addEvent"/></li>                      
+                 <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li>    
             </ul>
 
         </div>
@@ -153,10 +155,6 @@
          
          
   
-        <div  class="rights">
-            All right reserved 2014 @ Claudio Sanna, Walter samà 
-        </div>
-        
 
         <script language="javascript" type="text/javascript">
             <!--Function to load a page indicated with the string value.-->

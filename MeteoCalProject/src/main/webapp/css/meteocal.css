@@ -59,7 +59,7 @@ ul.buttonList {
 
 /*define button style*/
 
-#leftBarButton {
+.leftBarButton {
     background: #141314;
     background-image: -webkit-linear-gradient(top, #141314, #425f70);
     background-image: -moz-linear-gradient(top, #141314, #425f70);

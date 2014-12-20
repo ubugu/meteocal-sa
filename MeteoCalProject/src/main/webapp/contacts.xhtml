@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:jsf="http://xmlns.jcp.org/jsf">
     <head jsf:id="head">     
         <title>Guest Home</title>
@@ -24,7 +25,7 @@
                 <div> 
                     <input  type="text" name="username" placeholder="Username"/>
                     <input  type="text" name="password" placeholder="Password"/>   
-                    <input  type="button" value="Login" onclick="return loadPage('ciao.html', '_blank')"/>       
+                    <p:button  value="Login" outcome="mainUserPage"/>        
                 </div>
 
                 <div id="forgotten">
@@ -34,12 +35,13 @@
         </div>
 
         <div id="LeftHeader">
-            <ul class="buttonList">
-                <li><input id="leftBarButton" type="button" value="Home" onclick="return loadPage('index.xhtml')"/>  </li>
-                <li><input id="leftBarButton" type="button" value="Register" onclick="return loadPage('register.xhtml')"/>  </li>
-                <li><input id="leftBarButton" type="button" value="Contacts" onclick="return loadPage('contacts.xhtml')"/>  </li>
-                <li><input id="leftBarButton" type="button" value="AboutUs" onclick="return loadPage('aboutUs.xhtml')"/>  </li>  
+            <ul class="buttonList"> 
+                <li><p:button class="leftBarButton" value="Home" outcome="index"/></li>
+                <li><p:button class="leftBarButton" value="Register" outcome="register"/></li>
+                <li><p:button class="leftBarButton" value="Contacts" outcome="contacts"/></li>
+                <li><p:button class="leftBarButton" value="AboutUs" outcome="aboutUs"/></li>
             </ul>
+
 
         </div>
         
