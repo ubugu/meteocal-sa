@@ -32,89 +32,149 @@
                  <li><p:button class="leftBarButton"  value="AddEvent" outcome="addEvent"/></li>                      
                  <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li>  
             </ul>
-
         </div>
+        
+        <p:commandButton id="monthButton" type="button" onclick="setMonthView(),updateDay(),updateWeek()" value="Month" />
+        <p:commandButton id="weekButton" type="button" onclick="setWeekView(),updateMonth(),updateDay()" value="Week" />
+        <p:commandButton id="dayButton" type="button" onclick="setDayView(),updateMonth(), updateWeek()" value="Day" />
 
-  
-         <p:commandButton value="prev"  update="calendar" actionListener="#{viewController.prevMonth()}"/>
+        <!--Calendar for the month view-->
+        <h:form id="monthViewForm" style="display: #{viewController.show('0')};"  >
+            <!--Month view change updater-->
+            <p:remoteCommand name="setMonthView" actionListener="#{viewController.setView('0')}"  update="monthViewForm"/>
+            <p:remoteCommand name="updateMonth" update="monthViewForm"/>
 
-        <input  type="button" id="changeCalendar" value="next" /> 
-       
-        <p:panelGrid id="calendar" style="margin-left: 300px">
-            <f:facet name="header">
-                <p:row >
-                    <p:column  colspan="200"  style=" font-size: 30px;">#{viewController.month}</p:column>
+            <p:remoteCommand name="prev" actionListener="#{viewController.prevMonth()}"  update="monthViewForm"/>
+            <p:remoteCommand name="next" actionListener="#{viewController.nextMonth()}"  update="monthViewForm"/>
+            <p:commandButton id="prev" type="button" onclick="prev()" value="Previous" />
+            <p:commandButton id="next" type="button" onclick="next()" value="Next" />
+            <p:panelGrid style="margin-left: 300px">
+                <f:facet name="header">
+                    <p:row >
+                        <p:column  id="month" colspan="200"  style=" font-size: 30px;">#{viewController.getMonth('false')} (#{viewController.year})</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="20" >Sunday</p:column> 
+                        <p:column colspan="20">Monday </p:column>                 
+                        <p:column colspan="20">Tuesday</p:column>
+                        <p:column colspan="20">Wednesday</p:column>
+                        <p:column colspan="20">Thursday</p:column>
+                        <p:column colspan="20">Friday</p:column>
+                        <p:column colspan="20">Saturday</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('1')}" >#{viewController.getDayNumber("1")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('2')}" > #{viewController.getDayNumber("2")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('3')}" >#{viewController.getDayNumber("3")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('4')}" >#{viewController.getDayNumber("4")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('5')}" >#{viewController.getDayNumber("5")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('6')}" >#{viewController.getDayNumber("6")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('7')}" >#{viewController.getDayNumber("7")} </p:column>
                 </p:row>
                 <p:row>
-                    <p:column colspan="20" >Sunday</p:column> 
-                    <p:column colspan="20">Monday </p:column>                 
-                    <p:column colspan="20">Tuesday</p:column>
-                    <p:column colspan="20">Wednesday</p:column>
-                    <p:column colspan="20">Thursday</p:column>
-                    <p:column colspan="20">Friday</p:column>
-                    <p:column colspan="20">Saturday</p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('8')}" >#{viewController.getDayNumber("8")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('9')}" >#{viewController.getDayNumber("9")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('10')}" >#{viewController.getDayNumber("10")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('11')}" >#{viewController.getDayNumber("11")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('12')}" >#{viewController.getDayNumber("12")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('13')}" >#{viewController.getDayNumber("13")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('14')}" >#{viewController.getDayNumber("14")} </p:column>
                 </p:row>
-            </f:facet>
-             <p:row>
-                 
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('1')}" >#{viewController.getDayNumber("1")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('2')}" > #{viewController.getDayNumber("2")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('3')}" >#{viewController.getDayNumber("3")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('4')}" >#{viewController.getDayNumber("4")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('5')}" >#{viewController.getDayNumber("5")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('6')}" >#{viewController.getDayNumber("6")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('7')}" >#{viewController.getDayNumber("7")} </p:column>
-            </p:row>
-             <p:row>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('8')}" >#{viewController.getDayNumber("8")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('9')}" >#{viewController.getDayNumber("9")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('10')}" >#{viewController.getDayNumber("10")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('11')}" >#{viewController.getDayNumber("11")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('12')}" >#{viewController.getDayNumber("12")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('13')}" >#{viewController.getDayNumber("13")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('14')}" >#{viewController.getDayNumber("14")} </p:column>
-            </p:row>
-            <p:row>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('15')}" >#{viewController.getDayNumber("15")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('16')}" >#{viewController.getDayNumber("16")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('17')}" >#{viewController.getDayNumber("17")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('18')}" >#{viewController.getDayNumber("18")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('19')}" >#{viewController.getDayNumber("19")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('20')}" >#{viewController.getDayNumber("20")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('21')}" >#{viewController.getDayNumber("21")} </p:column>
-            </p:row>
-              <p:row>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('22')}" >#{viewController.getDayNumber("22")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('23')}" >#{viewController.getDayNumber("23")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('24')}" >#{viewController.getDayNumber("24")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('25')}" >#{viewController.getDayNumber("25")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('26')}" >#{viewController.getDayNumber("26")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('27')}" >#{viewController.getDayNumber("27")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('28')}" >#{viewController.getDayNumber("28")} </p:column>
-            </p:row>
-              <p:row>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('29')}" >#{viewController.getDayNumber("29")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('30')}" >#{viewController.getDayNumber("30")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('31')}" >#{viewController.getDayNumber("31")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('32')}" >#{viewController.getDayNumber("32")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('33')}" >#{viewController.getDayNumber("33")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('34')}" >#{viewController.getDayNumber("34")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('35')}" >#{viewController.getDayNumber("35")} </p:column>
-              </p:row>
-             <p:row>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('36')}" >#{viewController.getDayNumber("36")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('37')}" >#{viewController.getDayNumber("37")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('38')}" >#{viewController.getDayNumber("38")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('39')}" >#{viewController.getDayNumber("39")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('40')}" >#{viewController.getDayNumber("40")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('41')}" >#{viewController.getDayNumber("41")} </p:column>
-                <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('42')}" >#{viewController.getDayNumber("42")} </p:column>
-            </p:row>
-        </p:panelGrid>
-        
+                <p:row>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('15')}" >#{viewController.getDayNumber("15")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('16')}" >#{viewController.getDayNumber("16")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('17')}" >#{viewController.getDayNumber("17")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('18')}" >#{viewController.getDayNumber("18")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('19')}" >#{viewController.getDayNumber("19")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('20')}" >#{viewController.getDayNumber("20")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('21')}" >#{viewController.getDayNumber("21")} </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('22')}" >#{viewController.getDayNumber("22")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('23')}" >#{viewController.getDayNumber("23")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('24')}" >#{viewController.getDayNumber("24")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('25')}" >#{viewController.getDayNumber("25")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('26')}" >#{viewController.getDayNumber("26")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('27')}" >#{viewController.getDayNumber("27")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('28')}" >#{viewController.getDayNumber("28")} </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('29')}" >#{viewController.getDayNumber("29")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('30')}" >#{viewController.getDayNumber("30")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('31')}" >#{viewController.getDayNumber("31")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('32')}" >#{viewController.getDayNumber("32")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('33')}" >#{viewController.getDayNumber("33")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('34')}" >#{viewController.getDayNumber("34")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('35')}" >#{viewController.getDayNumber("35")} </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('36')}" >#{viewController.getDayNumber("36")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('37')}" >#{viewController.getDayNumber("37")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('38')}" >#{viewController.getDayNumber("38")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('39')}" >#{viewController.getDayNumber("39")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('40')}" >#{viewController.getDayNumber("40")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('41')}" >#{viewController.getDayNumber("41")} </p:column>
+                    <p:column colspan="20" style="background-color : #{viewController.isSlotEnabled('42')}" >#{viewController.getDayNumber("42")} </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
 
-        
-        
+        <!--Calendar for the week view-->
+        <h:form id="weekViewForm"  style="display: #{viewController.show('1')};">
+            <!--Week view change updater-->  
+            <p:remoteCommand name="setWeekView" actionListener="#{viewController.setView('1')}"  update="weekViewForm"/>
+            <p:remoteCommand name="updateWeek" update="weekViewForm"/>
+
+            <p:panelGrid style="margin-left: 300px">
+                <f:facet name="header">
+                    <p:row >
+                        <p:column  id="month" colspan="200"  style=" font-size: 30px;">Week #{viewController.week} (#{viewController.year})</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="20" >Sunday</p:column> 
+                        <p:column colspan="20">Monday </p:column>                 
+                        <p:column colspan="20">Tuesday</p:column>
+                        <p:column colspan="20">Wednesday</p:column>
+                        <p:column colspan="20">Thursday</p:column>
+                        <p:column colspan="20">Friday</p:column>
+                        <p:column colspan="20">Saturday</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column colspan="20" >#{viewController.getDayNumber("1")} </p:column>
+                    <p:column colspan="20" > #{viewController.getDayNumber("2")} </p:column>
+                    <p:column colspan="20" >#{viewController.getDayNumber("3")} </p:column>
+                    <p:column colspan="20" >#{viewController.getDayNumber("4")} </p:column>
+                    <p:column colspan="20" >#{viewController.getDayNumber("5")} </p:column>
+                    <p:column colspan="20" >#{viewController.getDayNumber("6")} </p:column>
+                    <p:column colspan="20" >#{viewController.getDayNumber("7")} </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+
+        <!--Calendar for the day view-->
+        <h:form id="dayViewForm" style="display: #{viewController.show('2')};">
+            <!--Day view change updater-->  
+            <p:remoteCommand name="setDayView" actionListener="#{viewController.setView('2')}"  update="dayViewForm"/>
+            <p:remoteCommand name="updateDay" update="dayViewForm"/>
+
+           <p:panelGrid style="margin-left: 300px">
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="20">#{viewController.getDayNumber("1")}/#{viewController.getMonth('true')}/#{viewController.year}</p:column> 
+                        <p:column colspan="20">#{viewController.getDayNumber("2")}/#{viewController.getMonth('true')}/#{viewController.year}</p:column>                 
+                        <p:column colspan="20">#{viewController.getDayNumber("3")}/#{viewController.getMonth('true')}/#{viewController.year}</p:column>
+                    </p:row>
+                </f:facet>
+                <p:row>
+                    <p:column colspan="20"> </p:column>
+                    <p:column colspan="20"> </p:column>
+                    <p:column colspan="20"> </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
 
         <script language="javascript" type="text/javascript">
             <!--Function to load a page indicated with the string value.-->
