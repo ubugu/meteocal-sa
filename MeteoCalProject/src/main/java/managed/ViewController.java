@@ -22,7 +22,7 @@ import java.util.Date;
 @SessionScoped
 public class ViewController {
     protected enum ViewType {
-        MONTH_VIEW, WEEK_VIED, DAY_VIEW, 
+        MONTH_VIEW, WEEK_VIEW, DAY_VIEW, 
     }
     
     protected enum Month {
@@ -103,13 +103,17 @@ public class ViewController {
         this.view = ViewType.values()[intValue];
     }
     
-    public String getMonth() {
-           Integer month = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH);
+    public String getMonth(boolean intValue) {
+        Integer month = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH);
         if (this.month == null) {
             this.month = Month.values()[month];
         }
-        return this.month.toString();
-
+        if (!intValue) {
+            return this.month.toString();
+        }
+        Integer monthIntValue = this.month.ordinal();
+        monthIntValue++;
+        return monthIntValue.toString();
     }
     
     public String getYear() {
@@ -117,20 +121,60 @@ public class ViewController {
     }
   
     public String getWeek() {
-        Calendar calendar = Calendar.getInstance();
-        Integer weekNumber = calendar.get(Calendar.WEEK_OF_YEAR);
-        return weekNumber.toString();
+        return this.week.toString();
      }
             
     public String getDayNumber(String value) {
         Calendar calendar = Calendar.getInstance();
         Integer gridNumber = Integer.parseInt(value);
-        calendar.set(year, month.ordinal(), 1);
-        int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
-        calendar.add(Calendar.DAY_OF_MONTH, gridNumber-weekDay);
-        Integer number = calendar.get(Calendar.DAY_OF_MONTH);
-        setToCurrentDate();
-        return number.toString();
+        if (this.view == ViewType.MONTH_VIEW) {
+            calendar.set(year, month.ordinal(), 1);
+            int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+            calendar.add(Calendar.DAY_OF_MONTH, gridNumber - weekDay);
+            Integer number = calendar.get(Calendar.DAY_OF_MONTH);
+            setToCurrentDate();
+            return number.toString();
+        }
+       
+        if (this.view == ViewType.WEEK_VIEW) {
+            calendar.set(year, month.ordinal(), this.day);
+            int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+            calendar.add(Calendar.DAY_OF_MONTH, gridNumber - weekDay);
+            Integer number = calendar.get(Calendar.DAY_OF_MONTH);
+            setToCurrentDate();
+            return number.toString();
+        }
+        
+        if (this.view == ViewType.DAY_VIEW) {
+            calendar.set(year, month.ordinal(), this.day);
+            
+            calendar.add(Calendar.DAY_OF_MONTH, gridNumber - 2);
+            Integer number = calendar.get(Calendar.DAY_OF_MONTH);
+            setToCurrentDate();
+            return number.toString();
+        }
+                
+        return "error";
+    }
+    
+    
+    public String getFullDate(String value) {
+        Calendar calendar = Calendar.getInstance();
+        Integer gridNumber = Integer.parseInt(value);
+        
+         if (this.view == ViewType.DAY_VIEW) {
+            calendar.set(year, month.ordinal(), this.day);
+            
+            calendar.add(Calendar.DAY_OF_MONTH, gridNumber - 2);
+            Integer day = calendar.get(Calendar.DAY_OF_MONTH);
+            Integer month = calendar.get(Calendar.MONTH);
+            Integer year = calendar.get(Calendar.YEAR);
+            month++;
+            setToCurrentDate();
+            return day.toString() + "/" + month.toString() + "/" + year.toString();
+        }
+                
+        return "error";
     }
     
       public void nextMonth() {
@@ -140,41 +184,60 @@ public class ViewController {
             number = 0;
             this.year++;
         }
+        
+        this.day = 1;
         this.month = Month.values()[number];
     }
       
      public void prevMonth() { 
-        /*Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, -3);
-   
-        this.month = Month.values()[calendar.get(Calendar.MONTH)];
-        this.week = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
-        this.day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        this.year = Calendar.getInstance().get(Calendar.YEAR);*/
-        
-         
-         
+
         int number = this.month.ordinal();
         number--;
         if (number < 0 ) {
             number = 11;
             this.year--;
         }
+        
+        this.day = 1;
         this.month = Month.values()[number];
     }
      
        public void nextWeek() {
-        return;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(this.year,this.month.ordinal(), this.day);
+        calendar.add(Calendar.DAY_OF_MONTH, 7);
+        this.month = Month.values()[calendar.get(Calendar.MONTH)];
+        this.week = calendar.get(Calendar.WEEK_OF_YEAR);
+        this.day = calendar.get(Calendar.DAY_OF_MONTH);
+        this.year = calendar.get(Calendar.YEAR);
     }
        public void prevWeek() {
-           return;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(this.year,this.month.ordinal(), this.day);
+        calendar.add(Calendar.DAY_OF_MONTH, -7);
+        this.month = Month.values()[calendar.get(Calendar.MONTH)];
+        this.week = calendar.get(Calendar.WEEK_OF_YEAR);
+        this.day = calendar.get(Calendar.DAY_OF_MONTH);
+        this.year = calendar.get(Calendar.YEAR);
        }
        
        public void nextDay() {
-        return;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(this.year,this.month.ordinal(), this.day);
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        this.month = Month.values()[calendar.get(Calendar.MONTH)];
+        this.week = calendar.get(Calendar.WEEK_OF_YEAR);
+        this.day = calendar.get(Calendar.DAY_OF_MONTH);
+        this.year = calendar.get(Calendar.YEAR);
     }
        public void prevDay() {
-           return;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(this.year,this.month.ordinal(), this.day);
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+        this.month = Month.values()[calendar.get(Calendar.MONTH)];
+        this.week = calendar.get(Calendar.WEEK_OF_YEAR);
+        this.day = calendar.get(Calendar.DAY_OF_MONTH);
+        this.year = calendar.get(Calendar.YEAR);
        }
        
     
