@@ -24,7 +24,7 @@
                     <h:outputText value="Email:"/>
                     <h:inputText id="email" value="#{user.user.email}" title="Email" required="true" requiredMessage="The email field is required." />
                     <h:outputText value="CalendarCollection:"/>
-                    <h:selectManyListbox id="calendarCollection" value="#{user.user.jsfcrud_transform[jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.arrayToList].calendarCollection}" title="CalendarCollection" size="6" converter="#{calendar.converter}" >
+                    <h:selectManyListbox id="calendarCollection" value="#{user.user.jsfcrud_transform[jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.arrayToList].calendarCollection}" title="CalendarCollection" size="6" converter="#{calendar.converter}" >
                         <f:selectItems value="#{calendar.calendarItemsAvailableSelectMany}"/>
                     </h:selectManyListbox>
                     <h:outputText value="Calendar:"/>
@@ -32,11 +32,11 @@
                         <f:selectItems value="#{calendar.calendarItemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
                     <h:outputText value="NotificationCollection:"/>
-                    <h:selectManyListbox id="notificationCollection" value="#{user.user.jsfcrud_transform[jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.arrayToList].notificationCollection}" title="NotificationCollection" size="6" converter="#{notification.converter}" >
+                    <h:selectManyListbox id="notificationCollection" value="#{user.user.jsfcrud_transform[jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.arrayToList].notificationCollection}" title="NotificationCollection" size="6" converter="#{notification.converter}" >
                         <f:selectItems value="#{notification.notificationItemsAvailableSelectMany}"/>
                     </h:selectManyListbox>
                     <h:outputText value="ParticipantCollection:"/>
-                    <h:outputText escape="false" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getCollectionAsString'][user.user.participantCollection == null ? jsfcrud_null : user.user.participantCollection].jsfcrud_invoke}" title="ParticipantCollection" />
+                    <h:outputText escape="false" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getCollectionAsString'][user.user.participantCollection == null ? jsfcrud_null : user.user.participantCollection].jsfcrud_invoke}" title="ParticipantCollection" />
 
                 </h:panelGrid>
                 <br />

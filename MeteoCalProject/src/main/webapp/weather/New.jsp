@@ -18,9 +18,9 @@
                 <h:inputHidden id="validateCreateField" validator="#{weather.validateCreate}" value="value"/>
                 <h:panelGrid columns="2">
                     <h:outputText value="City:"/>
-                    <h:inputText id="city" value="#{weather.weather.weatherPK.city}" title="City" required="true" requiredMessage="The city field is required." />
+                    <h:inputText id="city" value="#{weather.weather.city}" title="City" required="true" requiredMessage="The city field is required." />
                     <h:outputText value="Date (MM/dd/yyyy):"/>
-                    <h:inputText id="date" value="#{weather.weather.weatherPK.date}" title="Date" required="true" requiredMessage="The date field is required." >
+                    <h:inputText id="date" value="#{weather.weather.date}" title="Date" required="true" requiredMessage="The date field is required." >
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </h:inputText>
                     <h:outputText value="Precipitations:"/>
@@ -35,8 +35,10 @@
                     <h:inputText id="humidity" value="#{weather.weather.humidity}" title="Humidity" />
                     <h:outputText value="Clouds:"/>
                     <h:inputText id="clouds" value="#{weather.weather.clouds}" title="Clouds" />
+                    <h:outputText value="Id:"/>
+                    <h:inputText id="id" value="#{weather.weather.id}" title="Id" required="true" requiredMessage="The id field is required." />
                     <h:outputText value="EventCollection:"/>
-                    <h:selectManyListbox id="eventCollection" value="#{weather.weather.jsfcrud_transform[jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.arrayToList].eventCollection}" title="EventCollection" size="6" converter="#{event.converter}" >
+                    <h:selectManyListbox id="eventCollection" value="#{weather.weather.jsfcrud_transform[jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.arrayToList].eventCollection}" title="EventCollection" size="6" converter="#{event.converter}" >
                         <f:selectItems value="#{event.eventItemsAvailableSelectMany}"/>
                     </h:selectManyListbox>
 

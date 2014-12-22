@@ -36,12 +36,12 @@
                 </h:panelGrid>
                 <br />
                 <h:commandLink action="#{notification.edit}" value="Save">
-                    <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
+                    <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
                 </h:commandLink>
                 <br />
                 <br />
                 <h:commandLink action="#{notification.detailSetup}" value="Show" immediate="true">
-                    <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
+                    <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
                 </h:commandLink>
                 <br />
                 <h:commandLink action="#{notification.listSetup}" value="Show All Notification Items" immediate="true"/>

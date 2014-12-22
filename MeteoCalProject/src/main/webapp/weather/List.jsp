@@ -27,13 +27,15 @@
                             <f:facet name="header">
                                 <h:outputText value="City"/>
                             </f:facet>
-                            <h:outputText value="#{item.weatherPK.city}"/>
+                            <h:outputText value="#{item.city}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="Date"/>
                             </f:facet>
-                            <h:outputText value="#{item.weatherPK.date}"/>
+                            <h:outputText value="#{item.date}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
@@ -73,18 +75,24 @@
                         </h:column>
                         <h:column>
                             <f:facet name="header">
+                                <h:outputText value="Id"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
                                 <h:outputText escape="false" value="&nbsp;"/>
                             </f:facet>
                             <h:commandLink value="Show" action="#{weather.detailSetup}">
-                                <f:param name="jsfcrud.currentWeather" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][weather.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentWeather" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][weather.converter].jsfcrud_invoke}"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Edit" action="#{weather.editSetup}">
-                                <f:param name="jsfcrud.currentWeather" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][weather.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentWeather" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][weather.converter].jsfcrud_invoke}"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Destroy" action="#{weather.remove}">
-                                <f:param name="jsfcrud.currentWeather" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][weather.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentWeather" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][weather.converter].jsfcrud_invoke}"/>
                             </h:commandLink>
                         </h:column>
 

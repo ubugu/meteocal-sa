@@ -22,7 +22,7 @@
                     <h:outputText value="Privacy:"/>
                     <h:inputText id="privacy" value="#{calendar.calendar.privacy}" title="Privacy" required="true" requiredMessage="The privacy field is required." />
                     <h:outputText value="UserCollection:"/>
-                    <h:selectManyListbox id="userCollection" value="#{calendar.calendar.jsfcrud_transform[jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.arrayToList].userCollection}" title="UserCollection" size="6" converter="#{user.converter}" >
+                    <h:selectManyListbox id="userCollection" value="#{calendar.calendar.jsfcrud_transform[jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.arrayToList].userCollection}" title="UserCollection" size="6" converter="#{user.converter}" >
                         <f:selectItems value="#{user.userItemsAvailableSelectMany}"/>
                     </h:selectManyListbox>
                     <h:outputText value="Owner:"/>
@@ -30,7 +30,7 @@
                         <f:selectItems value="#{user.userItemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
                     <h:outputText value="EventCollection:"/>
-                    <h:selectManyListbox id="eventCollection" value="#{calendar.calendar.jsfcrud_transform[jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.arrayToList].eventCollection}" title="EventCollection" size="6" converter="#{event.converter}" >
+                    <h:selectManyListbox id="eventCollection" value="#{calendar.calendar.jsfcrud_transform[jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.arrayToList].eventCollection}" title="EventCollection" size="6" converter="#{event.converter}" >
                         <f:selectItems value="#{event.eventItemsAvailableSelectMany}"/>
                     </h:selectManyListbox>
 

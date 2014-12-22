@@ -21,17 +21,17 @@
     </navigation-rule>
     <managed-bean>
         <managed-bean-name>badconditions</managed-bean-name>
-        <managed-bean-class>jsf.classes.controller.bean.BadconditionsController</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>jsf.classes.BadconditionsController</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>badconditionsJpa</managed-bean-name>
         <managed-bean-class>session.bean.BadconditionsFacade</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <converter>
         <converter-for-class>entity.bean.Badconditions</converter-for-class>
-        <converter-class>jsf.classes.controller.bean.BadconditionsConverter</converter-class>
+        <converter-class>jsf.classes.BadconditionsConverter</converter-class>
     </converter>
     <navigation-rule>
         <from-view-id>*</from-view-id>
@@ -63,17 +63,17 @@
     </navigation-rule>
     <managed-bean>
         <managed-bean-name>calendar</managed-bean-name>
-        <managed-bean-class>jsf.classes.controller.bean.CalendarController</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>jsf.classes.CalendarController</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>calendarJpa</managed-bean-name>
         <managed-bean-class>session.bean.CalendarFacade</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <converter>
         <converter-for-class>entity.bean.Calendar</converter-for-class>
-        <converter-class>jsf.classes.controller.bean.CalendarConverter</converter-class>
+        <converter-class>jsf.classes.CalendarConverter</converter-class>
     </converter>
     <navigation-rule>
         <from-view-id>*</from-view-id>
@@ -105,17 +105,17 @@
     </navigation-rule>
     <managed-bean>
         <managed-bean-name>event</managed-bean-name>
-        <managed-bean-class>jsf.classes.controller.bean.EventController</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>jsf.classes.EventController</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>eventJpa</managed-bean-name>
         <managed-bean-class>session.bean.EventFacade</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <converter>
         <converter-for-class>entity.bean.Event</converter-for-class>
-        <converter-class>jsf.classes.controller.bean.EventConverter</converter-class>
+        <converter-class>jsf.classes.EventConverter</converter-class>
     </converter>
     <navigation-rule>
         <from-view-id>*</from-view-id>
@@ -147,17 +147,17 @@
     </navigation-rule>
     <managed-bean>
         <managed-bean-name>notification</managed-bean-name>
-        <managed-bean-class>jsf.classes.controller.bean.NotificationController</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>jsf.classes.NotificationController</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>notificationJpa</managed-bean-name>
         <managed-bean-class>session.bean.NotificationFacade</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <converter>
         <converter-for-class>entity.bean.Notification</converter-for-class>
-        <converter-class>jsf.classes.controller.bean.NotificationConverter</converter-class>
+        <converter-class>jsf.classes.NotificationConverter</converter-class>
     </converter>
     <navigation-rule>
         <from-view-id>*</from-view-id>
@@ -189,17 +189,17 @@
     </navigation-rule>
     <managed-bean>
         <managed-bean-name>participant</managed-bean-name>
-        <managed-bean-class>jsf.classes.controller.bean.ParticipantController</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>jsf.classes.ParticipantController</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>participantJpa</managed-bean-name>
         <managed-bean-class>session.bean.ParticipantFacade</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <converter>
         <converter-for-class>entity.bean.Participant</converter-for-class>
-        <converter-class>jsf.classes.controller.bean.ParticipantConverter</converter-class>
+        <converter-class>jsf.classes.ParticipantConverter</converter-class>
     </converter>
     <navigation-rule>
         <from-view-id>*</from-view-id>
@@ -231,17 +231,17 @@
     </navigation-rule>
     <managed-bean>
         <managed-bean-name>user</managed-bean-name>
-        <managed-bean-class>jsf.classes.controller.bean.UserController</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>jsf.classes.UserController</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>userJpa</managed-bean-name>
         <managed-bean-class>session.bean.UserFacade</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <converter>
         <converter-for-class>entity.bean.User</converter-for-class>
-        <converter-class>jsf.classes.controller.bean.UserConverter</converter-class>
+        <converter-class>jsf.classes.UserConverter</converter-class>
     </converter>
     <navigation-rule>
         <from-view-id>*</from-view-id>
@@ -273,17 +273,17 @@
     </navigation-rule>
     <managed-bean>
         <managed-bean-name>weather</managed-bean-name>
-        <managed-bean-class>jsf.classes.controller.bean.WeatherController</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>jsf.classes.WeatherController</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>weatherJpa</managed-bean-name>
         <managed-bean-class>session.bean.WeatherFacade</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
     <converter>
         <converter-for-class>entity.bean.Weather</converter-for-class>
-        <converter-class>jsf.classes.controller.bean.WeatherConverter</converter-class>
+        <converter-class>jsf.classes.WeatherConverter</converter-class>
     </converter>
     <navigation-rule>
         <from-view-id>*</from-view-id>
@@ -313,4 +313,7 @@
             <to-view-id>/weather/Detail.jsp</to-view-id>
         </navigation-case>
     </navigation-rule>
+    <application>
+        <el-resolver>jsf.classes.util.JsfCrudELResolver</el-resolver>
+    </application>
 </faces-config>

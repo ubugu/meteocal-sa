@@ -26,24 +26,24 @@
                         <h:panelGroup rendered="#{participant.participant.user1 != null}">
                             <h:outputText value=" ("/>
                             <h:commandLink value="Show" action="#{user.detailSetup}">
-                                <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant.user1][user.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant.user1][user.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="participant"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.ParticipantController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.ParticipantController"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Edit" action="#{user.editSetup}">
-                                <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant.user1][user.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant.user1][user.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="participant"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.ParticipantController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.ParticipantController"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Destroy" action="#{user.destroy}">
-                                <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant.user1][user.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant.user1][user.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="participant"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.ParticipantController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.ParticipantController"/>
                             </h:commandLink>
                             <h:outputText value=" )"/>
                         </h:panelGroup>
@@ -54,24 +54,24 @@
                         <h:panelGroup rendered="#{participant.participant.event1 != null}">
                             <h:outputText value=" ("/>
                             <h:commandLink value="Show" action="#{event.detailSetup}">
-                                <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant.event1][event.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant.event1][event.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="participant"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.ParticipantController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.ParticipantController"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Edit" action="#{event.editSetup}">
-                                <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant.event1][event.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant.event1][event.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="participant"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.ParticipantController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.ParticipantController"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Destroy" action="#{event.destroy}">
-                                <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant.event1][event.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant.event1][event.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="participant"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.ParticipantController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.ParticipantController"/>
                             </h:commandLink>
                             <h:outputText value=" )"/>
                         </h:panelGroup>
@@ -81,12 +81,12 @@
                 </h:panelGrid>
                 <br />
                 <h:commandLink action="#{participant.remove}" value="Destroy">
-                    <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}" />
+                    <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}" />
                 </h:commandLink>
                 <br />
                 <br />
                 <h:commandLink action="#{participant.editSetup}" value="Edit">
-                    <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}" />
+                    <f:param name="jsfcrud.currentParticipant" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][participant.participant][participant.converter].jsfcrud_invoke}" />
                 </h:commandLink>
                 <br />
                 <h:commandLink action="#{participant.createSetup}" value="New Participant" />

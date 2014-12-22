@@ -8,14 +8,18 @@ package entity.bean;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.CascadeType;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -28,18 +32,27 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Weather.findAll", query = "SELECT w FROM Weather w"),
-    @NamedQuery(name = "Weather.findByCity", query = "SELECT w FROM Weather w WHERE w.weatherPK.city = :city"),
-    @NamedQuery(name = "Weather.findByDate", query = "SELECT w FROM Weather w WHERE w.weatherPK.date = :date"),
+    @NamedQuery(name = "Weather.findByCity", query = "SELECT w FROM Weather w WHERE w.city = :city"),
+    @NamedQuery(name = "Weather.findByDate", query = "SELECT w FROM Weather w WHERE w.date = :date"),
     @NamedQuery(name = "Weather.findByPrecipitations", query = "SELECT w FROM Weather w WHERE w.precipitations = :precipitations"),
     @NamedQuery(name = "Weather.findByTemperature", query = "SELECT w FROM Weather w WHERE w.temperature = :temperature"),
     @NamedQuery(name = "Weather.findByWind", query = "SELECT w FROM Weather w WHERE w.wind = :wind"),
     @NamedQuery(name = "Weather.findByPressure", query = "SELECT w FROM Weather w WHERE w.pressure = :pressure"),
     @NamedQuery(name = "Weather.findByHumidity", query = "SELECT w FROM Weather w WHERE w.humidity = :humidity"),
-    @NamedQuery(name = "Weather.findByClouds", query = "SELECT w FROM Weather w WHERE w.clouds = :clouds")})
+    @NamedQuery(name = "Weather.findByClouds", query = "SELECT w FROM Weather w WHERE w.clouds = :clouds"),
+    @NamedQuery(name = "Weather.findById", query = "SELECT w FROM Weather w WHERE w.id = :id")})
 public class Weather implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected WeatherPK weatherPK;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 40)
+    @Column(name = "city")
+    private String city;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "date")
+    @Temporal(TemporalType.DATE)
+    private Date date;
     @Column(name = "precipitations")
     private Integer precipitations;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -53,26 +66,41 @@ public class Weather implements Serializable {
     private Float humidity;
     @Column(name = "clouds")
     private Float clouds;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "weather")
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID")
+    private Integer id;
+    @OneToMany(mappedBy = "weatherID")
     private Collection<Event> eventCollection;
 
     public Weather() {
     }
 
-    public Weather(WeatherPK weatherPK) {
-        this.weatherPK = weatherPK;
+    public Weather(Integer id) {
+        this.id = id;
     }
 
-    public Weather(String city, Date date) {
-        this.weatherPK = new WeatherPK(city, date);
+    public Weather(Integer id, String city, Date date) {
+        this.id = id;
+        this.city = city;
+        this.date = date;
     }
 
-    public WeatherPK getWeatherPK() {
-        return weatherPK;
+    public String getCity() {
+        return city;
     }
 
-    public void setWeatherPK(WeatherPK weatherPK) {
-        this.weatherPK = weatherPK;
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Integer getPrecipitations() {
@@ -123,6 +151,14 @@ public class Weather implements Serializable {
         this.clouds = clouds;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     @XmlTransient
     public Collection<Event> getEventCollection() {
         return eventCollection;
@@ -135,7 +171,7 @@ public class Weather implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (weatherPK != null ? weatherPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -146,7 +182,7 @@ public class Weather implements Serializable {
             return false;
         }
         Weather other = (Weather) object;
-        if ((this.weatherPK == null && other.weatherPK != null) || (this.weatherPK != null && !this.weatherPK.equals(other.weatherPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -154,7 +190,7 @@ public class Weather implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.bean.Weather[ weatherPK=" + weatherPK + " ]";
+        return "entity.bean.Weather[ id=" + id + " ]";
     }
     
 }

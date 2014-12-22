@@ -30,24 +30,24 @@
                         <h:panelGroup rendered="#{badconditions.badconditions.eventID != null}">
                             <h:outputText value=" ("/>
                             <h:commandLink value="Show" action="#{event.detailSetup}">
-                                <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions][badconditions.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions.eventID][event.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions][badconditions.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions.eventID][event.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="badconditions"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.BadconditionsController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.BadconditionsController"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Edit" action="#{event.editSetup}">
-                                <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions][badconditions.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions.eventID][event.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions][badconditions.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions.eventID][event.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="badconditions"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.BadconditionsController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.BadconditionsController"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Destroy" action="#{event.destroy}">
-                                <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions][badconditions.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions.eventID][event.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions][badconditions.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions.eventID][event.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="badconditions"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.BadconditionsController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.BadconditionsController"/>
                             </h:commandLink>
                             <h:outputText value=" )"/>
                         </h:panelGroup>
@@ -57,12 +57,12 @@
                 </h:panelGrid>
                 <br />
                 <h:commandLink action="#{badconditions.remove}" value="Destroy">
-                    <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions][badconditions.converter].jsfcrud_invoke}" />
+                    <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions][badconditions.converter].jsfcrud_invoke}" />
                 </h:commandLink>
                 <br />
                 <br />
                 <h:commandLink action="#{badconditions.editSetup}" value="Edit">
-                    <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions][badconditions.converter].jsfcrud_invoke}" />
+                    <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][badconditions.badconditions][badconditions.converter].jsfcrud_invoke}" />
                 </h:commandLink>
                 <br />
                 <h:commandLink action="#{badconditions.createSetup}" value="New Badconditions" />

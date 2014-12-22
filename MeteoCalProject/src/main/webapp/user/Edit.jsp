@@ -23,7 +23,7 @@
                     <h:outputText value="Email:"/>
                     <h:inputText id="email" value="#{user.user.email}" title="Email" required="true" requiredMessage="The email field is required." />
                     <h:outputText value="CalendarCollection:"/>
-                    <h:selectManyListbox id="calendarCollection" value="#{user.user.jsfcrud_transform[jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.arrayToList].calendarCollection}" title="CalendarCollection" size="6" converter="#{calendar.converter}" >
+                    <h:selectManyListbox id="calendarCollection" value="#{user.user.jsfcrud_transform[jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.arrayToList].calendarCollection}" title="CalendarCollection" size="6" converter="#{calendar.converter}" >
                         <f:selectItems value="#{calendar.calendarItemsAvailableSelectMany}"/>
                     </h:selectManyListbox>
                     <h:outputText value="Calendar:"/>
@@ -31,21 +31,21 @@
                         <f:selectItems value="#{calendar.calendarItemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
                     <h:outputText value="NotificationCollection:"/>
-                    <h:selectManyListbox id="notificationCollection" value="#{user.user.jsfcrud_transform[jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method.arrayToList].notificationCollection}" title="NotificationCollection" size="6" converter="#{notification.converter}" >
+                    <h:selectManyListbox id="notificationCollection" value="#{user.user.jsfcrud_transform[jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.collectionToArray][jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method.arrayToList].notificationCollection}" title="NotificationCollection" size="6" converter="#{notification.converter}" >
                         <f:selectItems value="#{notification.notificationItemsAvailableSelectMany}"/>
                     </h:selectManyListbox>
                     <h:outputText value="ParticipantCollection:"/>
-                    <h:outputText escape="false" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getCollectionAsString'][user.user.participantCollection == null ? jsfcrud_null : user.user.participantCollection].jsfcrud_invoke}" title="ParticipantCollection" />
+                    <h:outputText escape="false" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getCollectionAsString'][user.user.participantCollection == null ? jsfcrud_null : user.user.participantCollection].jsfcrud_invoke}" title="ParticipantCollection" />
 
                 </h:panelGrid>
                 <br />
                 <h:commandLink action="#{user.edit}" value="Save">
-                    <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][user.user][user.converter].jsfcrud_invoke}"/>
+                    <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][user.user][user.converter].jsfcrud_invoke}"/>
                 </h:commandLink>
                 <br />
                 <br />
                 <h:commandLink action="#{user.detailSetup}" value="Show" immediate="true">
-                    <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][user.user][user.converter].jsfcrud_invoke}"/>
+                    <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][user.user][user.converter].jsfcrud_invoke}"/>
                 </h:commandLink>
                 <br />
                 <h:commandLink action="#{user.listSetup}" value="Show All User Items" immediate="true"/>

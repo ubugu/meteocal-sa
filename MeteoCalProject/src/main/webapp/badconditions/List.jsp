@@ -58,15 +58,15 @@
                                 <h:outputText escape="false" value="&nbsp;"/>
                             </f:facet>
                             <h:commandLink value="Show" action="#{badconditions.detailSetup}">
-                                <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][badconditions.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][badconditions.converter].jsfcrud_invoke}"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Edit" action="#{badconditions.editSetup}">
-                                <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][badconditions.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][badconditions.converter].jsfcrud_invoke}"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Destroy" action="#{badconditions.remove}">
-                                <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][badconditions.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentBadconditions" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][badconditions.converter].jsfcrud_invoke}"/>
                             </h:commandLink>
                         </h:column>
 
