@@ -30,24 +30,24 @@
                         <h:panelGroup rendered="#{notification.notification.user != null}">
                             <h:outputText value=" ("/>
                             <h:commandLink value="Show" action="#{user.detailSetup}">
-                                <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification.user][user.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification.user][user.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="notification"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.NotificationController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.NotificationController"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Edit" action="#{user.editSetup}">
-                                <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification.user][user.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification.user][user.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="notification"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.NotificationController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.NotificationController"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Destroy" action="#{user.destroy}">
-                                <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification.user][user.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification.user][user.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="notification"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.NotificationController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.NotificationController"/>
                             </h:commandLink>
                             <h:outputText value=" )"/>
                         </h:panelGroup>
@@ -58,24 +58,24 @@
                         <h:panelGroup rendered="#{notification.notification.eventID != null}">
                             <h:outputText value=" ("/>
                             <h:commandLink value="Show" action="#{event.detailSetup}">
-                                <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification.eventID][event.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification.eventID][event.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="notification"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.NotificationController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.NotificationController"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Edit" action="#{event.editSetup}">
-                                <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification.eventID][event.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification.eventID][event.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="notification"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.NotificationController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.NotificationController"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Destroy" action="#{event.destroy}">
-                                <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification.eventID][event.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification.eventID][event.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="notification"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.NotificationController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.NotificationController"/>
                             </h:commandLink>
                             <h:outputText value=" )"/>
                         </h:panelGroup>
@@ -85,12 +85,12 @@
                 </h:panelGrid>
                 <br />
                 <h:commandLink action="#{notification.remove}" value="Destroy">
-                    <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}" />
+                    <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}" />
                 </h:commandLink>
                 <br />
                 <br />
                 <h:commandLink action="#{notification.editSetup}" value="Edit">
-                    <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}" />
+                    <f:param name="jsfcrud.currentNotification" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][notification.notification][notification.converter].jsfcrud_invoke}" />
                 </h:commandLink>
                 <br />
                 <h:commandLink action="#{notification.createSetup}" value="New Notification" />

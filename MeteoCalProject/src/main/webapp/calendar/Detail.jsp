@@ -26,24 +26,24 @@
                         <h:panelGroup rendered="#{calendar.calendar.owner != null}">
                             <h:outputText value=" ("/>
                             <h:commandLink value="Show" action="#{user.detailSetup}">
-                                <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar.owner][user.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar.owner][user.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="calendar"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.CalendarController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.CalendarController"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Edit" action="#{user.editSetup}">
-                                <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar.owner][user.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar.owner][user.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="calendar"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.CalendarController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.CalendarController"/>
                             </h:commandLink>
                             <h:outputText value=" "/>
                             <h:commandLink value="Destroy" action="#{user.destroy}">
-                                <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
-                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar.owner][user.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
+                                <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar.owner][user.converter].jsfcrud_invoke}"/>
                                 <f:param name="jsfcrud.relatedController" value="calendar"/>
-                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.CalendarController"/>
+                                <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.CalendarController"/>
                             </h:commandLink>
                             <h:outputText value=" )"/>
                         </h:panelGroup>
@@ -84,24 +84,24 @@
                                     <h:outputText escape="false" value="&nbsp;"/>
                                 </f:facet>
                                 <h:commandLink value="Show" action="#{user.detailSetup}">
-                                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
-                                    <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][user.converter].jsfcrud_invoke}"/>
+                                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
+                                    <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][user.converter].jsfcrud_invoke}"/>
                                     <f:param name="jsfcrud.relatedController" value="calendar" />
-                                    <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.CalendarController" />
+                                    <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.CalendarController" />
                                 </h:commandLink>
                                 <h:outputText value=" "/>
                                 <h:commandLink value="Edit" action="#{user.editSetup}">
-                                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
-                                    <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][user.converter].jsfcrud_invoke}"/>
+                                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
+                                    <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][user.converter].jsfcrud_invoke}"/>
                                     <f:param name="jsfcrud.relatedController" value="calendar" />
-                                    <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.CalendarController" />
+                                    <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.CalendarController" />
                                 </h:commandLink>
                                 <h:outputText value=" "/>
                                 <h:commandLink value="Destroy" action="#{user.destroy}">
-                                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
-                                    <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][user.converter].jsfcrud_invoke}"/>
+                                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
+                                    <f:param name="jsfcrud.currentUser" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][user.converter].jsfcrud_invoke}"/>
                                     <f:param name="jsfcrud.relatedController" value="calendar" />
-                                    <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.CalendarController" />
+                                    <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.CalendarController" />
                                 </h:commandLink>
                             </h:column>
                         </h:dataTable>
@@ -126,6 +126,14 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">
+                                    <h:outputText value="Date"/>
+                                </f:facet>
+                                <h:outputText value="#{item.date}">
+                                    <f:convertDateTime pattern="MM/dd/yyyy" />
+                                </h:outputText>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
                                     <h:outputText value="StartingTime"/>
                                 </f:facet>
                                 <h:outputText value="#{item.startingTime}">
@@ -145,6 +153,12 @@
                                     <h:outputText value="Location"/>
                                 </f:facet>
                                 <h:outputText value="#{item.location}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="City"/>
+                                </f:facet>
+                                <h:outputText value="#{item.city}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">
@@ -172,33 +186,33 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Weather"/>
+                                    <h:outputText value="WeatherID"/>
                                 </f:facet>
-                                <h:outputText value="#{item.weather}"/>
+                                <h:outputText value="#{item.weatherID}"/>
                             </h:column>
                             <h:column>
                                 <f:facet name="header">
                                     <h:outputText escape="false" value="&nbsp;"/>
                                 </f:facet>
                                 <h:commandLink value="Show" action="#{event.detailSetup}">
-                                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
-                                    <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][event.converter].jsfcrud_invoke}"/>
+                                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
+                                    <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][event.converter].jsfcrud_invoke}"/>
                                     <f:param name="jsfcrud.relatedController" value="calendar" />
-                                    <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.CalendarController" />
+                                    <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.CalendarController" />
                                 </h:commandLink>
                                 <h:outputText value=" "/>
                                 <h:commandLink value="Edit" action="#{event.editSetup}">
-                                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
-                                    <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][event.converter].jsfcrud_invoke}"/>
+                                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
+                                    <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][event.converter].jsfcrud_invoke}"/>
                                     <f:param name="jsfcrud.relatedController" value="calendar" />
-                                    <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.CalendarController" />
+                                    <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.CalendarController" />
                                 </h:commandLink>
                                 <h:outputText value=" "/>
                                 <h:commandLink value="Destroy" action="#{event.destroy}">
-                                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
-                                    <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][event.converter].jsfcrud_invoke}"/>
+                                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}"/>
+                                    <f:param name="jsfcrud.currentEvent" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][item][event.converter].jsfcrud_invoke}"/>
                                     <f:param name="jsfcrud.relatedController" value="calendar" />
-                                    <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.controller.bean.CalendarController" />
+                                    <f:param name="jsfcrud.relatedControllerType" value="jsf.classes.CalendarController" />
                                 </h:commandLink>
                             </h:column>
                         </h:dataTable>
@@ -207,12 +221,12 @@
                 </h:panelGrid>
                 <br />
                 <h:commandLink action="#{calendar.remove}" value="Destroy">
-                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}" />
+                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}" />
                 </h:commandLink>
                 <br />
                 <br />
                 <h:commandLink action="#{calendar.editSetup}" value="Edit">
-                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.controller.bean.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}" />
+                    <f:param name="jsfcrud.currentCalendar" value="#{jsfcrud_class['jsf.classes.util.JsfUtil'].jsfcrud_method['getAsConvertedString'][calendar.calendar][calendar.converter].jsfcrud_invoke}" />
                 </h:commandLink>
                 <br />
                 <h:commandLink action="#{calendar.createSetup}" value="New Calendar" />

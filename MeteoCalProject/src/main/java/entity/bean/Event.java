@@ -14,7 +14,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -38,9 +37,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
     @NamedQuery(name = "Event.findById", query = "SELECT e FROM Event e WHERE e.id = :id"),
     @NamedQuery(name = "Event.findByTitle", query = "SELECT e FROM Event e WHERE e.title = :title"),
+    @NamedQuery(name = "Event.findByDate", query = "SELECT e FROM Event e WHERE e.date = :date"),
     @NamedQuery(name = "Event.findByStartingTime", query = "SELECT e FROM Event e WHERE e.startingTime = :startingTime"),
     @NamedQuery(name = "Event.findByEndingTime", query = "SELECT e FROM Event e WHERE e.endingTime = :endingTime"),
     @NamedQuery(name = "Event.findByLocation", query = "SELECT e FROM Event e WHERE e.location = :location"),
+    @NamedQuery(name = "Event.findByCity", query = "SELECT e FROM Event e WHERE e.city = :city"),
     @NamedQuery(name = "Event.findByDescription", query = "SELECT e FROM Event e WHERE e.description = :description"),
     @NamedQuery(name = "Event.findByColor", query = "SELECT e FROM Event e WHERE e.color = :color"),
     @NamedQuery(name = "Event.findByPrivacy", query = "SELECT e FROM Event e WHERE e.privacy = :privacy")})
@@ -58,6 +59,11 @@ public class Event implements Serializable {
     private String title;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "date")
+    @Temporal(TemporalType.DATE)
+    private Date date;   
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "startingTime")
     @Temporal(TemporalType.TIME)
     private Date startingTime;
@@ -71,6 +77,11 @@ public class Event implements Serializable {
     @Size(min = 1, max = 40)
     @Column(name = "location")
     private String location;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 40)
+    @Column(name = "city")
+    private String city;
     @Size(max = 1000)
     @Column(name = "description")
     private String description;
@@ -89,16 +100,24 @@ public class Event implements Serializable {
     @JoinColumn(name = "calendar", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Calendar calendar;
-    @JoinColumns({
-        @JoinColumn(name = "city", referencedColumnName = "city"),
-        @JoinColumn(name = "date", referencedColumnName = "date")})
-    @ManyToOne(optional = false)
-    private Weather weather;
+    @JoinColumn(name = "weatherID", referencedColumnName = "ID")
+    @ManyToOne
+    private Weather weatherID;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "event1")
     private Collection<Participant> participantCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventID")
     private Collection<Badconditions> badconditionsCollection;
 
+    // variables useful to set the correct events in the database
+    
+    @Temporal(TemporalType.DATE)
+    private Date endate;
+    
+    private String repeats;
+    
+    @Temporal(TemporalType.DATE)
+    private Date untilldate;
+    
     public Event() {
     }
 
@@ -106,12 +125,14 @@ public class Event implements Serializable {
         this.id = id;
     }
 
-    public Event(Integer id, String title, Date startingTime, Date endingTime, String location, String color, String privacy) {
+    public Event(Integer id, String title, Date date, Date startingTime, Date endingTime, String location, String city, String color, String privacy) {
         this.id = id;
         this.title = title;
+        this.date = date;
         this.startingTime = startingTime;
         this.endingTime = endingTime;
         this.location = location;
+        this.city = city;
         this.color = color;
         this.privacy = privacy;
     }
@@ -130,6 +151,14 @@ public class Event implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Date getStartingTime() {
@@ -154,6 +183,14 @@ public class Event implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getDescription() {
@@ -197,12 +234,12 @@ public class Event implements Serializable {
         this.calendar = calendar;
     }
 
-    public Weather getWeather() {
-        return weather;
+    public Weather getWeatherID() {
+        return weatherID;
     }
 
-    public void setWeather(Weather weather) {
-        this.weather = weather;
+    public void setWeatherID(Weather weatherID) {
+        this.weatherID = weatherID;
     }
 
     @XmlTransient
@@ -223,6 +260,35 @@ public class Event implements Serializable {
         this.badconditionsCollection = badconditionsCollection;
     }
 
+    // variables not belonging to database
+    
+    public Date getEndate() {
+        return endate;
+    }
+
+    public void setEndate(Date date) {
+        this.endate = date;
+    }
+    
+    public Date getUntillDate() {
+        return untilldate;
+    }
+
+    public void setUntilldate(Date date) {
+        this.untilldate = date;
+    }
+    
+    public String getrepeats() {
+        return repeats;
+    }
+
+    public void setRepeats(String repeats) {
+        this.repeats = repeats;
+    }
+    
+    // end variables
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;
