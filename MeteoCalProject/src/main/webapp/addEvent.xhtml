@@ -15,7 +15,7 @@
     <body jsf:id="body" class="noFrame">   
         <!--Element of the first line on the top bar-->
         <div id="topHeader">
-            <img id="logo" src="Images/meteocalneve.png" alt="meteocalLogo"  name="meteocallogo" title="meteocallogo"/>
+            <img id="logo" src="Images/meteocalsnow.png" alt="meteocalLogo"  name="meteocallogo" title="meteocallogo"/>
             
                 <h1 id="userCalendar">User Calendar</h1>   
               
@@ -46,45 +46,45 @@
                     <!-- copied -->
                     <h:inputHidden id="validateCreateField" validator="#{event.validateCreate}" value="value"/>
                     <h:panelGrid columns="2"> 
-                    <h:outputLabel for="title" value="Title:"/>
-                    <h:inputText id="title" value="#{event.event.title}" required="true" requiredMessage="The title is required." />
+                        <p:outputLabel for="title" value="Title:"/>
+                        <p:inputText id="title" value="#{event.event.title}" required="true" requiredMessage="The title is required." />
 
-                    <h:outputLabel for="location" value="Location" />          
-                    <h:inputText id="location" value="#{event.event.location}" required="true"/>
+                        <p:outputLabel for="location" value="Location" />          
+                        <p:inputText id="location" value="#{event.event.location}" required="true"/>
 
-                    <h:outputLabel for="city" value="City:"/>
-                    <h:inputText id="city" value="#{event.event.city}"/>
+                        <p:outputLabel for="city" value="City:"/>
+                        <p:inputText id="city" value="#{event.event.city}"/>
 
-                    <p:outputLabel for="startingDate" value="Starting Date:" />
-                    <p:calendar id="startingDate" value="#{event.event.date}" locale="it" navigator="true" pattern="dd-MM-yyyy" />
- 
-                    <p:outputLabel for="endingDate" value="Ending Date:" />
-                    <p:calendar id="endingDate" value="#{event.event.endate}" locale="it" navigator="true" pattern="dd-MM-yyyy" />
- 
-                    <p:outputLabel for="startingTime" value="Starting Time:" />
-                    <p:calendar id="startingTime" value="#{event.event.startingTime}" pattern="HH:mm a" timeOnly="true"  />
+                        <p:outputLabel for="startingDate" value="Starting Date:" />
+                        <p:calendar id="startingDate" value="#{event.event.date}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true"/>
 
-                    <p:outputLabel for="endingTime" value="Ending Time:" />
-                    <p:calendar id="endingTime" value="#{event.event.endingTime}" pattern="HH:mm a" timeOnly="true"  />
+                        <p:outputLabel for="endingDate" value="Ending Date:" />
+                        <p:calendar id="endingDate" value="#{event.event.endate}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true" />
 
-                    <p:outputLabel for="repeat" value="Repeat Type:"/>
-                    <p:selectOneMenu id="repeat" value="#{event.event.repeats}" style="width:125px">
-                        <f:selectItem itemLabel="No" itemValue="no" />
-                        <f:selectItem itemLabel="EveryDay" itemValue="everyday" />
-                        <f:selectItem itemLabel="EveryWeek" itemValue="everyweek" />
-                        <f:selectItem itemLabel="EveryMonth" itemValue="everymonth" />
-                        <f:selectItem itemLabel="EveryYear" itemValue="everyyear" />
-                    </p:selectOneMenu>
+                        <p:outputLabel for="startingTime" value="Starting Time:" />
+                        <p:calendar id="startingTime" value="#{event.event.startingTime}" pattern="HH:mm a" timeOnly="true" required="true"/>
 
-                    <p:outputLabel for="untillDate" value="Untill:" />
-                    <p:calendar id="untillDate" value="#{event.event.untillDate}" locale="it" navigator="true" pattern="dd-MM-yyyy" />
+                        <p:outputLabel for="endingTime" value="Ending Time:" />
+                        <p:calendar id="endingTime" value="#{event.event.endingTime}" pattern="HH:mm a" timeOnly="true" required="true" />
 
-                    <p:outputLabel for="description" value="Description (optional):"/>
-                    <p:inputTextarea id="description" rows="4" cols="35" value="#{event.event.description}" />
- 
-                    <br />
-                    
+                        <p:outputLabel for="repeat" value="Repeat Type:"/>
+                        <p:selectOneMenu id="repeat" value="#{event.event.repeats}" style="width:125px">
+                            <f:selectItem itemLabel="No" itemValue="no" />
+                            <f:selectItem itemLabel="EveryDay" itemValue="everyday" />
+                            <f:selectItem itemLabel="EveryWeek" itemValue="everyweek" />
+                            <f:selectItem itemLabel="EveryMonth" itemValue="everymonth" />
+                            <f:selectItem itemLabel="EveryYear" itemValue="everyyear" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="untillDate" value="Untill:" />
+                        <p:calendar id="untillDate" value="#{event.event.untillDate}" locale="it" navigator="true" pattern="dd-MM-yyyy" />
+
+                        <p:outputLabel for="description" value="Description (optional):"/>
+                        <p:inputTextarea id="description" rows="4" cols="35" value="#{event.event.description}" />
+
                     </h:panelGrid>
+                    
+                    <br />                    
                     
                     <div id="badConditions"> Bad Conditions &nbsp;&nbsp;</div> 
                     <div id="badConditionsButton" class="onoffswitch">
@@ -94,16 +94,49 @@
                             <span class="onoffswitch-switch"></span>
                         </label>
                     </div>
-               
-                    <div id="badConditionsDiv" >
-                        <br />
-                        <h:panelGrid columns="2"> 
-                            sono una div a scomparsa :D
-                            
-                        </h:panelGrid>
-                    </div>
+                    
                     <br />
                     
+                    <div id="badConditionsDiv" >
+                            
+                        <!-- bad weather layer -->
+                    
+                        <h:panelGrid  cellpadding="20px" width="450px" columns="2">
+                    
+                            <p:outputLabel for="layer" value="Layer Type:"/>
+                            <p:selectOneMenu id="layer" value="#{badconditions.badconditions.layer}" style="width:100px">
+                                <f:selectItem itemLabel="Rainy" itemValue="rainy" />
+                                <f:selectItem itemLabel="Cloudy" itemValue="cloudy" />
+                                <f:selectItem itemLabel="Snowy" itemValue="snowy" />
+                            </p:selectOneMenu>
+                        
+                        </h:panelGrid>
+                        
+                            <!-- bad weather advance setting -->
+                        
+                            <h:panelGrid style="bottom: 5px;top: 10px" cellpadding="20px" width="450px" columns="5">
+                        
+                            <input id="temperaturecheck" type="checkbox" name="temperaturecheck"/>
+                            <h:outputText value="Temperature"/>
+                            <h:outputText id="temperatureoutput" value="C #{sliderView.number1}" />
+                            <h:inputHidden id="temperature" value="#{sliderView.number1}" />
+                            <p:slider for="temperature" display="temperatureoutput" minValue="-20" maxValue="50" style="width: 200px" displayTemplate="{value} C" />
+ 
+                            <input id="precipitationscheck" type="checkbox" name="invitationcheck"/>
+                            <h:outputText value="Precipitations"/>
+                            <h:outputText id="precipitationsoutput" value="% #{sliderView.number2}" />
+                            <h:inputHidden id="precipitations" value="#{sliderView.number2}" />
+                            <p:slider  for="precipitations" display="precipitationsoutput" style="width: 200px" displayTemplate="{value} %" />
+    
+                        </h:panelGrid>
+                        
+                    </div>
+                    <br />
+                    <br />
+                    
+                     
+                    
+                
                     <h:panelGrid columns="2"> 
                         <label for="invitationcheck"><input id="invitationcheck" type="checkbox" name="invitationcheck" onclick="enable('invitation')"/>
                         Send an Invitation to &nbsp;</label>
@@ -115,6 +148,30 @@
 
                 <div id="weatherForm">
                     <h1> Weather Preview</h1>
+                    
+                    <h:graphicImage id="image" value="#{ImageChanger.image}"/>
+                    
+                    <h:panelGrid columns="2"> 
+                        
+                        <p:outputLabel for="color" value="Color Type:"/>
+                        <p:selectOneMenu id="color" value="#{event.event.color}" style="width:100px">
+                            <f:selectItem itemLabel="Grey" itemValue="grey" />
+                            <f:selectItem itemLabel="Red" itemValue="red" />
+                            <f:selectItem itemLabel="Pink" itemValue="pink" />
+                            <f:selectItem itemLabel="Blue" itemValue="blue" />
+                            <f:selectItem itemLabel="Green" itemValue="green" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="privacy" value="Set Event Privacy to:"/>
+                        <p:selectOneMenu id="privacy" value="#{event.event.privacy}" style="width:100px">
+                            <f:selectItem itemLabel="Private" itemValue="private" />
+                            <f:selectItem itemLabel="Public" itemValue="public" />
+                        </p:selectOneMenu>
+
+                    </h:panelGrid>
+              
+                    <p:commandButton value="Create Event" action="#{event.create}" id="iconOnly" icon="ui-icon-calendar"/>
+                    
                 </div> 
             </h:form>
         

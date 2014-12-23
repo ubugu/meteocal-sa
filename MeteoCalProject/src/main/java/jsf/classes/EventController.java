@@ -88,6 +88,7 @@ public class EventController {
 
     public String create() {
         try {
+            
             utx.begin();
         } catch (Exception ex) {
         }
