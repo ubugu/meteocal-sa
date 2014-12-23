@@ -118,6 +118,10 @@ public class Event implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date untilldate;
     
+    private String invitations;
+    
+    //end variables
+    
     public Event() {
     }
 
@@ -284,6 +288,14 @@ public class Event implements Serializable {
 
     public void setRepeats(String repeats) {
         this.repeats = repeats;
+    }
+    
+    public String getInvitations() {
+        return invitations;
+    }
+
+    public void setInvitations(String invitations) {
+        this.invitations = invitations;
     }
     
     // end variables
