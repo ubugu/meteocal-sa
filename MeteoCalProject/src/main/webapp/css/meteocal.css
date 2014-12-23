@@ -173,6 +173,12 @@ div.logoutForm {
     text-align: left;
 }
 
+#badConditionsDiv{ 
+    width:550px;  
+    background-color: #FFFFFF; 
+    text-align: center;
+}
+
 #invitationcheck{
    padding-bottom: 18px;
 }
