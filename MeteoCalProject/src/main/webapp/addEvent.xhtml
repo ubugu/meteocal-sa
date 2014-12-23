@@ -46,13 +46,13 @@
                     <!-- copied -->
                     <h:inputHidden id="validateCreateField" validator="#{event.validateCreate}" value="value"/>
                     <h:panelGrid columns="2"> 
-                    <h:outputText value="Title:"/>
+                    <h:outputLabel for="title" value="Title:"/>
                     <h:inputText id="title" value="#{event.event.title}" required="true" requiredMessage="The title is required." />
 
-                    <h:outputText value="Location" />          
+                    <h:outputLabel for="location" value="Location" />          
                     <h:inputText id="location" value="#{event.event.location}" required="true"/>
 
-                    <h:outputText value="City:"/>
+                    <h:outputLabel for="city" value="City:"/>
                     <h:inputText id="city" value="#{event.event.city}"/>
 
                     <p:outputLabel for="startingDate" value="Starting Date:" />
@@ -79,10 +79,14 @@
                     <p:outputLabel for="untillDate" value="Untill:" />
                     <p:calendar id="untillDate" value="#{event.event.untillDate}" locale="it" navigator="true" pattern="dd-MM-yyyy" />
 
-                    <p>Description (optional):</p>
-                    <p:inputTextarea rows="4" cols="35" value="#{event.event.description}" />
+                    <p:outputLabel for="description" value="Description (optional):"/>
+                    <p:inputTextarea id="description" rows="4" cols="35" value="#{event.event.description}" />
  
-                    <div id="badConditions"> Bad Conditions </div> 
+                    <br />
+                    
+                    </h:panelGrid>
+                    
+                    <div id="badConditions"> Bad Conditions &nbsp;&nbsp;</div> 
                     <div id="badConditionsButton" class="onoffswitch">
                         <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked="true" onclick="show('badConditionsDiv')"/>
                         <label class="onoffswitch-label" for="myonoffswitch">
@@ -93,23 +97,20 @@
                
                     <div id="badConditionsDiv" >
                         <br />
-                        <br />
-                        <br />
-                        <br />
-                        sono una div a scomparsa :D
+                        <h:panelGrid columns="2"> 
+                            sono una div a scomparsa :D
+                            
+                        </h:panelGrid>
                     </div>
-
-                    <br />
-                    <br /> 
                     <br />
                     
-                    <label for="invitationcheck"><input id="invitationcheck" type="checkbox" name="invitationcheck" onclick="enable('invitation')"/>
+                    <h:panelGrid columns="2"> 
+                        <label for="invitationcheck"><input id="invitationcheck" type="checkbox" name="invitationcheck" onclick="enable('invitation')"/>
                         Send an Invitation to &nbsp;</label>
-
-                    <textarea id="invitation" name="invitation" form="createEvent" rows="4" cols="50" disabled="true">Write all the User you want to invite separated by a semicolon (';')
-                    </textarea>
-                    <br />
-                </h:panelGrid>
+                        
+                        <p:inputTextarea id="invitation" rows="4" cols="35" value="#{event.event.invitations}" disabled="true"/>
+                    </h:panelGrid> 
+                
                 </div>
 
                 <div id="weatherForm">
@@ -121,7 +122,7 @@
             <script type="text/javascript" language="javascript">
                 function show(id){
                   if (document.getElementById){
-                    if(document.getElementById(id).style.display == 'none'){
+                    if(document.getElementById(id).style.display === 'none'){
                       document.getElementById(id).style.display = 'block';
                     }else{
                       document.getElementById(id).style.display = 'none';
@@ -135,7 +136,7 @@
                 
                 function enable(id){
                   if (document.getElementById){
-                    if(document.getElementById(id).disabled == true){
+                    if(document.getElementById(id).disabled === true){
                       document.getElementById(id).disabled = false;
                     }else{
                       document.getElementById(id).disabled = true;
