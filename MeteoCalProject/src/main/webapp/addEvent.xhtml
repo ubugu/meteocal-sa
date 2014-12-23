@@ -59,7 +59,7 @@
                         <p:calendar id="startingDate" value="#{event.event.date}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true"/>
 
                         <p:outputLabel for="endingDate" value="Ending Date:" />
-                        <p:calendar id="endingDate" value="#{event.event.endate}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true" />
+                        <p:calendar id="endingDate" value="#{prepareCreateEvent.endate}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true" />
 
                         <p:outputLabel for="startingTime" value="Starting Time:" />
                         <p:calendar id="startingTime" value="#{event.event.startingTime}" pattern="HH:mm a" timeOnly="true" required="true"/>
@@ -68,7 +68,7 @@
                         <p:calendar id="endingTime" value="#{event.event.endingTime}" pattern="HH:mm a" timeOnly="true" required="true" />
 
                         <p:outputLabel for="repeat" value="Repeat Type:"/>
-                        <p:selectOneMenu id="repeat" value="#{event.event.repeats}" style="width:125px">
+                        <p:selectOneMenu id="repeat" value="#{prepareCreateEvent.repeats}" style="width:125px">
                             <f:selectItem itemLabel="No" itemValue="no" />
                             <f:selectItem itemLabel="EveryDay" itemValue="everyday" />
                             <f:selectItem itemLabel="EveryWeek" itemValue="everyweek" />
@@ -77,7 +77,7 @@
                         </p:selectOneMenu>
 
                         <p:outputLabel for="untillDate" value="Untill:" />
-                        <p:calendar id="untillDate" value="#{event.event.untillDate}" locale="it" navigator="true" pattern="dd-MM-yyyy" />
+                        <p:calendar id="untillDate" value="#{prepareCreateEvent.untillDate}" locale="it" navigator="true" pattern="dd-MM-yyyy" />
 
                         <p:outputLabel for="description" value="Description (optional):"/>
                         <p:inputTextarea id="description" rows="4" cols="35" value="#{event.event.description}" />
@@ -118,14 +118,14 @@
                         
                             <input id="temperaturecheck" type="checkbox" name="temperaturecheck"/>
                             <h:outputText value="Temperature"/>
-                            <h:outputText id="temperatureoutput" value="C #{sliderView.number1}" />
-                            <h:inputHidden id="temperature" value="#{sliderView.number1}" />
+                            <h:outputText id="temperatureoutput" value="C #{badconditions.badconditions.temperature}" />
+                            <h:inputHidden id="temperature" value="#{badconditions.badconditions.temperature}" />
                             <p:slider for="temperature" display="temperatureoutput" minValue="-20" maxValue="50" style="width: 200px" displayTemplate="{value} C" />
  
                             <input id="precipitationscheck" type="checkbox" name="invitationcheck"/>
                             <h:outputText value="Precipitations"/>
-                            <h:outputText id="precipitationsoutput" value="% #{sliderView.number2}" />
-                            <h:inputHidden id="precipitations" value="#{sliderView.number2}" />
+                            <h:outputText id="precipitationsoutput" value="% #{badconditions.badconditions.precipitations}" />
+                            <h:inputHidden id="precipitations" value="#{badconditions.badconditions.precipitations}" />
                             <p:slider  for="precipitations" display="precipitationsoutput" style="width: 200px" displayTemplate="{value} %" />
     
                         </h:panelGrid>
@@ -141,7 +141,7 @@
                         <label for="invitationcheck"><input id="invitationcheck" type="checkbox" name="invitationcheck" onclick="enable('invitation')"/>
                         Send an Invitation to &nbsp;</label>
                         
-                        <p:inputTextarea id="invitation" rows="4" cols="35" value="#{event.event.invitations}" disabled="true"/>
+                        <p:inputTextarea id="invitation" rows="4" cols="35" value="#{prepareCreateEvent.invitations}" disabled="true"/>
                     </h:panelGrid> 
                 
                 </div>
@@ -170,7 +170,7 @@
 
                     </h:panelGrid>
               
-                    <p:commandButton value="Create Event" action="#{event.create}" id="iconOnly" icon="ui-icon-calendar"/>
+                    <p:commandButton value="Create Event" action="#{prepareCreateEvent.controlCreation()}" id="iconOnly" icon="ui-icon-calendar"/>
                     
                 </div> 
             </h:form>
