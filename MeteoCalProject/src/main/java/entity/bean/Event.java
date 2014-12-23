@@ -108,20 +108,6 @@ public class Event implements Serializable {
     private Collection<Participant> participantCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventID")
     private Collection<Badconditions> badconditionsCollection;
-
-    // variables useful to set the correct events in the database
-    
-    @Temporal(TemporalType.DATE)
-    private Date endate;
-    
-    private String repeats;
-    
-    @Temporal(TemporalType.DATE)
-    private Date untilldate;
-    
-    private String invitations;
-    
-    //end variables
     
     public Event() {
     }
@@ -263,44 +249,7 @@ public class Event implements Serializable {
 
     public void setBadconditionsCollection(Collection<Badconditions> badconditionsCollection) {
         this.badconditionsCollection = badconditionsCollection;
-    }
-
-    // variables not belonging to database
-    
-    public Date getEndate() {
-        return endate;
-    }
-
-    public void setEndate(Date date) {
-        this.endate = date;
-    }
-    
-    public Date getUntillDate() {
-        return untilldate;
-    }
-
-    public void setUntilldate(Date date) {
-        this.untilldate = date;
-    }
-    
-    public String getrepeats() {
-        return repeats;
-    }
-
-    public void setRepeats(String repeats) {
-        this.repeats = repeats;
-    }
-    
-    public String getInvitations() {
-        return invitations;
-    }
-
-    public void setInvitations(String invitations) {
-        this.invitations = invitations;
-    }
-    
-    // end variables
-    
+    }    
     
     @Override
     public int hashCode() {
