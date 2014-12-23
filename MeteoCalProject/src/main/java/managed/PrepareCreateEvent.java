@@ -46,7 +46,6 @@ public class PrepareCreateEvent {
         badconditions.create();
     }
     
-    
     // variables not belonging to database
     
     public Date getEndate() {
@@ -55,14 +54,6 @@ public class PrepareCreateEvent {
 
     public void setEndate(Date date) {
         this.endate = date;
-    }
-    
-    public Date getUntillDate() {
-        return untillDate;
-    }
-
-    public void setUntilldate(Date date) {
-        this.untillDate = date;
     }
     
     public String getRepeats() {
@@ -81,7 +72,14 @@ public class PrepareCreateEvent {
         this.invitations = invitations;
     }
     
+    public Date getUntillDate() {
+        return untillDate;
+    }
+
+    public void setUntillDate(Date untillDate) {
+        this.untillDate = untillDate;
+    }
+    
     // end variables
 
-    
 }

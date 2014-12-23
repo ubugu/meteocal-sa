@@ -56,6 +56,8 @@ public class User implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "email")
     private String email;
+    @NotNull(message = "May not be empty")
+    private String groupName;
     @JoinTable(name = "shareduser", joinColumns = {
         @JoinColumn(name = "username", referencedColumnName = "username")}, inverseJoinColumns = {
         @JoinColumn(name = "calendarID", referencedColumnName = "ID")})
@@ -105,6 +107,14 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+    
     @XmlTransient
     public Collection<Calendar> getCalendarCollection() {
         return calendarCollection;

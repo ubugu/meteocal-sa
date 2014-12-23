@@ -5,8 +5,11 @@
  */
 package session.bean;
 
+import entity.bean.Group;
 import entity.bean.User;
+import java.security.Principal;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -26,6 +29,22 @@ public class UserFacade extends AbstractFacade<User> {
 
     public UserFacade() {
         super(User.class);
+    }
+    
+    @Inject
+    Principal principal;
+    
+    public void save(User user) {
+        user.setGroupName(Group.USERS);
+        em.persist(user);
+    }
+
+    public void unregister() {
+        em.remove(getLoggedUser());
+    }
+
+    public User getLoggedUser() {
+        return em.find(User.class, principal.getName());
     }
     
 }
