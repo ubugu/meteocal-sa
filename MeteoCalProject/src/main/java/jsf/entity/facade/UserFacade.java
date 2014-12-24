@@ -17,7 +17,7 @@ import jsf.entity.User;
 @Stateless
 public class UserFacade extends AbstractFacade<User> {
     @PersistenceContext(unitName = "com.mycompany_MeteoCalProject_war_1.0-SNAPSHOTPU")
-    private EntityManager em;
+    private EntityManager em ;
 
     @Override
     protected EntityManager getEntityManager() {
