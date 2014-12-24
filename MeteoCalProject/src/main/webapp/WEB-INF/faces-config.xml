@@ -310,7 +310,4 @@
             <to-view-id>/weather/Detail.jsp</to-view-id>
         </navigation-case>
     </navigation-rule>
-    <application>
-        <el-resolver>jsf.classes.util.JsfCrudELResolver</el-resolver>
-    </application>
 </faces-config>
