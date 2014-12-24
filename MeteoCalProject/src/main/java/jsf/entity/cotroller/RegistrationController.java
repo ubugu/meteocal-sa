@@ -5,22 +5,27 @@
  */
 package jsf.entity.cotroller;
 
-import javax.inject.Named;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ManagedBean;
 import jsf.entity.User;
 import jsf.entity.facade.UserFacade;
+import org.primefaces.context.RequestContext;
 
 /**
  *
  * @author claudio
  */
-@Named(value = "registration")
+@ManagedBean(name = "registrationController", eager = true)
 @RequestScoped
 public class RegistrationController {
     
     private User user;
-    private UserFacade facade;
-    
+    @EJB
+    private UserFacade facade = new UserFacade();
+
+
     /**
      * Creates a new instance of RegistrationController
      */
@@ -39,7 +44,32 @@ public class RegistrationController {
     }
     
     public void register() {
-        this.facade.create(user);
+       user.setGroupName("USER");
+       if (checkEmail()) {
+           return;
+       } 
+       try {
+        facade.create(user);
+       } catch (Exception e) {
+           RequestContext requestContext = RequestContext.getCurrentInstance();  
+           requestContext.execute("PF('usernameError').show();");
+       }
+        
     }
+
+    private boolean checkEmail() {
+        List<User> allUser = facade.findAll();
+  
+        for (User u : allUser) {
+            if (u.getEmail().equals(user.getEmail())) {
+                RequestContext requestContext = RequestContext.getCurrentInstance();  
+                requestContext.execute("PF('emailError').show();");
+                return true;
+            }
+        }
+       return false;
+    }
+    
+
     
 }
