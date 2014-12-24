@@ -9,9 +9,6 @@
             <var>bundle</var>
         </resource-bundle>
     </application>
-    <application>
-        <el-resolver>jsf.classes.controller.bean.util.JsfCrudELResolver</el-resolver>
-    </application>
     <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
