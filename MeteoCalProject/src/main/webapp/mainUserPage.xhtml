@@ -7,7 +7,7 @@
       xmlns:jsf="http://xmlns.jcp.org/jsf">
     <head jsf:id="head">     
         <title>Home</title>
-        <h:outputStylesheet name="css/jsfcrud.css"/>
+
         <script jsf:target="body" jsf:name="story-page.js"/>
         <link jsf:name="styles.css" rel="stylesheet" type="text/css" />
         <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
@@ -28,7 +28,8 @@
         <div id="LeftHeader">
             <ul class="buttonList">
                  <li><p:button class="leftBarButton"  value="Home" outcome="mainUserPage"/></li>   
-                 <li><p:button class="leftBarButton"  value="AddEvent" outcome="addEvent"/></li>                      
+                 <li><p:button class="leftBarButton"  value="AddEvent" outcome="addEvent"/></li>          
+                 <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
                  <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li>  
             </ul>
         </div>
@@ -126,6 +127,11 @@
             <p:remoteCommand name="setWeekView" actionListener="#{viewController.setView('1')}"  update="weekViewForm"/>
             <p:remoteCommand name="updateWeek" update="weekViewForm"/>
 
+            <p:remoteCommand name="prevWeek" actionListener="#{viewController.prevWeek()}"  update="weekViewForm"/>
+            <p:remoteCommand name="nextWeek" actionListener="#{viewController.nextWeek()}"  update="weekViewForm"/>
+            <p:commandButton id="prevWeek" type="button" onclick="prevWeek()" value="Previous" />
+            <p:commandButton id="nextWeek" type="button" onclick="nextWeek()" value="Next" />
+           
             <p:panelGrid style="margin-left: 300px">
                 <f:facet name="header">
                     <p:row >
@@ -158,13 +164,18 @@
             <!--Day view change updater-->  
             <p:remoteCommand name="setDayView" actionListener="#{viewController.setView('2')}"  update="dayViewForm"/>
             <p:remoteCommand name="updateDay" update="dayViewForm"/>
-
+            
+            <p:remoteCommand name="prevDay" actionListener="#{viewController.prevDay()}"  update="dayViewForm"/>
+            <p:remoteCommand name="nextDay" actionListener="#{viewController.nextDay()}"  update="dayViewForm"/>
+            <p:commandButton id="prevDay" type="button" onclick="prevDay()" value="Previous" />
+            <p:commandButton id="nextDay" type="button" onclick="nextDay()" value="Next" />
+           
            <p:panelGrid style="margin-left: 300px">
                 <f:facet name="header">
                     <p:row>
-                        <p:column colspan="20">#{viewController.getDayNumber("1")}/#{viewController.getMonth('true')}/#{viewController.year}</p:column> 
-                        <p:column colspan="20">#{viewController.getDayNumber("2")}/#{viewController.getMonth('true')}/#{viewController.year}</p:column>                 
-                        <p:column colspan="20">#{viewController.getDayNumber("3")}/#{viewController.getMonth('true')}/#{viewController.year}</p:column>
+                        <p:column colspan="20">#{viewController.getFullDate('1')}</p:column> 
+                        <p:column colspan="20">#{viewController.getFullDate('2')}</p:column>                 
+                        <p:column colspan="20">#{viewController.getFullDate('3')}</p:column>
                     </p:row>
                 </f:facet>
                 <p:row>
