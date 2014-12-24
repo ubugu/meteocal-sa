@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:jsf="http://xmlns.jcp.org/jsf">
     <head jsf:id="head">     
         <title>Guest Home</title>
@@ -44,72 +45,27 @@
 
         </div>
         
-        <form>
-                <fieldset>
-                    <legend>Registration Form</legend>
-                    <ol>
-                        <li>
-                            <label for="name">Name</label>
-                            <input id="name" name="name" type="text" placeholder="Username" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" required="true" autofocus="true"/>
-                        </li>
-                        <li>
-                            <label for="email">Email</label>
-                            <input id="email" name="email" type="email" placeholder="example@domain.com" required="true" />
-                        </li>
-                        <li>
-                            <label for="password">Password</label>
-                            <input id="password" name="password" type="password" pattern=".{5,}" required="true"/>
-                        </li>
-                        <li>
-                            <label>Calendar's privacy : </label>
-                            <br />
-                            <input id="private" name="privacy" type="radio" checked="true"/>
-                            <label for="private">Private</label> 
-                            <br />
-                            <input id="shared" name="privacy" type="radio"/>
-                            <label for="shared">Shared</label> 
-                            <br />
-                            <input id="public" name="privacy" type="radio"/>
-                            <label for="public" >Public </label>
-                        </li>
-                    </ol>
-                    <button type="submit">Register</button>
-                </fieldset>
-            </form>
+        <h:form>
+            <p:panel header="Registration Form">
+                <p:messages autoUpdate="true"/>
 
-        <div  class="rights">
-            All right reserved 2014 @ Claudio Sanna, Walter samà 
-        </div>
+                <h:panelGrid id="grid" columns="4" cellpadding="5">
+                    <h:outputLabel for="name" value="Name:" style="font-weight:bold"/>                   
+                    <p:inputText id="name" value="#{registration.user.username}" required="true" label="Name"/>
+                    <p:message for="name" />
 
-        <script language="javascript" type="text/javascript">
-        <!--Function to load a page indicated with the string value.-->
-            function loadPage(page)
-            {
-                window.open(page);
-            }
-        </script>
-
-        <h:form>
-            <h:commandLink action="#{badconditions.listSetup}" value="Show All Badconditions Items"/>
-        </h:form>
-        <h:form>
-            <h:commandLink action="#{calendar.listSetup}" value="Show All Calendar Items"/>
-        </h:form>
-        <h:form>
-            <h:commandLink action="#{event.listSetup}" value="Show All Event Items"/>
-        </h:form>
-        <h:form>
-            <h:commandLink action="#{notification.listSetup}" value="Show All Notification Items"/>
-        </h:form>
-        <h:form>
-            <h:commandLink action="#{participant.listSetup}" value="Show All Participant Items"/>
-        </h:form>
-        <h:form>
-            <h:commandLink action="#{user.listSetup}" value="Show All User Items"/>
-        </h:form>
-        <h:form>
-            <h:commandLink action="#{weather.listSetup}" value="Show All Weather Items"/>
-        </h:form>
+                    <h:outputLabel for="pwd1" value="Password 1:" style="font-weight:bold"/>                   
+                    <p:password id="pwd1" value="#{registration.user.password}" match="pwd2" label="Password 1" required="true" feedback="true" />
+                    <h:outputLabel for="pwd2" value="Password 2: *" />
+                    <p:password id="pwd2" value="#{registration.user.password}" label="Password 2" required="true" />
+                    
+                    <h:outputLabel for="email" value="E,ail:" style="font-weight:bold"/>                   
+                    <p:inputText id="email" value="#{registration.user.email}" required="true"/>
+                    <p:message for="email" />
+                    <p:commandButton value="Register" ajax="false" action="#{registration.register()}" validateClient="true"  style="margin-right:10px"/>
+                </h:panelGrid>
+            </p:panel>
+       
     </body>
 </html>
 
