@@ -43,18 +43,19 @@ public class RegistrationController {
         this.user = user;
     }
     
-    public void register() {
+    public String register() {
        user.setGroupName("USER");
        if (checkEmail()) {
-           return;
+           return "";
        } 
        try {
         facade.create(user);
        } catch (Exception e) {
            RequestContext requestContext = RequestContext.getCurrentInstance();  
            requestContext.execute("PF('usernameError').show();");
+           return "";
        }
-        
+        return "mainUserPage?faces-redirect=true";
     }
 
     private boolean checkEmail() {
