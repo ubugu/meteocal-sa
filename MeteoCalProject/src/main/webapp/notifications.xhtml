@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <head jsf:id="head">     
         <title>Notifications</title>
 
@@ -32,5 +33,28 @@
                  <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li>  
             </ul>
         </div>
+        
+         <p:commandButton value="addNotitication" actionListener="#{notificationsController.createNotification('UPDATE', null, 'squalo')}" />
+        
+        <div class="guestFrame">
+             <p:dataTable var="notification" value="#{notificationsController.userNotification}" rows="10"
+                         paginator="true"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+                 <p:column headerText="Notification">                         
+                     <h:outputText id="text" value="NEW! #{notification.type} #{notification.visualized} notification       "  style="font-weight: bolder; display: #{notificationsController.isNotVisualized(notification)}"/>
+                     <h:outputText  value="#{notification.type} notification       "  style="display: #{notificationsController.isVisualized(notification)}"/>
+                     <p:commandButton value="show" onclick="changeVisualized()" icon="ui-icon-extlink">
+                         <f:setPropertyActionListener value="#{notification}" target="#{notificationsController.selectedNotification}" />
+                         <p:ajax update="text"/>
+                     </p:commandButton>
+                     
+                 </p:column>
+             </p:dataTable>   
+         </div>
+
+
+         
+         
     </body>
 </html>
