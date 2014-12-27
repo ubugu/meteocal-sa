@@ -7,9 +7,6 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <head jsf:id="head">    
         <title>Notifications</title>
-
-        <script jsf:target="body" jsf:name="story-page.js"/>
-        <link jsf:name="styles.css" rel="stylesheet" type="text/css" />
         <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
     </head>
     <body jsf:id="body" class="noFrame">  
@@ -42,15 +39,22 @@
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15">
                  <p:column headerText="Notification">                        
-                     <h:outputText id="text" value="NEW! #{notification.type} #{notification.visualized} notification       "  style="font-weight: bolder; display: #{notificationsController.isNotVisualized(notification)}"/>
-                     <h:outputText  value="#{notification.type} notification       "  style="display: #{notificationsController.isVisualized(notification)}"/>
-                     <p:commandButton value="show" onclick="changeVisualized()" icon="ui-icon-extlink">
+                     <h:outputText id="text1" value="NEW! #{notification.type} #{notification.visualized} notification       "  style="font-weight: bolder; display: #{notificationsController.isNotVisualized(notification)}"/>
+                     <h:outputText id='text2' value="#{notification.type} notification       "  style="display: #{notificationsController.isVisualized(notification)}"/>
+                     <p:commandButton value="show" oncomplete="PF('notificationDialog').show()" icon="ui-icon-extlink" update="text1, text2"  >
                          <f:setPropertyActionListener value="#{notification}" target="#{notificationsController.selectedNotification}" />
-                         <p:ajax update="text"/>
                      </p:commandButton>
                      
                  </p:column>
              </p:dataTable>  
+             
+             <p:dialog header="Notification" widgetVar="notificationDialog" resizable="false" >
+            
+                 #{notificationsController.selectedNotification.description}
+                 
+                 con id : 
+                 #{notificationsController.selectedNotification.id}
+             </p:dialog>
          </h:form>
           
 
