@@ -5,43 +5,43 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <head jsf:id="head">     
+    <head jsf:id="head">    
         <title>Notifications</title>
 
         <script jsf:target="body" jsf:name="story-page.js"/>
         <link jsf:name="styles.css" rel="stylesheet" type="text/css" />
         <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
     </head>
-    <body jsf:id="body" class="noFrame">   
+    <body jsf:id="body" class="noFrame">  
          <!--Element of the first line on the top bar-->
         <div id="topHeader">
              <img id="logo" src="Images/meteocalsnow.png"  name="meteocalLogo" title="meteocallogo"/>
-             <h1 id="userCalendar">User Calendar</h1>   
-              
-            <div class="logoutForm">         
+             <h1 id="userCalendar">User Calendar</h1>  
+             
+            <div class="logoutForm">        
                 <div >
-                   <p:button value="Logout" outcome="index"/>                     
+                   <p:button value="Logout" outcome="index"/>                    
                 </div>
             </div>
         </div>
-        
+       
         <div id="LeftHeader">
             <ul class="buttonList">
-                 <li><p:button class="leftBarButton"  value="Home" outcome="mainUserPage"/></li>   
+                 <li><p:button class="leftBarButton"  value="Home" outcome="mainUserPage"/></li>  
                  <li><p:button class="leftBarButton"  value="AddEvent" outcome="addEvent"/></li>          
-                 <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
+                 <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>  
                  <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li>  
             </ul>
         </div>
-        
-         <p:commandButton value="addNotitication" actionListener="#{notificationsController.createNotification('UPDATE', null, 'squalo')}" />
-        
-        <div class="guestFrame">
-             <p:dataTable var="notification" value="#{notificationsController.userNotification}" rows="10"
+         <h:form>
+             <p:commandButton value="addNotitication"  actionListener="#{notificationsController.createNotification('UPDATE', null, 'squalo')}" />
+         </h:form>
+         <h:form>
+                <p:dataTable var="notification" value="#{notificationsController.userNotification}" rows="10"
                          paginator="true"
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15">
-                 <p:column headerText="Notification">                         
+                 <p:column headerText="Notification">                        
                      <h:outputText id="text" value="NEW! #{notification.type} #{notification.visualized} notification       "  style="font-weight: bolder; display: #{notificationsController.isNotVisualized(notification)}"/>
                      <h:outputText  value="#{notification.type} notification       "  style="display: #{notificationsController.isVisualized(notification)}"/>
                      <p:commandButton value="show" onclick="changeVisualized()" icon="ui-icon-extlink">
@@ -50,11 +50,12 @@
                      </p:commandButton>
                      
                  </p:column>
-             </p:dataTable>   
-         </div>
+             </p:dataTable>  
+         </h:form>
+          
 
 
-         
-         
+
     </body>
 </html>
+
