@@ -49,7 +49,7 @@ public class Notification implements Serializable {
     private String description;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2)
+    @Size(min = 1, max = 3)
     @Column(name = "visualized")
     private String visualized;
     @JoinColumn(name = "user", referencedColumnName = "username")

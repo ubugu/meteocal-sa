@@ -88,13 +88,8 @@
                     <br />                    
                     
                     <div id="badConditions"> Bad Conditions &nbsp;&nbsp;</div> 
-                    <div id="badConditionsButton" class="onoffswitch">
-                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked="true" onclick="show('badConditionsDiv')"/>
-                        <label class="onoffswitch-label" for="myonoffswitch">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                        </label>
-                    </div>
+                    
+                    <p:inputSwitch onchange="show('badConditionsDiv')" />
                     
                     <br />
                     
@@ -122,7 +117,7 @@
                             <h:outputText id="temperatureoutput" value="C #{badconditions.badconditions.temperature}" />
                             <h:inputHidden id="temperature" value="#{badconditions.badconditions.temperature}" />
                             <p:slider for="temperature" display="temperatureoutput" minValue="-20" maxValue="50" style="width: 200px" displayTemplate="{value} C" />
- 
+                            
                             <input id="precipitationscheck" type="checkbox" name="invitationcheck"/>
                             <h:outputText value="Precipitations"/>
                             <h:outputText id="precipitationsoutput" value="% #{badconditions.badconditions.precipitations}" />
@@ -141,8 +136,9 @@
                     <h:panelGrid columns="2"> 
                         <label for="invitationcheck"><input id="invitationcheck" type="checkbox" name="invitationcheck" onclick="enable('invitation')"/>
                         Send an Invitation to &nbsp;</label>
+                        <f:ajax render="invitation" event="click" execute="invitationcheck"/>
+                        <p:inputTextarea id="invitation" rows="4" cols="35" value="#{prepareCreateEvent.invitations}"  disabled="true"/>
                         
-                        <p:inputTextarea id="invitation" rows="4" cols="35" value="#{prepareCreateEvent.invitations}" disabled="true"/>
                     </h:panelGrid> 
                 
                 </div>
