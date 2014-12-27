@@ -35,62 +35,69 @@
             </ul>
 
         </div>
-        
-        
-         
-         
+               
             <h:form>
                 <div id="eventForm">
 
                     <h1> Event Creation</h1>
 
                     <!-- copied -->
-                    <h:inputHidden id="validateCreateField" validator="#{event.validateCreate}" value="value"/>
-                    <h:panelGrid columns="2"> 
+                    <h:panelGrid columns="3"> 
                         <p:outputLabel for="title" value="Title:"/>
-                        <p:inputText id="title" value="#{event.event.title}" required="true" requiredMessage="The title is required." />
-
+                        <p:inputText id="title" value="#{EventController.event.title}" required="true" requiredMessage="The title is required." />
+                        <h:message for="title" />
+                        
                         <p:outputLabel for="location" value="Location" />          
-                        <p:inputText id="location" value="#{event.event.location}" required="true"/>
-
+                        <p:inputText id="location" value="#{EventController.event.location}" required="true" requiredMessage="The location is required." />
+                        <h:message for="location" />
+                        
                         <p:outputLabel for="city" value="City:"/>
-                        <p:inputText id="city" value="#{event.event.city}"/>
-
+                        <p:inputText id="city" value="#{EventController.event.city}"/>
+                        <h:message for="city" />
+                        
                         <p:outputLabel for="startingDate" value="Starting Date:" />
-                        <p:calendar id="startingDate" value="#{event.event.date}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true"/>
-
+                        <p:calendar id="startingDate" value="#{EventController.event.date}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true" requiredMessage="The Starting Date is required."/>
+                        <h:message for="startingDate" />
+                        
                         <p:outputLabel for="endingDate" value="Ending Date:" />
-                        <p:calendar id="endingDate" value="#{prepareCreateEvent.endate}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true" />
-
+                        <p:calendar id="endingDate" value="#{EventController.endate}" validator="#{EventController.validateEndate}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true" requiredMessage="The Ending Date is required." />
+                        <h:message for="endingDate" />
+                        
                         <p:outputLabel for="startingTime" value="Starting Time:" />
-                        <p:calendar id="startingTime" value="#{event.event.startingTime}" pattern="HH:mm a" timeOnly="true" required="true"/>
-
+                        <p:calendar id="startingTime" value="#{EventController.event.startingTime}" pattern="HH:mm a" timeOnly="true" required="true" requiredMessage="The Starting Time is required." />
+                        <h:message for="startingTime" />
+                        
                         <p:outputLabel for="endingTime" value="Ending Time:" />
-                        <p:calendar id="endingTime" value="#{event.event.endingTime}" pattern="HH:mm a" timeOnly="true" required="true" />
-
+                        <p:calendar id="endingTime" value="#{EventController.event.endingTime}"  validator="#{EventController.validateEndtime}" pattern="HH:mm a" timeOnly="true" required="true" requiredMessage="The Ending Time is required." />
+                        <h:message for="endingTime" />
+                        
                         <p:outputLabel for="repeat" value="Repeat Type:"/>
-                        <p:selectOneMenu id="repeat" value="#{prepareCreateEvent.repeats}" style="width:125px">
+                        <p:selectOneMenu id="repeat" value="#{EventController.repeats}" validator="#{EventController.validateRepeats}" style="width:125px" >
                             <f:selectItem itemLabel="No" itemValue="no" />
                             <f:selectItem itemLabel="EveryDay" itemValue="everyday" />
                             <f:selectItem itemLabel="EveryWeek" itemValue="everyweek" />
                             <f:selectItem itemLabel="EveryMonth" itemValue="everymonth" />
                             <f:selectItem itemLabel="EveryYear" itemValue="everyyear" />
                         </p:selectOneMenu>
-
+                        <h:message for="repeat" />
+                        
                         <p:outputLabel for="untillDate" value="Untill:" />
-                        <p:calendar id="untillDate" value="#{prepareCreateEvent.untillDate}" locale="it" navigator="true" pattern="dd-MM-yyyy" />
-
+                        <p:calendar id="untillDate" value="#{EventController.untillDate}" validator="#{EventController.validateUntilldate}" locale="it" navigator="true" pattern="dd-MM-yyyy" />
+                        <h:message for="untillDate" />
+                        
                         <p:outputLabel for="description" value="Description (optional):"/>
-                        <p:inputTextarea id="description" rows="4" cols="35" value="#{event.event.description}" />
-
+                        <p:inputTextarea id="description" rows="4" cols="35" value="#{EventController.event.description}" />
+                        <h:message for="description" />
+                        
                     </h:panelGrid>
                     
                     <br />                    
-                    
-                    <div id="badConditions"> Bad Conditions &nbsp;&nbsp;</div> 
-                    
-                    <p:inputSwitch onchange="show('badConditionsDiv')" />
-                    
+                    <div id="badConditions"> 
+                        <p:outputLabel for="bad" value="Bad Conditions:"/>
+                        <p:inputSwitch id="bad" value="#{EventController.bad}" onchange="show('badConditionsDiv')" />
+                        <h:message for="bad" />
+                    </div>
+               
                     <br />
                     
                     <div id="badConditionsDiv" >
@@ -100,12 +107,13 @@
                         <h:panelGrid  cellpadding="20px" width="450px" columns="2">
                     
                             <p:outputLabel for="layer" value="Layer Type:"/>
-                            <p:selectOneMenu id="layer" value="#{badconditions.badconditions.layer}" style="width:100px">
+                            <p:selectOneMenu id="layer" value="#{EventController.badconditions.layer}" style="width:100px">
                                 <f:selectItem itemLabel="Rainy" itemValue="rainy" />
                                 <f:selectItem itemLabel="Cloudy" itemValue="cloudy" />
                                 <f:selectItem itemLabel="Snowy" itemValue="snowy" />
                             </p:selectOneMenu>
-                        
+                            <h:message for="layer" />
+                            
                         </h:panelGrid>
                         
                             <!-- bad weather advance setting -->
@@ -114,14 +122,14 @@
                         
                             <input id="temperaturecheck" type="checkbox" name="temperaturecheck"/>
                             <h:outputText value="Temperature"/>
-                            <h:outputText id="temperatureoutput" value="C #{badconditions.badconditions.temperature}" />
-                            <h:inputHidden id="temperature" value="#{badconditions.badconditions.temperature}" />
+                            <h:outputText id="temperatureoutput" value="C #{EventController.badconditions.temperature}" />
+                            <h:inputHidden id="temperature" value="#{EventController.badconditions.temperature}" />
                             <p:slider for="temperature" display="temperatureoutput" minValue="-20" maxValue="50" style="width: 200px" displayTemplate="{value} C" />
                             
                             <input id="precipitationscheck" type="checkbox" name="invitationcheck"/>
                             <h:outputText value="Precipitations"/>
-                            <h:outputText id="precipitationsoutput" value="% #{badconditions.badconditions.precipitations}" />
-                            <h:inputHidden id="precipitations" value="#{badconditions.badconditions.precipitations}" />
+                            <h:outputText id="precipitationsoutput" value="% #{EventController.badconditions.precipitations}" />
+                            <h:inputHidden id="precipitations" value="#{EventController.badconditions.precipitations}" />
                             <p:slider  for="precipitations" display="precipitationsoutput" style="width: 200px" displayTemplate="{value} %" />
     
                         </h:panelGrid>
@@ -139,6 +147,7 @@
                         <f:ajax render="invitation" event="click" execute="invitationcheck"/>
                         <p:inputTextarea id="invitation" rows="4" cols="35" value="#{prepareCreateEvent.invitations}"  disabled="true"/>
                         
+                        <p:inputTextarea id="invitation" rows="4" cols="35" value="#{EventController.invitations}" disabled="true"/>
                     </h:panelGrid> 
                 
                 </div>
@@ -151,23 +160,25 @@
                     <h:panelGrid columns="2"> 
                         
                         <p:outputLabel for="color" value="Color Type:"/>
-                        <p:selectOneMenu id="color" value="#{event.event.color}" style="width:100px">
+                        <p:selectOneMenu id="color" value="#{EventController.event.color}" style="width:100px">
                             <f:selectItem itemLabel="Grey" itemValue="grey" />
                             <f:selectItem itemLabel="Red" itemValue="red" />
                             <f:selectItem itemLabel="Pink" itemValue="pink" />
                             <f:selectItem itemLabel="Blue" itemValue="blue" />
                             <f:selectItem itemLabel="Green" itemValue="green" />
                         </p:selectOneMenu>
+                        <h:message for="color" />
 
                         <p:outputLabel for="privacy" value="Set Event Privacy to:"/>
-                        <p:selectOneMenu id="privacy" value="#{event.event.privacy}" style="width:100px">
+                        <p:selectOneMenu id="privacy" value="#{EventController.event.privacy}" style="width:100px">
                             <f:selectItem itemLabel="Private" itemValue="private" />
                             <f:selectItem itemLabel="Public" itemValue="public" />
                         </p:selectOneMenu>
+                        <h:message for="privacy" />
 
                     </h:panelGrid>
               
-                    <p:commandButton value="Create Event" action="#{prepareCreateEvent.controlCreation()}" id="iconOnly" icon="ui-icon-calendar"/>
+                    <p:commandButton value="Create Event" action="#{EventController.prepareCreateEvent()}" id="iconOnly" icon="ui-icon-calendar"/>
                     
                 </div> 
             </h:form>

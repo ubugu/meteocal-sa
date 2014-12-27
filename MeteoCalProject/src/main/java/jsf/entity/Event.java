@@ -53,27 +53,27 @@ public class Event implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message="Title required")
     @Size(min = 1, max = 40)
     @Column(name = "title")
     private String title;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message="Date required")
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message="Starting Time required")
     @Column(name = "startingTime")
     @Temporal(TemporalType.TIME)
     private Date startingTime;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message="Ending Time required")
     @Column(name = "endingTime")
     @Temporal(TemporalType.TIME)
     private Date endingTime;
     @Basic(optional = false)
-    @NotNull
+    @NotNull(message="Location required")
     @Size(min = 1, max = 40)
     @Column(name = "location")
     private String location;
