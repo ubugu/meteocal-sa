@@ -9,19 +9,19 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import jsf.entity.Event;
 import jsf.entity.Notification;
-import jsf.entity.User;
 import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.UserFacade;
-import org.primefaces.context.RequestContext;
 
 /**
  *
  * @author claudio
  */
 @ManagedBean(name = "notificationsController", eager = true)
-@RequestScoped
+@SessionScoped
 public class NotificationsController {
     private int ID = 0;
     private enum NotificationType {
@@ -116,13 +116,12 @@ public class NotificationsController {
     }
 
     public void setSelectedNotification(Notification selectedNotification) {
-        
+        this.selectedNotification = selectedNotification;
        
+        if (selectedNotification.getVisualized().equals("NO")) {
             selectedNotification.setVisualized("YES");
             facade.edit(selectedNotification);
-        
-        
-        this.selectedNotification = selectedNotification;
-        
+        }
+            
     }
 }
