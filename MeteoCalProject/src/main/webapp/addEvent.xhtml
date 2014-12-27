@@ -144,9 +144,7 @@
                     <h:panelGrid columns="2"> 
                         <label for="invitationcheck"><input id="invitationcheck" type="checkbox" name="invitationcheck" onclick="enable('invitation')"/>
                         Send an Invitation to &nbsp;</label>
-                        <f:ajax render="invitation" event="click" execute="invitationcheck"/>
-                        <p:inputTextarea id="invitation" rows="4" cols="35" value="#{prepareCreateEvent.invitations}"  disabled="true"/>
-                        
+                        <f:ajax render="invitation" event="click" execute="invitationcheck"/>                      
                         <p:inputTextarea id="invitation" rows="4" cols="35" value="#{EventController.invitations}" disabled="true"/>
                     </h:panelGrid> 
                 
