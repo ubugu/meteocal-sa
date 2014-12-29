@@ -142,11 +142,11 @@
                      
                     
                 
-                    <h:panelGrid columns="2"> 
-                        <label for="invitationcheck"><input id="invitationcheck" type="checkbox" name="invitationcheck" onclick="enable('invitation')"/>
-                        Send an Invitation to &nbsp;</label>
-                        <f:ajax render="invitation" event="click" execute="invitationcheck"/>                      
-                        <p:inputTextarea id="invitation" rows="4" cols="35" value="#{EventController.invitations}" disabled="true"/>
+                    <h:panelGrid columns="3"> 
+                        <p:selectBooleanCheckbox id="invitationcheck" value="#{EventController.inviteSelect}"/>     
+                        <h:outputText value="Send an Invitation to: "/>
+                        <p:ajax event="click" update="invitation"/>                      
+                        <p:inputTextarea id="invitation" disabled="#{!EventController.inviteSelect}" rows="4" cols="35" value="#{EventController.invitations}"/>
                     </h:panelGrid> 
                 
                 </div>
@@ -201,6 +201,10 @@
            
                 <p:dialog header="Error" widgetVar="Repeat Error" minHeight="40" resizable="false" >
                 <h:outputText value="You can not repeat an event that last more than 1 day for now" />
+                </p:dialog>
+                
+                <p:dialog header="Error" widgetVar="Invite Error" minHeight="40" resizable="false" >
+                    <h:outputText value="You haven't insert any User or these Users does not exist: #{EventController.rejectedUsers}" />
                 </p:dialog>
                 
                 <!-- dialog error -->

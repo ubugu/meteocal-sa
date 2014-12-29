@@ -18,6 +18,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import jsf.entity.facade.UserFacade;
 import org.joda.time.DateTime; 
 import org.joda.time.Days;
 import org.primefaces.context.RequestContext;
@@ -38,6 +39,8 @@ public class EventController {
     private EventFacade eventFacade = new EventFacade();
     @EJB
     private BadconditionsFacade badconditionsFacade = new BadconditionsFacade();
+    @EJB
+    private UserFacade userFacade = new UserFacade();
     
     
     // variables useful to set the correct events in the database
@@ -57,8 +60,38 @@ public class EventController {
     private Boolean temp = false;
     
     private Boolean prec = false;
+    
+    private Boolean InviteSelect = false;
+    
+    private String[] invitatedUsers;
+    
+    private String rejectedUsers;
         
     // variables not belonging to database
+    
+    public String[] getInvitatedUsers() {
+        return invitatedUsers;
+    }
+
+    public void setInvitatedUsers(String[] invitatedUsers) {
+        this.invitatedUsers = invitatedUsers;
+    }
+    
+    public String getRejectedUsers() {
+        return rejectedUsers;
+    }
+
+    public void setRejectedUsers(String rejectedUsers) {
+        this.rejectedUsers = rejectedUsers;
+    }
+    
+    public Boolean getInviteSelect() {
+        return InviteSelect;
+    }
+
+    public void setInviteSelect(Boolean InviteSelect) {
+        this.InviteSelect = InviteSelect;
+    }
     
     public Boolean getBad() {
         return bad;
@@ -177,6 +210,13 @@ public class EventController {
             error=true;
         }
         
+        //it will return false also if the field is disabled
+        if(!searchInvited()){
+            RequestContext requestContext = RequestContext.getCurrentInstance();  
+            requestContext.execute("PF('Invite Error').show();");
+            error=true;
+        }
+        
         if(error){
            return ""; 
         }
@@ -188,10 +228,31 @@ public class EventController {
     }
     
     /**
+     * method that will control if the users invited by the organiser exists or not;
+     * @return if some of they does not exist a false value is returned
+     */
+    private Boolean searchInvited(){
+        
+        if(getInvitations().equals("")){
+            return false;
+        }
+        
+        setInvitatedUsers(getInvitations().split(";"));
+        
+        for (String invitatedUser : getInvitatedUsers()) {
+            if (userFacade.searchForUser(invitatedUser) == null) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
      * method that will control the creation of the events and then it will use
      * the facades to create the records in the database
      */ 
-    public void prepareCreateEvent(){
+    private void prepareCreateEvent(){
         
         if(getRepeats().equals("no")){
             normalCreation();
@@ -223,6 +284,13 @@ public class EventController {
                 prepareCreateBadConditions(event);
             }
             
+            //create notification
+            prepareCreateNotification(event);
+            
+            //create participant
+            prepareCreateParticipant(event);
+            
+            //repetition
             switch(getRepeats()){
                 case "everyday"   : {
                     nextDate= (new DateTime(nextDate).plusDays(1).toDate());
@@ -292,6 +360,12 @@ public class EventController {
                 prepareCreateBadConditions(event);
             }
             
+            //create notification
+            prepareCreateNotification(event);
+            
+            //create participant
+            prepareCreateParticipant(event);
+            
             
             if(days>1){            
                 DateTime datetime = new DateTime(event.getDate());
@@ -327,6 +401,23 @@ public class EventController {
         }catch(Exception e){
             //TODO
         }
+        
+    }
+    
+    /**
+     * method that will create and send a notification to all the invited User for the current Event
+     * @param event 
+     */
+    private void prepareCreateNotification(Event event){
+        
+    }
+   
+    /**
+     * method that will create a record in the participant table in which the organiser is setted 
+     * and the invited User are setted to "unknown" response to the participation
+     * @param event 
+     */
+    private void prepareCreateParticipant(Event event){
         
     }
     
