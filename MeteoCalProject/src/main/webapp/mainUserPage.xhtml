@@ -7,21 +7,18 @@
       xmlns:jsf="http://xmlns.jcp.org/jsf">
     <head jsf:id="head">     
         <title>Home</title>
-
-        <script jsf:target="body" jsf:name="story-page.js"/>
-        <link jsf:name="styles.css" rel="stylesheet" type="text/css" />
         <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
     </head>
     <body jsf:id="body" class="noFrame">   
         <!--Element of the first line on the top bar-->
         <div id="topHeader">
              <img id="logo" src="Images/meteocalsnow.png"  name="meteocalLogo" title="meteocallogo"/>
-             <h1 id="userCalendar">User Calendar</h1>   
+             <h1 id="userCalendar">#{loginBean.loggedUser.username} Calendar</h1>   
               
             <div class="logoutForm">         
-                <div >
-                   <p:button value="Logout" outcome="index"/>                     
-                </div>
+                <h:form>
+                    <p:commandButton value="Logout" action="#{loginBean.logout()}"/>                     
+                </h:form>
             </div>
         </div>
         

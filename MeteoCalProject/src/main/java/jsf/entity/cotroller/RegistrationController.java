@@ -42,20 +42,21 @@ public class RegistrationController {
     public void setUser(User user) {
         this.user = user;
     }
-    
+
     public String register() {
-       user.setGroupName("USER");
-       if (checkEmail()) {
-           return "";
-       } 
-       try {
-        facade.create(user);
-       } catch (Exception e) {
-           RequestContext requestContext = RequestContext.getCurrentInstance();  
-           requestContext.execute("PF('usernameError').show();");
-           return "";
-       }
-        return "mainUserPage?faces-redirect=true";
+        user.setGroupName("USER");
+        if (checkEmail()) {
+            return "";
+        }
+        try {
+            facade.create(user);
+        } catch (Exception e) {
+            e.getMessage();
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+            requestContext.execute("PF('usernameError').show();");
+            return "";
+        }
+        return "index?faces-redirect=true";
     }
 
     private boolean checkEmail() {

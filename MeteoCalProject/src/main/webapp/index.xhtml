@@ -22,12 +22,14 @@
                 <span>Username</span>
                 <span id="passwordLabel">Password</span>
 
-                <div> 
-                    <input type="text" name="username" placeholder="Username"/>
-                    <input type="text" name="password" placeholder="Password"/>   
-
-                    <p:button value="Login" outcome="mainUserPage"/>   
-                </div>
+                <h:form> 
+                    <p:inputText id="username" value="#{loginBean.username}" required="true"/>
+                    <p:password id="password" value="#{loginBean.password}" required="true"/>
+                    <p:commandButton value="Login" action="#{loginBean.login()}" ajax="true" update="@all" />
+                    <p:dialog header="Error" widgetVar="loginFailed" minHeight="40" resizable="false" >
+                        <h:outputText value="Login failde: username or passoword not recognized." />
+                    </p:dialog>
+                </h:form>
 
                 <div id="forgotten">
                     <a href="create.html">  Forgotten password? </a>  
@@ -46,7 +48,7 @@
         </div>
 
         <div class="guestFrame">
-            <h2 >Meteocal: the meteo in your calendar!</h2>
+            <h2 >Meteocal: the meteo in your calendar! </h2>
             <h5>What is meteocal?</h5>
             <p class="informations">
                 Meteocal is an applications that provides a meteo and a calendar all stick together. <br />
