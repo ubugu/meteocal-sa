@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import org.joda.time.DateTime; 
 import org.joda.time.Days;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -140,6 +141,52 @@ public class EventController {
     }
     // end variables
     
+    public String controlDataCreation(){
+        
+        Boolean error = false;
+        
+        //controlData
+
+        if( event.getDate().compareTo(new Date()) < 0){
+           RequestContext requestContext = RequestContext.getCurrentInstance();  
+           requestContext.execute("PF('NoPast Error').show();");
+           error=true;
+        }
+                
+        if( getEndate().compareTo(event.getDate()) < 0){
+           RequestContext requestContext = RequestContext.getCurrentInstance();  
+           requestContext.execute("PF('EndDate Error').show();");
+           error=true;
+        }
+        
+        if( event.getEndingTime().compareTo(event.getStartingTime()) < 0){
+            RequestContext requestContext = RequestContext.getCurrentInstance();  
+            requestContext.execute("PF('EndTime Error').show();");
+            error=true;
+        }
+        
+        if( getUntillDate().compareTo(event.getDate()) < 0){
+            RequestContext requestContext = RequestContext.getCurrentInstance();  
+            requestContext.execute("PF('EndUntillDate Error').show();");
+            error=true;
+        }
+        
+        if( (!getRepeats().equals("no")) && (getEndate().compareTo(event.getDate())!=0) ){
+            RequestContext requestContext = RequestContext.getCurrentInstance();  
+            requestContext.execute("PF('Repeat Error').show();");
+            error=true;
+        }
+        
+        if(error){
+           return ""; 
+        }
+        
+        //creationEvent
+        prepareCreateEvent();
+        
+        return "Success" ;
+    }
+    
     /**
      * method that will control the creation of the events and then it will use
      * the facades to create the records in the database
@@ -259,7 +306,7 @@ public class EventController {
      * prepare and create the bad conditions associated to the event
      * @param event in order to set the foreign key
      */
-    public void prepareCreateBadConditions(Event event){
+    private void prepareCreateBadConditions(Event event){
         
         badconditions.setId( badconditionsFacade.getMaxBadConditionsID() + 1 );
         badconditions.setEventID(event);
