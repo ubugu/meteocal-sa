@@ -18,6 +18,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import jsf.entity.Notification;
+import jsf.entity.Participant;
+import jsf.entity.facade.NotificationFacade;
+import jsf.entity.facade.ParticipantFacade;
 import jsf.entity.facade.UserFacade;
 import org.joda.time.DateTime; 
 import org.joda.time.Days;
@@ -35,12 +39,20 @@ public class EventController {
 
     private Badconditions badconditions = new Badconditions();
     
+    private Notification notification = new Notification();
+    
+    private Participant participant = new Participant();
+    
     @EJB
     private EventFacade eventFacade = new EventFacade();
     @EJB
     private BadconditionsFacade badconditionsFacade = new BadconditionsFacade();
     @EJB
     private UserFacade userFacade = new UserFacade();
+    @EJB
+    private NotificationFacade notificationFacade = new NotificationFacade();
+    @EJB
+    private ParticipantFacade participantFacade = new ParticipantFacade();
     
     
     // variables useful to set the correct events in the database
@@ -254,6 +266,9 @@ public class EventController {
      */ 
     private void prepareCreateEvent(){
         
+        //we can set here the calendar for the event
+        event.setCalendar(userFacade.getLoggedUser().getCalendar());
+        
         if(getRepeats().equals("no")){
             normalCreation();
         }else{
@@ -346,9 +361,8 @@ public class EventController {
                     event.setEndingTime(new Date(Time.valueOf("23:59:59").getTime()));
                 }
             }
-            
+                   
             //we can try to create the event
-            
             try{
                 eventFacade.create(event);
             }catch(Exception e){
@@ -409,6 +423,16 @@ public class EventController {
      * @param event 
      */
     private void prepareCreateNotification(Event event){
+        notification.setId( notificationFacade.getMaxNotificationID() +1 );
+        notification.setType("INVITED");
+        notification.setEventID(event);
+        notification.setVisualized("NO");
+        notification.setDescription("You have been invited to the event " + event.getTitle() + " by the user " + event.getCalendar().getOwner() + " on the " + event.getDate());
+        
+        for (String invitatedUser : getInvitatedUsers()) {
+            notification.setUser(userFacade.searchForUser(invitatedUser));
+            notificationFacade.create(notification);
+        }
         
     }
    
@@ -418,7 +442,19 @@ public class EventController {
      * @param event 
      */
     private void prepareCreateParticipant(Event event){
-        
+        //participants invited
+        participant.setEvent1(event);
+        participant.setOrganiser("NO");
+        participant.setParticipant("UNKNOWN");
+        for (String invitatedUser : getInvitatedUsers()) { 
+            participant.setUser1(userFacade.searchForUser(invitatedUser));
+            participantFacade.create(participant);
+        }
+        //participant organiser
+        participant.setOrganiser("YES");
+        participant.setUser1(event.getCalendar().getOwner());
+        participant.setParticipant("YES");
+        participantFacade.create(participant);     
     }
     
     // validators
