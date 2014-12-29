@@ -38,12 +38,12 @@ public class Participant implements Serializable {
     protected ParticipantPK participantPK;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2)
+    @Size(min = 1, max = 3)
     @Column(name = "organiser")
     private String organiser;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 3)
+    @Size(min = 1, max = 7)
     @Column(name = "participant")
     private String participant;
     @JoinColumn(name = "user", referencedColumnName = "username", insertable = false, updatable = false)

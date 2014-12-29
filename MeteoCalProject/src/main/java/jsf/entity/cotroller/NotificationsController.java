@@ -79,7 +79,7 @@ public class NotificationsController {
         String description = new String();
         
        if (type.equals(NotificationType.INVITED.toString())) {
-           description += "You have been invited to the event " + event.getTitle() + " by the user " + event.getCalendar().getOwner();
+           description += "You have been invited to the event " + event.getTitle() + " by the user " + event.getCalendar().getOwner() + " on the " + event.getDate();
            notification.setType(type);
        } 
            
