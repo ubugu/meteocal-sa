@@ -28,4 +28,12 @@ public class CalendarFacade extends AbstractFacade<Calendar> {
         super(Calendar.class);
     }
     
+    public int getMaxCalendarID(){
+        try{
+            return (Integer) em.createNativeQuery("Select MAX(ID) from Calendar").getSingleResult();    
+        }catch(Exception e){
+            return 0;
+        } 
+    }
+    
 }

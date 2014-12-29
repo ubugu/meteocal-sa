@@ -72,8 +72,18 @@
                         <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                     </p:inputText>
                     <p:message for="email" />
+
+
+                    <p:outputLabel for="privacy" value="Privacy:" />
+                    <p:selectOneRadio id="privacy" value="#{registrationController.calendar.privacy}" required="true" >
+                        <f:selectItem itemLabel="Private" itemValue="PRIVATE"  />
+                        <f:selectItem itemLabel="Shared" itemValue="SHARED" />
+                        <f:selectItem itemLabel="Public" itemValue="PUBLIC" />
+                    </p:selectOneRadio>
+                    <p:message for="privacy"/>
+
                     <p:commandButton value="Register" ajax="true" action="#{registrationController.register()}" validateClient="true"  style="margin-right:10px" />
-             </p:panelGrid>
+                </p:panelGrid>
             </p:panel>
            <p:dialog header="Error" widgetVar="usernameError" minHeight="40" resizable="false" >
                <h:outputText value="Username Already used used" />

@@ -55,7 +55,7 @@ public class NotificationsController {
         this.ID = searchForLastID();
         notification.setEventID(event);
         notification.setId(ID);
-        notification.setUser(this.userFacade.serchForUser(user));
+        notification.setUser(this.userFacade.searchForUser(user));
         notification.setVisualized("NO");
     }
     
@@ -64,7 +64,7 @@ public class NotificationsController {
         this.ID = searchForLastID();
         notification.setEventID(event);
         notification.setId(ID);
-        notification.setUser(this.userFacade.serchForUser(user));
+        notification.setUser(this.userFacade.searchForUser(user));
         notification.setVisualized("NO");
     }
     
@@ -73,7 +73,7 @@ public class NotificationsController {
         this.ID = searchForLastID();
         notification.setEventID(event);
         notification.setId(ID);
-        notification.setUser(this.userFacade.serchForUser(user));
+        notification.setUser(this.userFacade.searchForUser(user));
         notification.setVisualized("NO");
         
         String description = new String();
