@@ -9,7 +9,9 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import jsf.entity.Calendar;
 import jsf.entity.User;
+import jsf.entity.facade.CalendarFacade;
 import jsf.entity.facade.UserFacade;
 import org.primefaces.context.RequestContext;
 
@@ -22,8 +24,14 @@ import org.primefaces.context.RequestContext;
 public class RegistrationController {
     
     private User user;
+    private Calendar calendar;
+    
     @EJB
     private UserFacade facade = new UserFacade();
+    
+    @EJB
+    private CalendarFacade calendarFacade = new CalendarFacade();
+    
 
 
     /**
@@ -42,6 +50,17 @@ public class RegistrationController {
     public void setUser(User user) {
         this.user = user;
     }
+    
+    public Calendar getCalendar() {
+        if (calendar == null) {
+            calendar = new Calendar();
+        }
+        return calendar;
+    }
+    
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
+    }
 
     public String register() {
         user.setGroupName("USER");
@@ -50,6 +69,9 @@ public class RegistrationController {
         }
         try {
             facade.create(user);
+            calendar.setOwner(user);
+            calendar.setId(calendarFacade.getMaxCalendarID());
+            calendarFacade.create(calendar);
         } catch (Exception e) {
             e.getMessage();
             RequestContext requestContext = RequestContext.getCurrentInstance();

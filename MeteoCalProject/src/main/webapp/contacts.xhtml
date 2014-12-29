@@ -5,10 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:jsf="http://xmlns.jcp.org/jsf">
     <head jsf:id="head">     
-        <title>Guest Home</title>
-
-        <script jsf:target="body" jsf:name="story-page.js"/>
-        <link jsf:name="styles.css" rel="stylesheet" type="text/css" />
+        <title>Contacts</title>
         <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
     </head>
     <body jsf:id="body" class="noFrame">      
@@ -53,35 +50,7 @@
             All right reserved 2014 @ Claudio Sanna, Walter samà 
         </div>
 
-        <script language="javascript" type="text/javascript">
-        <!--Function to load a page indicated with the string value.-->
-            function loadPage(page)
-            {
-                window.open(page);
-            }
-        </script>
-
-        <h:form>
-            <h:commandLink action="#{badconditions.listSetup}" value="Show All Badconditions Items"/>
-        </h:form>
-        <h:form>
-            <h:commandLink action="#{calendar.listSetup}" value="Show All Calendar Items"/>
-        </h:form>
-        <h:form>
-            <h:commandLink action="#{event.listSetup}" value="Show All Event Items"/>
-        </h:form>
-        <h:form>
-            <h:commandLink action="#{notification.listSetup}" value="Show All Notification Items"/>
-        </h:form>
-        <h:form>
-            <h:commandLink action="#{participant.listSetup}" value="Show All Participant Items"/>
-        </h:form>
-        <h:form>
-            <h:commandLink action="#{user.listSetup}" value="Show All User Items"/>
-        </h:form>
-        <h:form>
-            <h:commandLink action="#{weather.listSetup}" value="Show All Weather Items"/>
-        </h:form>
+        
     </body>
 </html>
 
