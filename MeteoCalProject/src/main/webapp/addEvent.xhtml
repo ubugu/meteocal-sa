@@ -20,9 +20,9 @@
                 <h1 id="userCalendar">User Calendar</h1>   
               
             <div class="logoutForm">         
-                <div >
-                    <p:button value="Logout" outcome="index"/>    
-                </div>
+                <h:form>
+                    <p:commandButton value="Logout" action="#{loginBean.logout()}"/>                     
+                </h:form>
             </div>
         </div>
         
