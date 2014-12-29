@@ -28,4 +28,17 @@ public class BadconditionsFacade extends AbstractFacade<Badconditions> {
         super(Badconditions.class);
     }
     
+    /**
+     * method to get the 
+     * @return the maximum number of all the ids of the records in the BadConditions table or 0 if there are no records
+     *  
+     */
+    public int getMaxBadConditionsID(){
+        try{
+            return (Integer) em.createNativeQuery("Select MAX(ID) from Badconditions").getSingleResult();    
+        }catch(Exception e){
+            return 0;
+        } 
+    }
+    
 }

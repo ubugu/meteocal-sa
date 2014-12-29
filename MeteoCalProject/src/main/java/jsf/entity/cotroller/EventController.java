@@ -35,9 +35,8 @@ public class EventController {
     
     @EJB
     private EventFacade eventFacade = new EventFacade();
+    @EJB
     private BadconditionsFacade badconditionsFacade = new BadconditionsFacade();
-    
-    public static int ID =0;
     
     
     // variables useful to set the correct events in the database
@@ -53,6 +52,10 @@ public class EventController {
     private String repeats = "no" ;
     
     private Boolean bad = false;
+    
+    private Boolean temp = false;
+    
+    private Boolean prec = false;
         
     // variables not belonging to database
     
@@ -119,6 +122,22 @@ public class EventController {
     public void setBadconditions(Badconditions badconditions) {
         this.badconditions = badconditions;
     }
+    
+    public Boolean getTemp() {
+        return temp;
+    }
+
+    public void setTemp(Boolean temp) {
+        this.temp = temp;
+    }
+
+    public Boolean getPrec() {
+        return prec;
+    }
+
+    public void setPrec(Boolean prec) {
+        this.prec = prec;
+    }
     // end variables
     
     /**
@@ -143,13 +162,13 @@ public class EventController {
  
         while(nextDate.compareTo(getUntillDate()) < 0){
             
-            event.setId(ID);
+            event.setId( eventFacade.getMaxEventID() + 1);
             
             //event creation
             try{
                 eventFacade.create(event);
             }catch(Exception e){
-            // TODO
+                //TODO
             };
             
             //badcondition creation if they are set
@@ -158,13 +177,25 @@ public class EventController {
             }
             
             switch(getRepeats()){
-                case "everyday"   : nextDate= (new DateTime(nextDate).plusDays(1).toDate());
-                case "everyweek"  : nextDate= (new DateTime(nextDate).plusWeeks(1).toDate());
-                case "everymonth" : nextDate= (new DateTime(nextDate).plusMonths(1).toDate());
-                case "everyyear"  : nextDate= (new DateTime(nextDate).plusYears(1).toDate());
+                case "everyday"   : {
+                    nextDate= (new DateTime(nextDate).plusDays(1).toDate());
+                    break;
+                }
+                case "everyweek"  : {
+                    nextDate= (new DateTime(nextDate).plusWeeks(1).toDate());
+                    break;
+                }
+                case "everymonth" : {
+                    nextDate= (new DateTime(nextDate).plusMonths(1).toDate());
+                    break;
+                }
+                case "everyyear"  : {
+                    nextDate= (new DateTime(nextDate).plusYears(1).toDate());
+                    break;
+                }
             }
             
-            ID++;
+            event.setDate(nextDate);
             
         }
     }
@@ -176,27 +207,29 @@ public class EventController {
      * 00:00 and the ending time to 23:59 unless the days is the first or the last
      */
     private void normalCreation(){
-        int days = 1;
-        Time endingTime=null;
+        int days = 0;
+        Date endingTime=null;
         if( getEndate().compareTo(event.getDate()) > 0){
             
             days = Days.daysBetween(new DateTime(event.getDate()), new DateTime(getEndate())).getDays();            
-            endingTime = (Time) event.getEndingTime();
+            endingTime = event.getEndingTime();
         }
         
-        for(int i=0; i< days; i++ ){
+        for(int i=0; i <= days; i++ ){
         
-            event.setId(ID);
+            event.setId( eventFacade.getMaxEventID() + 1);
             
             //if the cycle is repeated then the successive starting date must be set to 00:00
             // we have to do this only one time.
             if(i==1){
-                event.setStartingTime(Time.valueOf("00:00"));
+                event.setStartingTime(new Date(Time.valueOf("00:00:00").getTime()));
             }
             if(i+1 > days && days > 1){
                 event.setEndingTime(endingTime);
-            }else{
-                event.setEndingTime(Time.valueOf("23:59"));
+            }else{ 
+                if(days!=0){
+                    event.setEndingTime(new Date(Time.valueOf("23:59:59").getTime()));
+                }
             }
             
             //we can try to create the event
@@ -206,15 +239,19 @@ public class EventController {
             }catch(Exception e){
                 //TODO
             }
-                        
-            if(days>1 && i+1 < days){            
+            
+            //badcondition creation if they are set
+            if(getBad()){
+                prepareCreateBadConditions(event);
+            }
+            
+            
+            if(days>1){            
                 DateTime datetime = new DateTime(event.getDate());
                 datetime = datetime.plusDays(1);
                 event.setDate(datetime.toDate());
             }
             
-            ID++;
-    
         }
     }
     
@@ -223,6 +260,26 @@ public class EventController {
      * @param event in order to set the foreign key
      */
     public void prepareCreateBadConditions(Event event){
+        
+        badconditions.setId( badconditionsFacade.getMaxBadConditionsID() + 1 );
+        badconditions.setEventID(event);
+        
+        if(temp==false){
+            badconditions.setTemperature(null);
+        }
+        
+        if(prec==false){
+            badconditions.setPrecipitations(null);
+        }
+        
+        //we can try to create the badconditions
+            
+        try{
+            System.out.print("layer = " + badconditions.getLayer() + " temp: " + badconditions.getTemperature() + "prec: " + badconditions.getPrecipitations());
+            badconditionsFacade.create(badconditions);
+        }catch(Exception e){
+            //TODO
+        }
         
     }
     

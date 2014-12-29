@@ -28,4 +28,17 @@ public class EventFacade extends AbstractFacade<Event> {
         super(Event.class);
     }
     
+    /**
+     * method to get the 
+     * @return the maximum number of all the ids of the records in the Event database or 0 if there are no records
+     *  
+     */
+    public int getMaxEventID(){
+        try{
+            return (Integer) em.createNativeQuery("Select MAX(ID) from Event").getSingleResult();    
+        }catch(Exception e){
+            return 0;
+        } 
+    }
+    
 }
