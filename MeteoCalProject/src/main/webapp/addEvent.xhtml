@@ -37,6 +37,7 @@
         </div>
                
             <h:form id="Event">
+              <p:messages autoUpdate="true"/>
                 <div id="eventForm">
 
                     <h1> Event Creation</h1>
@@ -45,31 +46,31 @@
                     <h:panelGrid columns="3"> 
                         <p:outputLabel for="title" value="Title:"/>
                         <p:inputText id="title" value="#{EventController.event.title}" required="true" requiredMessage="The title is required." />
-                        <h:message for="title" />
+                        <p:message for="title" />
                         
                         <p:outputLabel for="location" value="Location" />          
                         <p:inputText id="location" value="#{EventController.event.location}" required="true" requiredMessage="The location is required." />
-                        <h:message for="location" />
+                        <p:message for="location" />
                         
                         <p:outputLabel for="city" value="City:"/>
                         <p:inputText id="city" value="#{EventController.event.city}"/>
-                        <h:message for="city" />
+                        <p:message for="city" />
                         
                         <p:outputLabel for="startingDate" value="Starting Date:" />
                         <p:calendar id="startingDate" value="#{EventController.event.date}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true" requiredMessage="The Starting Date is required."/>
-                        <h:message for="startingDate" />
+                        <p:message for="startingDate" />
                         
                         <p:outputLabel for="endingDate" value="Ending Date:" />
                         <p:calendar id="endingDate" value="#{EventController.endate}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true" requiredMessage="The Ending Date is required." />
-                        <h:message for="endingDate" />
+                        <p:message for="endingDate" />
                         
                         <p:outputLabel for="startingTime" value="Starting Time:" />
                         <p:calendar id="startingTime" value="#{EventController.event.startingTime}" pattern="HH:mm a" timeOnly="true" required="true" requiredMessage="The Starting Time is required." />
-                        <h:message for="startingTime" />
+                        <p:message for="startingTime" />
                         
                         <p:outputLabel for="endingTime" value="Ending Time:" />
                         <p:calendar id="endingTime" value="#{EventController.event.endingTime}" pattern="HH:mm a" timeOnly="true" required="true" requiredMessage="The Ending Time is required." />
-                        <h:message for="endingTime" />
+                        <p:message for="endingTime" />
                         
                         <p:outputLabel for="repeat" value="Repeat Type:"/>
                         <p:selectOneMenu id="repeat" value="#{EventController.repeats}" style="width:125px" >
@@ -79,15 +80,15 @@
                             <f:selectItem itemLabel="EveryMonth" itemValue="everymonth" />
                             <f:selectItem itemLabel="EveryYear" itemValue="everyyear" />
                         </p:selectOneMenu>
-                        <h:message for="repeat" />
+                        <p:message for="repeat" />
                         
                         <p:outputLabel for="untillDate" value="Untill:" />
                         <p:calendar id="untillDate" value="#{EventController.untillDate}" locale="it" navigator="true" pattern="dd-MM-yyyy" />
-                        <h:message for="untillDate" />
+                        <p:message for="untillDate" />
                         
                         <p:outputLabel for="description" value="Description (optional):"/>
                         <p:inputTextarea id="description" rows="4" cols="35" value="#{EventController.event.description}" />
-                        <h:message for="description" />
+                        <p:message for="description" />
                         
                     </h:panelGrid>
                     
@@ -95,7 +96,7 @@
                     <div id="badConditions"> 
                         <p:outputLabel for="bad" value="Bad Conditions:"/>
                         <p:inputSwitch id="bad" value="#{EventController.bad}" onchange="show('badConditionsDiv')" />
-                        <h:message for="bad" />
+                        <p:message for="bad" />
                     </div>
                
                     <br />
@@ -112,7 +113,7 @@
                                 <f:selectItem itemLabel="Cloudy" itemValue="cloudy" />
                                 <f:selectItem itemLabel="Snowy" itemValue="snowy" />
                             </p:selectOneMenu>
-                            <h:message for="layer" />
+                            <p:message for="layer" />
                             
                         </h:panelGrid>
                         
@@ -165,20 +166,45 @@
                             <f:selectItem itemLabel="Blue" itemValue="blue" />
                             <f:selectItem itemLabel="Green" itemValue="green" />
                         </p:selectOneMenu>
-                        <h:message for="color" />
+                        <p:message for="color" />
 
                         <p:outputLabel for="privacy" value="Set Event Privacy to:"/>
                         <p:selectOneMenu id="privacy" value="#{EventController.event.privacy}" style="width:100px">
                             <f:selectItem itemLabel="Private" itemValue="private" />
                             <f:selectItem itemLabel="Public" itemValue="public" />
                         </p:selectOneMenu>
-                        <h:message for="privacy" />
+                        <p:message for="privacy" />
 
                     </h:panelGrid>
               
-                    <p:commandButton value="Create Event" action="#{EventController.prepareCreateEvent()}" id="iconOnly" icon="ui-icon-calendar"/>
+                    <p:commandButton value="Create Event" ajax="true" validateClient="true" action="#{EventController.controlDataCreation()}" id="iconOnly" icon="ui-icon-calendar"/>
                     
                 </div> 
+                
+                <!-- dialog error -->
+                
+                <p:dialog header="Error" widgetVar="NoPast Error" minHeight="40" resizable="false" >
+                <h:outputText value="The Starting Date is before Today" />
+                </p:dialog>
+                
+                <p:dialog header="Error" widgetVar="EndDate Error" minHeight="40" resizable="false" >
+                <h:outputText value="The ending date is before the starting date" />
+                </p:dialog>
+           
+                <p:dialog header="Error" widgetVar="EndTime Error" minHeight="40" resizable="false" >
+                <h:outputText value="The ending time is before the starting time" />
+                </p:dialog>
+                
+                <p:dialog header="Error" widgetVar="EndUntillDate Error" minHeight="40" resizable="false" >
+                <h:outputText value="The untill date is before the starting date" />
+                </p:dialog>
+           
+                <p:dialog header="Error" widgetVar="Repeat Error" minHeight="40" resizable="false" >
+                <h:outputText value="You can not repeat an event that last more than 1 day for now" />
+                </p:dialog>
+                
+                <!-- dialog error -->
+                
             </h:form>
         
             <!--Function to show element on click-->
