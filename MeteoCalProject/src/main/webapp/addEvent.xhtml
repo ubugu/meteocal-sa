@@ -36,7 +36,7 @@
 
         </div>
                
-            <h:form>
+            <h:form id="Event">
                 <div id="eventForm">
 
                     <h1> Event Creation</h1>
@@ -60,7 +60,7 @@
                         <h:message for="startingDate" />
                         
                         <p:outputLabel for="endingDate" value="Ending Date:" />
-                        <p:calendar id="endingDate" value="#{EventController.endate}" validator="#{EventController.validateEndate}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true" requiredMessage="The Ending Date is required." />
+                        <p:calendar id="endingDate" value="#{EventController.endate}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true" requiredMessage="The Ending Date is required." />
                         <h:message for="endingDate" />
                         
                         <p:outputLabel for="startingTime" value="Starting Time:" />
@@ -68,11 +68,11 @@
                         <h:message for="startingTime" />
                         
                         <p:outputLabel for="endingTime" value="Ending Time:" />
-                        <p:calendar id="endingTime" value="#{EventController.event.endingTime}"  validator="#{EventController.validateEndtime}" pattern="HH:mm a" timeOnly="true" required="true" requiredMessage="The Ending Time is required." />
+                        <p:calendar id="endingTime" value="#{EventController.event.endingTime}" pattern="HH:mm a" timeOnly="true" required="true" requiredMessage="The Ending Time is required." />
                         <h:message for="endingTime" />
                         
                         <p:outputLabel for="repeat" value="Repeat Type:"/>
-                        <p:selectOneMenu id="repeat" value="#{EventController.repeats}" validator="#{EventController.validateRepeats}" style="width:125px" >
+                        <p:selectOneMenu id="repeat" value="#{EventController.repeats}" style="width:125px" >
                             <f:selectItem itemLabel="No" itemValue="no" />
                             <f:selectItem itemLabel="EveryDay" itemValue="everyday" />
                             <f:selectItem itemLabel="EveryWeek" itemValue="everyweek" />
@@ -82,7 +82,7 @@
                         <h:message for="repeat" />
                         
                         <p:outputLabel for="untillDate" value="Untill:" />
-                        <p:calendar id="untillDate" value="#{EventController.untillDate}" validator="#{EventController.validateUntilldate}" locale="it" navigator="true" pattern="dd-MM-yyyy" />
+                        <p:calendar id="untillDate" value="#{EventController.untillDate}" locale="it" navigator="true" pattern="dd-MM-yyyy" />
                         <h:message for="untillDate" />
                         
                         <p:outputLabel for="description" value="Description (optional):"/>
@@ -100,7 +100,7 @@
                
                     <br />
                     
-                    <div id="badConditionsDiv" >
+                    <div id="badConditionsDiv" style="display: none">
                             
                         <!-- bad weather layer -->
                     
@@ -120,13 +120,13 @@
                         
                             <h:panelGrid style="bottom: 5px;top: 10px" cellpadding="20px" width="450px" columns="5">
                         
-                            <input id="temperaturecheck" type="checkbox" name="temperaturecheck"/>
+                            <p:selectBooleanCheckbox id="temperaturecheck" value="#{EventController.temp}" onchange="#{EventController.setTemp(!EventController.temp)}"/>
                             <h:outputText value="Temperature"/>
                             <h:outputText id="temperatureoutput" value="C #{EventController.badconditions.temperature}" />
                             <h:inputHidden id="temperature" value="#{EventController.badconditions.temperature}" />
                             <p:slider for="temperature" display="temperatureoutput" minValue="-20" maxValue="50" style="width: 200px" displayTemplate="{value} C" />
                             
-                            <input id="precipitationscheck" type="checkbox" name="invitationcheck"/>
+                            <p:selectBooleanCheckbox id="precipitationscheck" value="#{EventController.prec}" onchange="#{EventController.setPrec(!EventController.prec)}"/>
                             <h:outputText value="Precipitations"/>
                             <h:outputText id="precipitationsoutput" value="% #{EventController.badconditions.precipitations}" />
                             <h:inputHidden id="precipitations" value="#{EventController.badconditions.precipitations}" />
