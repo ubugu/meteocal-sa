@@ -5,9 +5,11 @@
  */
 package jsf.entity.facade;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import jsf.entity.Event;
 import jsf.entity.Participant;
 
 /**
@@ -27,5 +29,9 @@ public class ParticipantFacade extends AbstractFacade<Participant> {
     public ParticipantFacade() {
         super(Participant.class);
     }
+    
+      public List<Participant> searchByEvent (int eventID)  {
+        return (List<Participant>) em.createNamedQuery("Participant.findByEvent").setParameter("event", eventID).getResultList();
+    } 
     
 }

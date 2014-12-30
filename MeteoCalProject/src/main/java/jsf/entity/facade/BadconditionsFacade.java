@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import jsf.entity.Badconditions;
+import jsf.entity.Event;
 
 /**
  *
@@ -38,7 +39,15 @@ public class BadconditionsFacade extends AbstractFacade<Badconditions> {
             return (Integer) em.createNativeQuery("Select MAX(ID) from Badconditions").getSingleResult();    
         }catch(Exception e){
             return 0;
-        } 
+        }
+    }
+
+    public Badconditions searchByEvent(Event event) {
+        try {
+            return (Badconditions) em.createNamedQuery("Badconditions.findByEvent").setParameter("event", event).getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
     
 }

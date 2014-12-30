@@ -5,10 +5,12 @@
  */
 package jsf.entity.facade;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import jsf.entity.Notification;
+import jsf.entity.User;
 
 /**
  *
@@ -23,7 +25,12 @@ public class NotificationFacade extends AbstractFacade<Notification> {
     protected EntityManager getEntityManager() {
         return em;
     }
-
+    
+     public List<Notification> searchForUser (User username)  {
+        return (List<Notification>) em.createNamedQuery("Notification.findByUser").setParameter("user", username).getResultList();
+    } 
+   
+    
     public NotificationFacade() {
         super(Notification.class);
     }
