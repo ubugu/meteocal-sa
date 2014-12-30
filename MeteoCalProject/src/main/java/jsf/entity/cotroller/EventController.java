@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import jsf.entity.Notification;
 import jsf.entity.Participant;
+import jsf.entity.ParticipantPK;
 import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.ParticipantFacade;
 import jsf.entity.facade.UserFacade;
@@ -210,7 +211,7 @@ public class EventController {
             error=true;
         }
         
-        if( getUntillDate().compareTo(event.getDate()) < 0){
+        if( (!getRepeats().equals("no")) && (getUntillDate().compareTo(event.getDate()) < 0)){
             RequestContext requestContext = RequestContext.getCurrentInstance();  
             requestContext.execute("PF('EndUntillDate Error').show();");
             error=true;
@@ -448,12 +449,14 @@ public class EventController {
         participant.setParticipant("UNKNOWN");
         for (String invitatedUser : getInvitatedUsers()) { 
             participant.setUser1(userFacade.searchForUser(invitatedUser));
+            participant.setParticipantPK(new ParticipantPK(participant.getUser1().getUsername(),participant.getEvent1().getId()));
             participantFacade.create(participant);
         }
         //participant organiser
         participant.setOrganiser("YES");
         participant.setUser1(event.getCalendar().getOwner());
         participant.setParticipant("YES");
+        participant.setParticipantPK(new ParticipantPK(participant.getUser1().getUsername(),participant.getEvent1().getId()));
         participantFacade.create(participant);     
     }
     
