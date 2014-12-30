@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Badconditions.findById", query = "SELECT b FROM Badconditions b WHERE b.id = :id"),
     @NamedQuery(name = "Badconditions.findByLayer", query = "SELECT b FROM Badconditions b WHERE b.layer = :layer"),
     @NamedQuery(name = "Badconditions.findByPrecipitations", query = "SELECT b FROM Badconditions b WHERE b.precipitations = :precipitations"),
+    @NamedQuery(name = "Badconditions.findByEvent", query = "SELECT b FROM Badconditions b WHERE b.eventID = :event"),
     @NamedQuery(name = "Badconditions.findByTemperature", query = "SELECT b FROM Badconditions b WHERE b.temperature = :temperature")})
 public class Badconditions implements Serializable {
     private static final long serialVersionUID = 1L;

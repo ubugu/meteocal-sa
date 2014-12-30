@@ -7,14 +7,13 @@ package jsf.entity.cotroller;
 
 import java.util.List;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
-import jsf.entity.Event;
 import jsf.entity.Notification;
 import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.UserFacade;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -23,9 +22,12 @@ import jsf.entity.facade.UserFacade;
 @ManagedBean(name = "notificationsController", eager = true)
 @SessionScoped
 public class NotificationsController {
+    @ManagedProperty(value="#{showEventController}")
+    private ShowEventController eventController;
+    
     private int ID = 0;
     private enum NotificationType {
-        INVITED, UPDATE, RESPONSE, BADCONDITIONS,
+        INVITED, UPDATE, RESPONSE, BADCONDITIONS, SYSTEM,
     }
     
     private enum BadConditionsType {
@@ -42,58 +44,14 @@ public class NotificationsController {
     
     
     public List<Notification> getUserNotification() {
-        //TODO modificare mettendo l'user loggato
-        return this.facade.findAll();
+        List<Notification> list = facade.searchForUser(userFacade.getLoggedUser());
+        return list;
     }
     
     public int searchForLastID() {
         return   facade.findAll().size();
     }
 
-    public void createResponseNotification(Event event, String user) {
-        notification = new Notification();
-        this.ID = searchForLastID();
-        notification.setEventID(event);
-        notification.setId(ID);
-        notification.setUser(this.userFacade.searchForUser(user));
-        notification.setVisualized("NO");
-    }
-    
-    public void createBadConditionsNotification (Event event, BadConditionsType type, String user) {
-        notification = new Notification();
-        this.ID = searchForLastID();
-        notification.setEventID(event);
-        notification.setId(ID);
-        notification.setUser(this.userFacade.searchForUser(user));
-        notification.setVisualized("NO");
-    }
-    
-    public void createNotification(String type, Event event, String user){
-        notification = new Notification();
-        this.ID = searchForLastID();
-        notification.setEventID(event);
-        notification.setId(ID);
-        notification.setUser(this.userFacade.searchForUser(user));
-        notification.setVisualized("NO");
-        
-        String description = new String();
-        
-       if (type.equals(NotificationType.INVITED.toString())) {
-           description += "You have been invited to the event " + event.getTitle() + " by the user " + event.getCalendar().getOwner() + " on the " + event.getDate();
-           notification.setType(type);
-       } 
-           
-       if (type.equals(NotificationType.UPDATE.toString())) {
-            description += "The event " + /*event.getTitle() + */ " has been modified";
-            notification.setType(type);
-        }
-
-        notification.setDescription(description);
-
-        facade.create(notification);  
-   
-    }
-    
     public String isVisualized(Notification notification) {
         if (notification.getVisualized().equals("NO")) {
             return "none";
@@ -114,14 +72,62 @@ public class NotificationsController {
     public Notification getSelectedNotification() {
         return selectedNotification;
     }
+    
+    
+    public void createNotification(){
+        notification = new Notification();
+        this.ID = searchForLastID();
+        notification.setEventID(null);
+        notification.setId(ID);
+        notification.setUser(this.userFacade.searchForUser("squalo2"));
+        notification.setVisualized("NO");
+       
+        String description = new String();
+        
+        description += "The event " + /*event.getTitle() + */ " has been modified";
+        notification.setType("UPDATE");
+       
+        notification.setDescription(description);
 
+        facade.create(notification);  
+   
+    }
+
+    public void showEvent() {
+        if (this.selectedNotification == null) {
+            return;
+        }
+        eventController.setSelectedEvent(this.selectedNotification.getEventID());
+    }
+    
     public void setSelectedNotification(Notification selectedNotification) {
         this.selectedNotification = selectedNotification;
-       
+        
         if (selectedNotification.getVisualized().equals("NO")) {
             selectedNotification.setVisualized("YES");
             facade.edit(selectedNotification);
         }
-            
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("PF('notificationDialog').show();");
+  
+    }
+    
+    public String hasEvent() {
+        if (this.selectedNotification == null) {
+            return "none";
+        }
+        if (this.selectedNotification.getType().equals(NotificationType.SYSTEM.toString())) {
+            return "none";
+        } else {
+            return "display";
+        }
+    }
+    
+    public ShowEventController getEventController() {
+        return eventController;
+    }
+
+    public void setEventController(ShowEventController eventController) {
+        this.eventController = eventController;
     }
 }

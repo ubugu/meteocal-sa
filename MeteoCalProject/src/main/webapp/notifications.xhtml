@@ -31,7 +31,7 @@
             </ul>
         </div>
          <h:form>
-             <p:commandButton value="addNotitication"  actionListener="#{notificationsController.createNotification('UPDATE', null, 'squalo')}" />
+             <p:commandButton value="addNotitication"  actionListener="#{notificationsController.createNotification()}" />
          </h:form>
          <h:form>
                 <p:dataTable var="notification" value="#{notificationsController.userNotification}" rows="10"
@@ -39,22 +39,24 @@
                          paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15">
                  <p:column headerText="Notification">                        
-                     <h:outputText id="text1" value="NEW! #{notification.type} #{notification.visualized} notification       "  style="font-weight: bolder; display: #{notificationsController.isNotVisualized(notification)}"/>
+                     <h:outputText id="text1" value="NEW! #{notification.type}  notification       "  style="font-weight: bolder; display: #{notificationsController.isNotVisualized(notification)}"/>
                      <h:outputText id='text2' value="#{notification.type} notification       "  style="display: #{notificationsController.isVisualized(notification)}"/>
-                     <p:commandButton value="show" oncomplete="PF('notificationDialog').show()" icon="ui-icon-extlink" update="text1, text2"  >
+                     <p:commandButton value="show" icon="ui-icon-extlink" update="text1, text2" >
                          <f:setPropertyActionListener value="#{notification}" target="#{notificationsController.selectedNotification}" />
                      </p:commandButton>
                      
                  </p:column>
-             </p:dataTable>  
-             
-             <p:dialog header="Notification" widgetVar="notificationDialog" resizable="false" >
-            
-                 #{notificationsController.selectedNotification.description}
-                 
-                 con id : 
-                 #{notificationsController.selectedNotification.id}
-             </p:dialog>
+                </p:dataTable>  
+
+                <p:dialog id="dialog" header="Notification" widgetVar="notificationDialog" resizable="false" onShow="updateDialog()"  >
+                    <p:remoteCommand name="updateDialog" update="dialogContent, eventButton"/>
+                    <h:outputText id="dialogContent" value=" #{notificationsController.selectedNotification.description}"/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <p:button id="eventButton" value="Go To Event" onclick="#{notificationsController.showEvent()}" outcome="showEvent" style="display: #{notificationsController.hasEvent()}" />
+                    
+                </p:dialog>
          </h:form>
           
 
