@@ -14,7 +14,7 @@
         <div id="topHeader">
              <img id="logo" src="Images/meteocalsnow.png"  name="meteocalLogo" title="meteocallogo"/>
 
-                <h1 id="userCalendar">#{loginBean.loggedUser.username}'s Calendar</h1>   
+                <h2 id="userCalendar">#{loginBean.loggedUser.username}'s Calendar</h2>   
               
             <div class="logoutForm">         
                 <h:form>
@@ -200,9 +200,15 @@
                 <h:outputText value="You can not repeat an event that last more than 1 day for now" />
                 </p:dialog>
                 
-                <p:dialog header="Error" widgetVar="Invite Error" minHeight="40" resizable="false" >
-                    <h:outputText value="You haven't insert any User or these Users does not exist: #{EventController.rejectedUsers}" />
+                <p:dialog header="Error" widgetVar="Invite Error" minHeight="40" resizable="false" dynamic="true">
+                <h:outputText value="You haven't insert any User or these Users does not exist: #{EventController.rejectedUsers}" />
                 </p:dialog>
+                
+                <p:dialog header="Error" widgetVar="StartTime Error" minHeight="40" resizable="false" >
+                <h:outputText value="The Starting Time is before the current Time!" />
+                </p:dialog>
+                
+                
                 
                 <!-- dialog error -->
                 

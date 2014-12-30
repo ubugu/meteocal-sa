@@ -6,6 +6,7 @@
 package jsf.entity.cotroller;
 
 import java.sql.Time;
+import java.util.Calendar;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -25,6 +26,7 @@ import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.ParticipantFacade;
 import jsf.entity.facade.UserFacade;
 import org.joda.time.DateTime; 
+import org.joda.time.DateTimeComparator;
 import org.joda.time.Days;
 import org.primefaces.context.RequestContext;
 
@@ -78,7 +80,7 @@ public class EventController {
     
     private String[] invitatedUsers;
     
-    private String rejectedUsers;
+    private String rejectedUsers="";
         
     // variables not belonging to database
     
@@ -190,44 +192,45 @@ public class EventController {
     public String controlDataCreation(){
         
         Boolean error = false;
-        
+        RequestContext requestContext = RequestContext.getCurrentInstance();
         //controlData
 
-        if( event.getDate().compareTo(new Date()) < 0){
-           RequestContext requestContext = RequestContext.getCurrentInstance();  
-           requestContext.execute("PF('NoPast Error').show();");
-           error=true;
-        }
-                
-        if( getEndate().compareTo(event.getDate()) < 0){
-           RequestContext requestContext = RequestContext.getCurrentInstance();  
-           requestContext.execute("PF('EndDate Error').show();");
-           error=true;
+        if(DateTimeComparator.getDateOnlyInstance().compare( new DateTime(event.getDate()) , new DateTime()) < 0){     
+            requestContext.execute("PF('NoPast Error').show();");
+            error=true;
         }
         
-        if( event.getEndingTime().compareTo(event.getStartingTime()) < 0){
-            RequestContext requestContext = RequestContext.getCurrentInstance();  
+        if((DateTimeComparator.getTimeOnlyInstance().compare( new DateTime(event.getStartingTime()) , new DateTime()) < 0) && (DateTimeComparator.getDateOnlyInstance().compare( new DateTime() , new DateTime(event.getDate())) == 0)){
+            requestContext.execute("PF('StartTime Error').show();");
+            error=true;
+        }
+                    
+        if(DateTimeComparator.getDateOnlyInstance().compare( new DateTime(getEndate()) , new DateTime(event.getDate())) < 0){
+            requestContext.execute("PF('EndDate Error').show();");
+            error=true;
+        }
+        
+        if(DateTimeComparator.getTimeOnlyInstance().compare( new DateTime(event.getEndingTime()) , new DateTime(event.getStartingTime())) < 0){
             requestContext.execute("PF('EndTime Error').show();");
             error=true;
         }
         
-        if( (!getRepeats().equals("no")) && (getUntillDate().compareTo(event.getDate()) < 0)){
-            RequestContext requestContext = RequestContext.getCurrentInstance();  
+        if((!getRepeats().equals("no")) && (DateTimeComparator.getDateOnlyInstance().compare( new DateTime(getUntillDate()) , new DateTime(event.getDate())) < 0)){
             requestContext.execute("PF('EndUntillDate Error').show();");
             error=true;
         }
         
-        if( (!getRepeats().equals("no")) && (getEndate().compareTo(event.getDate())!=0) ){
-            RequestContext requestContext = RequestContext.getCurrentInstance();  
+        if((!getRepeats().equals("no")) && (DateTimeComparator.getDateOnlyInstance().compare( new DateTime(getEndate()) , new DateTime(event.getDate())) == 0)){
             requestContext.execute("PF('Repeat Error').show();");
             error=true;
         }
         
         //it will return false also if the field is disabled
-        if(!searchInvited()){
-            RequestContext requestContext = RequestContext.getCurrentInstance();  
-            requestContext.execute("PF('Invite Error').show();");
-            error=true;
+        if(getInviteSelect()){
+            if(!searchInvited()){
+                requestContext.execute("PF('Invite Error').show();");
+                error=true;
+            }
         }
         
         if(error){
@@ -246,7 +249,9 @@ public class EventController {
      */
     private Boolean searchInvited(){
         
-        if(getInvitations().equals("")){
+        Boolean result = true;
+        
+        if(getInvitations()== null || getInvitations().equals("")){
             return false;
         }
         
@@ -254,11 +259,12 @@ public class EventController {
         
         for (String invitatedUser : getInvitatedUsers()) {
             if (userFacade.searchForUser(invitatedUser) == null) {
-                return false;
+                setRejectedUsers(getRejectedUsers() + invitatedUser + " ;");
+                result = false;
             }
         }
         
-        return true;
+        return result;
     }
     
     /**
@@ -300,11 +306,13 @@ public class EventController {
                 prepareCreateBadConditions(event);
             }
             
-            //create notification
-            prepareCreateNotification(event);
-            
-            //create participant
-            prepareCreateParticipant(event);
+            if(getInviteSelect()){
+                //create notification
+                prepareCreateNotification(event);
+
+                //create participant
+                prepareCreateParticipant(event);
+            }
             
             //repetition
             switch(getRepeats()){
@@ -375,12 +383,13 @@ public class EventController {
                 prepareCreateBadConditions(event);
             }
             
-            //create notification
-            prepareCreateNotification(event);
-            
-            //create participant
-            prepareCreateParticipant(event);
-            
+            if(getInviteSelect()){
+                //create notification
+                prepareCreateNotification(event);
+
+                //create participant
+                prepareCreateParticipant(event);
+            }
             
             if(days>1){            
                 DateTime datetime = new DateTime(event.getDate());
