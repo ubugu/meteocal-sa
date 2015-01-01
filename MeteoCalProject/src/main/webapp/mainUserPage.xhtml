@@ -33,7 +33,7 @@
         <div>   
             <h:panelGrid style="width: 1000px">
                 <p:schedule value="#{scheduleController.eventModel}" draggable="false" >
-                    <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails, eventButton" oncomplete="PF('event').show();"  />
+                    <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails, eventButton, deleteButton" oncomplete="PF('event').show();"  />
                 </p:schedule>
             </h:panelGrid>
 
@@ -47,17 +47,13 @@
 
                     <h:outputLabel for="endingTime" value="Ending:" /> 
                     <h:outputText id="endingTime" value="#{scheduleController.event.endDate}" />
-                    
-                     <h:outputLabel for="id" value="ID:" /> 
-                     <h:outputText id="id" value="#{scheduleController.event.id}" />
           
                 </h:panelGrid>
                 <br/>
                 <br/>
                 <br/>
                 <p:button id="eventButton" value="Go To Event" onclick="#{scheduleController.showEvent()}" outcome="showEvent"/>
-                <p:button id="eventButton" value="Delete Event" onclick="#{scheduleController.showEvent()}" outcome="mainUserPage"/>
-            </p:dialog>
+              </p:dialog>
 
         </div>
 
