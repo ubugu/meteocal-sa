@@ -94,10 +94,7 @@ public class NotificationsController {
     }
 
     public void showEvent() {
-        if (this.selectedNotification == null) {
-            return;
-        }
-        eventController.setSelectedEvent(this.selectedNotification.getEventID());
+        
     }
     
     public void setSelectedNotification(Notification selectedNotification) {

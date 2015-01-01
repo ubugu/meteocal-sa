@@ -34,7 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Calendar.findAll", query = "SELECT c FROM Calendar c"),
     @NamedQuery(name = "Calendar.findById", query = "SELECT c FROM Calendar c WHERE c.id = :id"),
+    @NamedQuery(name = "Calendar.findByOwner", query = "SELECT c FROM Calendar c WHERE c.owner = :owner"),
     @NamedQuery(name = "Calendar.findByPrivacy", query = "SELECT c FROM Calendar c WHERE c.privacy = :privacy")})
+
 public class Calendar implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

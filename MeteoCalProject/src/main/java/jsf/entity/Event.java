@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
+    @NamedQuery(name = "Event.findByCalendar", query = "SELECT e FROM Event e WHERE e.calendar = :calendar"),
     @NamedQuery(name = "Event.findById", query = "SELECT e FROM Event e WHERE e.id = :id"),
     @NamedQuery(name = "Event.findByTitle", query = "SELECT e FROM Event e WHERE e.title = :title"),
     @NamedQuery(name = "Event.findByDate", query = "SELECT e FROM Event e WHERE e.date = :date"),
