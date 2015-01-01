@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import jsf.entity.Calendar;
+import jsf.entity.User;
 
 /**
  *
@@ -33,6 +34,14 @@ public class CalendarFacade extends AbstractFacade<Calendar> {
             return (Integer) em.createNativeQuery("Select MAX(ID) from Calendar").getSingleResult();    
         }catch(Exception e){
             return 0;
+        } 
+    }
+    
+     public Calendar searchByUser(User user){
+        try{
+            return (Calendar) em.createNamedQuery("Calendar.findByOwner").setParameter("owner", user).getSingleResult();    
+        }catch(Exception e){
+            return null;
         } 
     }
     

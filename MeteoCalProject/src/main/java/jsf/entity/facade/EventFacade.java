@@ -5,9 +5,11 @@
  */
 package jsf.entity.facade;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import jsf.entity.Calendar;
 import jsf.entity.Event;
 
 /**
@@ -39,6 +41,10 @@ public class EventFacade extends AbstractFacade<Event> {
         }catch(Exception e){
             return 0;
         } 
+    }
+    
+    public List<Event> searchByCalendar(Calendar calendar) {
+        return (List<Event>) em.createNamedQuery("Event.findByCalendar").setParameter("calendar", calendar).getResultList(); 
     }
     
 }
