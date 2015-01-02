@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import jsf.entity.Event;
 import jsf.entity.Notification;
 import jsf.entity.User;
 
@@ -30,6 +31,10 @@ public class NotificationFacade extends AbstractFacade<Notification> {
         return (List<Notification>) em.createNamedQuery("Notification.findByUser").setParameter("user", username).getResultList();
     } 
    
+      public List<Notification> searchByEventID (int id)  {
+        return (List<Notification>) em.createNamedQuery("Notification.findByEventID").setParameter("eventID", id).getResultList();
+    } 
+     
     
     public NotificationFacade() {
         super(Notification.class);

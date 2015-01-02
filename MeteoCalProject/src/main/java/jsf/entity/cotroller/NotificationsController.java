@@ -10,6 +10,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import jsf.entity.Event;
 import jsf.entity.Notification;
 import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.UserFacade;
@@ -27,7 +28,7 @@ public class NotificationsController {
     
     private int ID = 0;
     private enum NotificationType {
-        INVITED, UPDATE, RESPONSE, BADCONDITIONS, SYSTEM,
+        INVITED, UPDATE, RESPONSE, BADCONDITIONS, SYSTEM, DELETE,
     }
     
     private enum BadConditionsType {
@@ -73,30 +74,24 @@ public class NotificationsController {
         return selectedNotification;
     }
     
-    
-    public void createNotification(){
-        notification = new Notification();
-        this.ID = searchForLastID();
-        notification.setEventID(null);
-        notification.setId(ID);
-        notification.setUser(this.userFacade.searchForUser("squalo2"));
-        notification.setVisualized("NO");
-       
-        String description = new String();
-        
-        description += "The event " + /*event.getTitle() + */ " has been modified";
-        notification.setType("UPDATE");
-       
-        notification.setDescription(description);
 
-        facade.create(notification);  
-   
+    public String showEvent() {
+        if (this.selectedNotification == null) {
+            return "";
+        }
+        Event event = this.selectedNotification.getEventID();
+        if (event == null) {
+            RequestContext requestContext = RequestContext.getCurrentInstance();
+            requestContext.execute("PF('eventDeleted').show();");
+            return "";
+
+        } else {
+            eventController.setSelectedEvent(event);
+            return "/showEvent?faces-redirect=true";
+        }
+
     }
 
-    public void showEvent() {
-        
-    }
-    
     public void setSelectedNotification(Notification selectedNotification) {
         this.selectedNotification = selectedNotification;
         
@@ -113,7 +108,7 @@ public class NotificationsController {
         if (this.selectedNotification == null) {
             return "none";
         }
-        if (this.selectedNotification.getType().equals(NotificationType.SYSTEM.toString())) {
+        if (this.selectedNotification.getType().equals(NotificationType.SYSTEM.toString()) || this.selectedNotification.getType().equals(NotificationType.DELETE.toString())) {
             return "none";
         } else {
             return "display";

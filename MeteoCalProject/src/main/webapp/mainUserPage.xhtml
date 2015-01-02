@@ -53,7 +53,11 @@
                 <br/>
                 <br/>
                 <p:button id="eventButton" value="Go To Event" onclick="#{scheduleController.showEvent()}" outcome="showEvent"/>
-              </p:dialog>
+                <h:form id="deleteButton">
+                    <p:commandButton  value="Delete Event" actionListener="#{scheduleController.delete()}" style="display : #{scheduleController.isInvited()}"/>
+                  
+                </h:form>
+            </p:dialog>
 
         </div>
 
