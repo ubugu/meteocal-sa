@@ -235,13 +235,18 @@ public class EventController {
             error=true;
         }
         
-        if((!getRepeats().equals("no")) && (DateTimeComparator.getDateOnlyInstance().compare( new DateTime(getUntillDate()) , new DateTime(event.getDate())) < 0)){
+        if((!getRepeats().equals("no")) && (getUntillDate()!=null) && (DateTimeComparator.getDateOnlyInstance().compare( new DateTime(getUntillDate()) , new DateTime(event.getDate())) < 0)){
             requestContext.execute("PF('EndUntillDate Error').show();");
             error=true;
         }
         
-        if((!getRepeats().equals("no")) && (DateTimeComparator.getDateOnlyInstance().compare( new DateTime(getEndate()) , new DateTime(event.getDate())) == 0)){
+        if((!getRepeats().equals("no")) && (DateTimeComparator.getDateOnlyInstance().compare( new DateTime(getEndate()) , new DateTime(event.getDate())) != 0)){
             requestContext.execute("PF('Repeat Error').show();");
+            error=true;
+        }
+        
+        if((!getRepeats().equals("no")) && (getUntillDate()==null)){
+            requestContext.execute("PF('Untill Error').show();");
             error=true;
         }
         
@@ -529,23 +534,26 @@ public class EventController {
      * it will check and set the value of the event that the user want to change in 
      * order to show the precompiled field, this avoid us to create an updateeventcontroller
      * and an updateevent page
+     * @param id of the event to update, is obtained by the schedule controller
      * @return redirect to the addeventpage
      */
-    public String changeEvent(){
+    public String changeEvent(int id){
         
-        event = eventFacade.find(3);
+        event = eventFacade.find(id);
         badconditions = badconditionsFacade.searchByEvent(event);
         
-        if(badconditions.getPrecipitations()!=null){
-            setPrec(true);
-        }
-        if(badconditions.getTemperature()!=null){
-            setTemp(true);
-        }
-        
-        if(badconditions.getId()!= null){
+        if(badconditions!=null){
+            
             bad=true;
             style="block";
+            
+            if(badconditions.getPrecipitations()!=null){
+                setPrec(true);
+            }
+            if(badconditions.getTemperature()!=null){
+                setTemp(true);
+            }     
+
         }
         
         setEdit(true);
@@ -567,10 +575,12 @@ public class EventController {
         bad=false;
         style="none";
         setEdit(false);
-        setEndate(event.getDate());
+        setEndate(null);
         setInvitations("");
         setInviteSelect(false);
         setRejectedUsers("");
+        setUntillDate(null);
+        setRepeats("no");
         
         return "addEvent?faces-redirect=true"; 
     }

@@ -36,8 +36,6 @@
                     <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent()}"/></li>     
                     <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
                     <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li> 
-                    <!-- prova -->
-                    <li><p:commandButton class="leftBarButton"  value="UpdateEvent" action="#{EventController.changeEvent()}"/> </li>
                 </h:form>
             </ul>
         </div>
@@ -64,6 +62,9 @@
                 <br/>
                 <br/>
                 <p:button id="eventButton" value="Go To Event" onclick="#{scheduleController.showEvent()}" outcome="showEvent"/>
+                <h:form id="updateButton">
+                    <p:commandButton  value="Update Event"  action="#{scheduleController.updateEvent()}"/>
+                </h:form>
                 <h:form id="deleteButton">
                     <p:commandButton  value="Delete Event"  actionListener="#{scheduleController.delete()}" style="display : #{scheduleController.isInvited()}"/>
                 </h:form>

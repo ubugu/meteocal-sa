@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package jsf.entity.cotroller;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,11 +12,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import jsf.entity.Calendar;
 import jsf.entity.Event;
 import jsf.entity.Notification;
@@ -40,7 +45,10 @@ public class SchedulerController implements Serializable {
     private ScheduleModel eventModel; 
     
     @ManagedProperty(value="#{showEventController}")
-    private ShowEventController eventController;
+    private ShowEventController showEventController;
+    
+    @ManagedProperty(value="#{EventController}")
+    private EventController eventController;
   
     private ScheduleEvent event = new DefaultScheduleEvent();
 
@@ -108,22 +116,40 @@ public class SchedulerController implements Serializable {
         this.event = (ScheduleEvent) selectEvent.getObject();
     }
     
-    public ShowEventController getEventController() {
+    public ShowEventController getShowEventController() {
+        return showEventController;
+    }
+     
+    public EventController getEventController() {
         return eventController;
     }
- 
+
+    public void setEventController(EventController eventController) {
+        this.eventController = eventController;
+    }
+    
     public void showEvent() {
         try {
             int id = eventMap.get(event.getId());
             for (Event e : events) {
             if (e.getId() == id) {
-                eventController.setSelectedEvent(e);
+                showEventController.setSelectedEvent(e);
                 break;
             }
         }
         } catch( NullPointerException e) {
             return;
         }
+    }
+    
+    /**
+     * method that will redirect to the addEvent page in order to update the current selected event
+     * @return the redirecting string
+     */
+    public String updateEvent(){
+        int id = eventMap.get(event.getId());
+        return eventController.changeEvent(id);
+        
     }
 
     public void delete() {
@@ -193,8 +219,8 @@ public class SchedulerController implements Serializable {
         }
     }
 
-    public void setEventController(ShowEventController eventController) {
-        this.eventController = eventController;
+    public void setShowEventController(ShowEventController showEventController) {
+        this.showEventController = showEventController;
     }
 
 }
