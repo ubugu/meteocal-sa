@@ -43,17 +43,15 @@
 
         <!-- Variable part -->
 
-        <table id="searchedUser" width="400"  border="2" >
-            <p:column headerText="Username">
-                <h:outputText value="#{SearchController.user.username}" />
-            </p:column>
-            <p:column headerText="Calendar">
-                <h:outputText value="#{SearchController.user.calendar.privacy}" />
-            </p:column>
-            <p:column headerText="GoToHome">
-                <p:button id="goToHome" value="Go To #{SearchController.user.username} 's Calendar" />
-            </p:column>            
-        </table>
+        <p:panelGrid id="searchGridHeader" columns="3">
+            <h:outputText value="USERNAME" />
+            <h:outputText value="CALENDAR'S PRIVACY" />
+            <h:outputText value="GO TO USER'S Calendar" />            
+
+            <h:outputText value="#{SearchController.user.username}" />
+            <h:outputText value="#{SearchController.user.calendar.privacy}" />
+            <p:button id="goToHome" disabled="#{SearchController.privateCalendar}" value="#{SearchController.user.username} 's Calendar" />            
+        </p:panelGrid>
         
     </body>
 </html>

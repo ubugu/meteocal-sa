@@ -24,10 +24,20 @@ public class SearchController {
     
     private String searchedUser=null;
     
+    private Boolean privateCalendar = true; 
+           
     @EJB
     private UserFacade userFacade = new UserFacade();
 
     //getter & setter
+    
+    public Boolean getPrivateCalendar() {
+        return privateCalendar;
+    }
+
+    public void setPrivateCalendar(Boolean privateCalendar) {
+        this.privateCalendar = privateCalendar;
+    }
     
     public String getSearchedUser() {
         return searchedUser;
@@ -53,6 +63,10 @@ public class SearchController {
         if(user == null){
             //TODO error
             return "search?faces-redirect=true";
+        }
+        
+        if(user.getCalendar().getPrivacy().equals("PUBLIC") ){
+            setPrivateCalendar(false);
         }
         
         return("search?faces-redirect=true");
