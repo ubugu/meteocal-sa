@@ -32,7 +32,7 @@
         </div>
         <div>   
             <h:panelGrid style="width: 1000px">
-                <p:schedule value="#{scheduleController.eventModel}" draggable="false" >
+                <p:schedule id="calendar" value="#{scheduleController.eventModel}" draggable="false" >
                     <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails, eventButton, deleteButton" oncomplete="PF('event').show();"  />
                 </p:schedule>
             </h:panelGrid>
@@ -54,8 +54,7 @@
                 <br/>
                 <p:button id="eventButton" value="Go To Event" onclick="#{scheduleController.showEvent()}" outcome="showEvent"/>
                 <h:form id="deleteButton">
-                    <p:commandButton  value="Delete Event" actionListener="#{scheduleController.delete()}" style="display : #{scheduleController.isInvited()}"/>
-                  
+                    <p:commandButton  value="Delete Event"  actionListener="#{scheduleController.delete()}" style="display : #{scheduleController.isInvited()}"/>
                 </h:form>
             </p:dialog>
 
