@@ -30,9 +30,7 @@
                  <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li>  
             </ul>
         </div>
-         <h:form>
-             <p:commandButton value="addNotitication"  actionListener="#{notificationsController.createNotification()}" />
-         </h:form>
+
          <h:form>
                 <p:dataTable var="notification" value="#{notificationsController.userNotification}" rows="10"
                          paginator="true"
@@ -54,7 +52,7 @@
                     <br/>
                     <br/>
                     <br/>
-                    <p:commandButton id="eventButton" value="Go To Event" actionListener="#{notificationsController.showEvent()}" style="display: #{notificationsController.hasEvent()}" />
+                    <p:button id="eventButton" value="Go To Event" onclick="#{notificationsController.showEvent()}" outcome="showEvent" style="display: #{notificationsController.hasEvent()}" />
                     
                 </p:dialog>
              

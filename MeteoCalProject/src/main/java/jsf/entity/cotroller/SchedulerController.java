@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import jsf.entity.Calendar;
 import jsf.entity.Event;
 import jsf.entity.Notification;
@@ -35,7 +36,7 @@ import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
  
 @ManagedBean  (name="scheduleController")
-@SessionScoped
+@ViewScoped
 public class SchedulerController implements Serializable {
  
     private ScheduleModel eventModel; 
@@ -127,7 +128,7 @@ public class SchedulerController implements Serializable {
         }
     }
 
-    public String delete() {
+    public void delete() {
         try {
             int id = eventMap.get(event.getId());
             Event event = null;
@@ -165,9 +166,8 @@ public class SchedulerController implements Serializable {
             
             this.eventFacade.remove(event);
 
-           return "/mainUserPage?faces-redirect=true";
         } catch (NullPointerException e) {
-            return "";
+
         }
         
     }

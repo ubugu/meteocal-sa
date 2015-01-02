@@ -7,9 +7,11 @@ package jsf.entity.cotroller;
 
 import java.util.List;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import jsf.entity.Event;
 import jsf.entity.Notification;
 import jsf.entity.facade.NotificationFacade;
@@ -75,19 +77,17 @@ public class NotificationsController {
     }
     
 
-    public String showEvent() {
+    public void showEvent() {
         if (this.selectedNotification == null) {
-            return "";
+            return;
         }
         Event event = this.selectedNotification.getEventID();
         if (event == null) {
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('eventDeleted').show();");
-            return "";
-
         } else {
             eventController.setSelectedEvent(event);
-            return "/showEvent?faces-redirect=true";
+           
         }
 
     }
@@ -108,7 +108,7 @@ public class NotificationsController {
         if (this.selectedNotification == null) {
             return "none";
         }
-        if (this.selectedNotification.getType().equals(NotificationType.SYSTEM.toString()) || this.selectedNotification.getType().equals(NotificationType.DELETE.toString())) {
+        if (this.selectedNotification.getEventID() == null) {
             return "none";
         } else {
             return "display";
