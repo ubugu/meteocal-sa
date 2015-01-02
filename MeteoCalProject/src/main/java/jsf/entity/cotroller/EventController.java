@@ -14,6 +14,7 @@ import jsf.entity.Event;
 import jsf.entity.facade.BadconditionsFacade;
 import jsf.entity.facade.EventFacade;
 import java.util.Date; 
+import javax.faces.bean.ManagedProperty;
 import jsf.entity.Notification;
 import jsf.entity.Participant;
 import jsf.entity.ParticipantPK;
@@ -265,9 +266,11 @@ public class EventController {
         //creationEvent
         prepareCreateEvent();
         
-        return "mainUserPage?faces-redirect=true" ;
+        requestContext = RequestContext.getCurrentInstance();
+        requestContext.execute("PF('complete').show();");
+        return "";
     }
-    
+
     /**
      * method that will control if the users invited by the organiser exists or not;
      * @return if some of they does not exist a false value is returned

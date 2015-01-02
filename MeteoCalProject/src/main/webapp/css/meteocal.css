@@ -188,6 +188,33 @@ div.logoutForm {
     bottom: 70px;
 }
 
+/* ### schedule event color ### */
+.red {
+    background: red;
+}
+
+.private {
+    background: activeborder;
+}
+
+
+.grey {
+    background: #999999;
+}
+
+.pink {
+    background: plum;
+}
+
+.blue {
+    background: blue;
+}
+
+.green {
+    background: green;
+}
+
+
 /* ### Button onOff ### */
 
 .onoffswitch {

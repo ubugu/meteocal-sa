@@ -13,7 +13,7 @@
         <!--Element of the first line on the top bar-->
         <div id="topHeader">
              <img id="logo" src="Images/meteocalsnow.png"  name="meteocalLogo" title="meteocallogo"/>
-             <h1 id="userCalendar">#{loginBean.loggedUser.username}'s Calendar</h1>  
+             <h1 id="userCalendar">#{SearchController.searchedUser}'s Calendar</h1>  
               
             <div class="logoutForm">         
                 <h:form id="logout">
@@ -33,7 +33,7 @@
             <ul class="buttonList">
                 <h:form>
                     <li><p:commandButton class="leftBarButton"  value="Home" action="#{scheduleController.loadOwnCalendar()}"/></li>   
-                    <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent}"/></li>    
+                    <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent}"/></li>     
                     <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
                     <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li> 
                 </h:form>
@@ -41,8 +41,8 @@
         </div>
         <div>   
             <h:panelGrid style="width: 1000px">
-                <p:schedule id="calendar" value="#{scheduleController.eventModel}" draggable="false" >
-                    <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails, eventButton, deleteButton, updateButton"   />
+                <p:schedule id="calendar" value="#{scheduleController.eventModel}" draggable="false"   >
+                    <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails, eventButton" />
                 </p:schedule>
             </h:panelGrid>
 
@@ -61,13 +61,7 @@
                 <br/>
                 <br/>
                 <br/>
-                <p:button id="eventButton" value="Go To Event" onclick="#{scheduleController.showEvent()}" outcome="showEvent"/>
-                <h:form id="updateButton">
-                    <p:commandButton  value="Update Event"  action="#{scheduleController.updateEvent()}" style="display : #{scheduleController.isInvited()}"/>
-                </h:form>
-                <h:form id="deleteButton">
-                    <p:commandButton  value="Delete Event"  action="#{scheduleController.delete()}" style="display : #{scheduleController.isInvited()}"/>
-                </h:form>
+                <p:button id="eventButton" value="Go To Event" onclick="#{scheduleController.showEvent()}" outcome="showEvent"/>   
             </p:dialog>
 
         </div>

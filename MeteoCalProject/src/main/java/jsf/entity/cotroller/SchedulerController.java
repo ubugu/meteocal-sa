@@ -15,6 +15,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import jsf.entity.Calendar;
 import jsf.entity.Event;
@@ -27,6 +28,7 @@ import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.ParticipantFacade;
 import jsf.entity.facade.UserFacade;
 import org.joda.time.DateTime;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
@@ -34,7 +36,7 @@ import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
  
 @ManagedBean  (name="scheduleController")
-@ViewScoped
+@SessionScoped
 public class SchedulerController implements Serializable {
  
     private ScheduleModel eventModel; 
@@ -44,12 +46,18 @@ public class SchedulerController implements Serializable {
     
     @ManagedProperty(value="#{EventController}")
     private EventController eventController;
-  
+
+    @ManagedProperty(value = "#{SearchController}")
+    private SearchController searchController;
+
     private ScheduleEvent event = new DefaultScheduleEvent();
 
-    private Set<Event> events = new HashSet<Event>();
+    private Set<Event> events = new HashSet<>();
     
     private Map<String,Integer> eventMap = new HashMap<>();
+    
+    boolean isPublic = false;
+
     
     @EJB
     CalendarFacade calendarFacade = new CalendarFacade();
@@ -69,17 +77,35 @@ public class SchedulerController implements Serializable {
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();
-        Calendar calendar = calendarFacade.searchByUser(this.userFacade.getLoggedUser());
+        User user = null;
+        if (this.isPublic == false) {
+           user = this.userFacade.getLoggedUser();
+        } else {
+            user = this.userFacade.searchForUser(this.searchController.getSearchedUser());
+        }
+        events.clear();
+        Calendar calendar = calendarFacade.searchByUser(user);
         List<Event> ownEvents = eventFacade.searchByCalendar(calendar);
-        List<Event>  invitedEvents = this.participantFacade.searchEventByUsername(this.userFacade.getLoggedUser().getUsername());
+        List<Event>  invitedEvents = this.participantFacade.searchEventByUsername(user.getUsername());
         events.addAll(ownEvents);
         events.addAll(invitedEvents);
         
         for (Event e : events) {
             Date startingDate = dataMerge(e.getDate(), e.getStartingTime());
             Date endingDate = dataMerge(e.getDate(), e.getEndingTime());
-            DefaultScheduleEvent newEvent = new DefaultScheduleEvent(e.getTitle(), startingDate, endingDate);
-            newEvent.setStyleClass(null);
+            DefaultScheduleEvent newEvent = null;
+            if (this.isPublic == false) {
+                newEvent = new DefaultScheduleEvent(e.getTitle(), startingDate, endingDate, e.getColor());
+            } else {
+                if (e.getPrivacy().equals("public")) {
+                    newEvent = new DefaultScheduleEvent(e.getTitle(), startingDate, endingDate, e.getColor());
+
+                } else {
+                    newEvent = new DefaultScheduleEvent("Private Event", startingDate, endingDate, "private");
+                }
+
+            }
+
             eventModel.addEvent(newEvent);
             eventMap.put(newEvent.getId(), e.getId());
         }
@@ -110,8 +136,19 @@ public class SchedulerController implements Serializable {
      
     public void onEventSelect(SelectEvent selectEvent) {
         this.event = (ScheduleEvent) selectEvent.getObject();
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        if (this.isPublic == false) {
+            requestContext.execute("PF('event').show();");
+        } else {
+            if (event.getTitle().equals("Private Event")) {
+                return;
+            } else {
+                requestContext.execute("PF('event').show();");
+            }
+        }
+
     }
-    
+
     public ShowEventController getShowEventController() {
         return showEventController;
     }
@@ -147,6 +184,16 @@ public class SchedulerController implements Serializable {
         return eventController.changeEvent(id);
         
     }
+    
+    
+    public SearchController getSearchController() {
+        return searchController;
+    }
+
+    public void setSearchController(SearchController searchController) {
+        this.searchController = searchController;
+    }
+
 
     public String delete() {
         try {
@@ -185,6 +232,7 @@ public class SchedulerController implements Serializable {
             }
 
             this.eventFacade.remove(event);
+            init();
             return "/mainUserPage?faces-redirect=true";
         } catch (NullPointerException e) {
             return "";
@@ -217,5 +265,26 @@ public class SchedulerController implements Serializable {
     public void setShowEventController(ShowEventController showEventController) {
         this.showEventController = showEventController;
     }
+    
+    public String loadPublicCalendar() {
+        setIsPublic(true);
+        init();
+        return "/publicCalendar?faces-redirect=true";
+    }
+    
+    public String loadOwnCalendar() {
+        setIsPublic(false);
+        init();
+        return "/mainUserPage?faces-redirect=true";
+    }
+    
+    public boolean isIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+    
 
 }

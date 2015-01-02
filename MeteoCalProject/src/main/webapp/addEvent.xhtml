@@ -26,8 +26,8 @@
         <div id="LeftHeader">
             <ul class="buttonList">
                 <h:form>
-                    <li><p:button class="leftBarButton"  value="Home" outcome="mainUserPage"/></li>   
-                    <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent()}"/></li>     
+                    <li><p:commandButton class="leftBarButton"  value="Home" action="#{scheduleController.loadOwnCalendar()}"/></li>   
+                    <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent}"/></li>   
                     <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
                     <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li> 
                 </h:form>
@@ -178,7 +178,9 @@
                     </h:panelGrid>
               
                     <p:commandButton value="Create Event" ajax="true" validateClient="true" action="#{EventController.controlDataCreation()}" id="iconOnly" icon="ui-icon-calendar"/>
-                    
+                    <p:dialog widgetVar="complete" header="Sucess">
+                        Event Created!
+                    </p:dialog>
                 </div> 
                 
                 <!-- dialog error -->

@@ -31,12 +31,11 @@
         <div id="LeftHeader">
             <ul class="buttonList">
                 <h:form>
-                    <li><p:button class="leftBarButton"  value="Home" outcome="mainUserPage"/></li>   
-                    <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent()}"/></li>     
+                    <li><p:commandButton class="leftBarButton"  value="Home" action="#{scheduleController.loadOwnCalendar()}"/></li>   
+                    <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent}"/></li>    
                     <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
                     <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li> 
-                    <!-- prova -->
-                    <li><p:commandButton class="leftBarButton"  value="UpdateEvent" action="#{EventController.changeEvent()}"/> </li>
+
                 </h:form>
             </ul>
         </div>
@@ -50,7 +49,7 @@
 
             <h:outputText value="#{SearchController.user.username}" />
             <h:outputText value="#{SearchController.user.calendar.privacy}" />
-            <p:button id="goToHome" disabled="#{SearchController.privateCalendar}" value="#{SearchController.user.username} 's Calendar" />            
+            <p:commandButton id="goToHome" disabled="#{SearchController.privateCalendar}" value="#{SearchController.user.username} 's Calendar"  action="#{scheduleController.loadPublicCalendar()}" />            
         </p:panelGrid>
         
     </body>
