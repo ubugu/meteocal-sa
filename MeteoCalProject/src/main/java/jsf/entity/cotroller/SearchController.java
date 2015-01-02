@@ -67,6 +67,8 @@ public class SearchController {
         
         if(user.getCalendar().getPrivacy().equals("PUBLIC") ){
             setPrivateCalendar(false);
+        } else {
+            setPrivateCalendar(true);
         }
         
         return("search?faces-redirect=true");

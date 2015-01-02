@@ -40,6 +40,7 @@ public class ShowEventController {
     UserFacade userFacade = new UserFacade();
     
     private List<Participant> participants;
+    private List<Participant> invited;
 
     private Badconditions badConditions;
     private User creator;
@@ -76,13 +77,13 @@ public class ShowEventController {
     public void setSelectedEvent(Event selectedEvent) {
         this.selectedEvent = selectedEvent;
         int id = selectedEvent.getId();
-        this.participants =  participantFacade.searchByEvent(id);
+        this.participants =  this.participantFacade.searchByEvent(id);
         setCreator();
     }
     
     public void setCreator() {
-        for (Participant u : this.participants) {
-            if (u.getOrganiser().equals("YES")) {
+        for (Participant u : this.participants) { 
+           if (u.getOrganiser().equals("YES")) {
                 this.creator = u.getUser1();
             }
         }
@@ -95,12 +96,20 @@ public class ShowEventController {
     
     public String isInvited() {
         User user = userFacade.getLoggedUser();
-        if (user.equals(creator)) {
-            return "none";
-        } else {
-            return "display";
+        
+        for (Participant p : this.participants) {
+            if (user.equals(p.getUser1())) {
+                if (user.equals(this.creator)) {
+                    return "none";
+                } else {
+                    return "display";
+                }
+            }
         }
+        return "none";
     }
+  
+
     public String getResponse() {
         User user = this.userFacade.getLoggedUser();
         for (Participant u : this.participants) {
