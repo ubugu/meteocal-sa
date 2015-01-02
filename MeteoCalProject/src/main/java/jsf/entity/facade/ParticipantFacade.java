@@ -34,8 +34,8 @@ public class ParticipantFacade extends AbstractFacade<Participant> {
         return (List<Participant>) em.createNamedQuery("Participant.findByEvent").setParameter("event", eventID).getResultList();
     } 
     
-    public List<Event> searchEventByUsername (String username)  {
-        return (List<Event>) em.createNamedQuery("Participant.findEventByUser").setParameter("user", username).getResultList();
+    public List<Event> searchAcceptedEventByUsername (String username)  {
+        return (List<Event>) em.createNamedQuery("Participant.findAcceptedEventByUser").setParameter("user", username).getResultList();
     } 
     
 }
