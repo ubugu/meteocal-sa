@@ -6,7 +6,6 @@
 package jsf.entity.cotroller;
 
 import java.sql.Time;
-import java.util.Calendar;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -15,13 +14,6 @@ import jsf.entity.Event;
 import jsf.entity.facade.BadconditionsFacade;
 import jsf.entity.facade.EventFacade;
 import java.util.Date; 
-import java.util.List;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import jsf.entity.Notification;
 import jsf.entity.Participant;
 import jsf.entity.ParticipantPK;
@@ -337,17 +329,22 @@ public class EventController {
             
             //badcondition creation if they are set
             if(getBad()){
-                prepareCreateBadConditions(event);
+                prepareCreateBadConditions();
             }
             
+            //invite & notify if there are invited
             if(getInviteSelect()){
                 //create notification
-                prepareCreateNotification(event);
+                prepareCreateNotification();
 
                 //create participant
-                prepareCreateParticipant(event);
+                prepareCreateParticipant();
             }
             
+            //set the owner as a participant
+            setOwnerParticipant();
+  
+                
             //repetition
             switch(getRepeats()){
                 case "everyday"   : {
@@ -369,6 +366,8 @@ public class EventController {
             }
             
             event.setDate(nextDate);
+            
+            
             
         }
     }
@@ -420,17 +419,22 @@ public class EventController {
             
             //badcondition creation if they are set
             if(getBad()){
-                prepareCreateBadConditions(event);
+                prepareCreateBadConditions();
             }
             
+            //invite & notify if there are invited
             if(getInviteSelect()){
                 //create notification
-                prepareCreateNotification(event);
+                prepareCreateNotification();
 
                 //create participant
-                prepareCreateParticipant(event);
+                prepareCreateParticipant();
             }
             
+            //set the owner as a participant
+            setOwnerParticipant();
+            
+            //add one day and repeat
             if(days>0){            
                 DateTime datetime = new DateTime(event.getDate());
                 datetime = datetime.plusDays(1);
@@ -444,7 +448,7 @@ public class EventController {
      * prepare and create the bad conditions associated to the event
      * @param event in order to set the foreign key
      */
-    private void prepareCreateBadConditions(Event event){
+    private void prepareCreateBadConditions(){
         
         if(!edit){
             badconditions.setId( badconditionsFacade.getMaxBadConditionsID() + 1 );
@@ -477,7 +481,7 @@ public class EventController {
      * method that will create and send a notification to all the invited User for the current Event
      * @param event 
      */
-    private void prepareCreateNotification(Event event){
+    private void prepareCreateNotification(){
         notification.setId( notificationFacade.getMaxNotificationID() +1 );
         notification.setType("INVITED");
         notification.setEventID(event);
@@ -496,7 +500,7 @@ public class EventController {
      * and the invited User are setted to "unknown" response to the participation
      * @param event 
      */
-    private void prepareCreateParticipant(Event event){
+    private void prepareCreateParticipant(){
         //participants invited
         participant.setEvent1(event);
         participant.setOrganiser("NO");
@@ -505,13 +509,19 @@ public class EventController {
             participant.setUser1(userFacade.searchForUser(invitatedUser));
             participant.setParticipantPK(new ParticipantPK(participant.getUser1().getUsername(),participant.getEvent1().getId()));
             participantFacade.create(participant);
-        }
-        //participant organiser
+        }    
+    }
+    
+    /**
+     * method useful to set in the database the owner as a participant
+     */
+    private void setOwnerParticipant(){
+        participant.setEvent1(event);
         participant.setOrganiser("YES");
         participant.setUser1(event.getCalendar().getOwner());
         participant.setParticipant("YES");
         participant.setParticipantPK(new ParticipantPK(participant.getUser1().getUsername(),participant.getEvent1().getId()));
-        participantFacade.create(participant);     
+        participantFacade.create(participant);
     }
     
     /**
