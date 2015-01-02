@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package jsf.entity.cotroller;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,15 +11,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import jsf.entity.Calendar;
 import jsf.entity.Event;
 import jsf.entity.Notification;
@@ -83,7 +78,8 @@ public class SchedulerController implements Serializable {
         for (Event e : events) {
             Date startingDate = dataMerge(e.getDate(), e.getStartingTime());
             Date endingDate = dataMerge(e.getDate(), e.getEndingTime());
-            ScheduleEvent newEvent = new DefaultScheduleEvent(e.getTitle(), startingDate, endingDate);
+            DefaultScheduleEvent newEvent = new DefaultScheduleEvent(e.getTitle(), startingDate, endingDate);
+            newEvent.setStyleClass(null);
             eventModel.addEvent(newEvent);
             eventMap.put(newEvent.getId(), e.getId());
         }
@@ -152,7 +148,7 @@ public class SchedulerController implements Serializable {
         
     }
 
-    public void delete() {
+    public String delete() {
         try {
             int id = eventMap.get(event.getId());
             Event event = null;
@@ -179,21 +175,20 @@ public class SchedulerController implements Serializable {
                     this.notificationFacade.create(newNotification);  
                 }
                 this.participantFacade.remove(p);
+                
             }
 
             List<Notification> notifications = this.notificationFacade.searchByEventID(id);
             
             for (Notification n : notifications) {
-                n.setEventID(null);
-                this.notificationFacade.edit(n);
+                this.notificationFacade.remove(n);
             }
-            
+
             this.eventFacade.remove(event);
-
+            return "/mainUserPage?faces-redirect=true";
         } catch (NullPointerException e) {
-
+            return "";
         }
-        
     }
     
       public String isInvited() {
