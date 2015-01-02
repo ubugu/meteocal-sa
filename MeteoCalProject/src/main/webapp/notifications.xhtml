@@ -54,9 +54,13 @@
                     <br/>
                     <br/>
                     <br/>
-                    <p:button id="eventButton" value="Go To Event" onclick="#{notificationsController.showEvent()}" outcome="showEvent" style="display: #{notificationsController.hasEvent()}" />
+                    <p:commandButton id="eventButton" value="Go To Event" actionListener="#{notificationsController.showEvent()}" style="display: #{notificationsController.hasEvent()}" />
                     
                 </p:dialog>
+             
+             <p:dialog id="eventDeleted" header="Error" widgetVar="eventDeleted" resizable="false">
+                 Error the event search was deleted.
+             </p:dialog>
          </h:form>
           
 

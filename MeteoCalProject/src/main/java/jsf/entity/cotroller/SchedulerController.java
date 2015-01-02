@@ -19,8 +19,12 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import jsf.entity.Calendar;
 import jsf.entity.Event;
+import jsf.entity.Notification;
+import jsf.entity.Participant;
+import jsf.entity.User;
 import jsf.entity.facade.CalendarFacade;
 import jsf.entity.facade.EventFacade;
+import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.ParticipantFacade;
 import jsf.entity.facade.UserFacade;
 import org.joda.time.DateTime;
@@ -53,6 +57,9 @@ public class SchedulerController implements Serializable {
     
     @EJB
     UserFacade userFacade = new UserFacade();
+    
+    @EJB
+    NotificationFacade notificationFacade = new NotificationFacade();
     
     @EJB
     ParticipantFacade participantFacade = new ParticipantFacade();
@@ -112,6 +119,7 @@ public class SchedulerController implements Serializable {
             for (Event e : events) {
             if (e.getId() == id) {
                 eventController.setSelectedEvent(e);
+                break;
             }
         }
         } catch( NullPointerException e) {
@@ -119,14 +127,76 @@ public class SchedulerController implements Serializable {
         }
     }
 
-    public String prova() {
-       
-     
-        return "/showEvent?faces-redirect=true";
+    public String delete() {
+        try {
+            int id = eventMap.get(event.getId());
+            Event event = null;
+
+            for (Event e : this.events) {
+                if (e.getId() == id) {
+                    event = e;
+                    break;
+                }
+            }
+
+            List<Participant> participants = this.participantFacade.searchByEvent(id);
+
+            for (Participant p : participants) {
+                if (p.getParticipant().equals("YES") && p.getOrganiser().equals("NO")) {
+                    User user = p.getUser1();
+                    Notification newNotification = new Notification();
+                    newNotification.setId(this.notificationFacade.getMaxNotificationID() + 1);
+                    newNotification.setDescription("The event " + event.getTitle() + " has been deleted.");
+                    newNotification.setEventID(null);
+                    newNotification.setType("DELETE");
+                    newNotification.setUser(user);
+                    newNotification.setVisualized("NO");
+                    this.notificationFacade.create(newNotification);  
+                }
+                this.participantFacade.remove(p);
+            }
+
+            List<Notification> notifications = this.notificationFacade.searchByEventID(id);
+            
+            for (Notification n : notifications) {
+                n.setEventID(null);
+                this.notificationFacade.edit(n);
+            }
+            
+            this.eventFacade.remove(event);
+
+           return "/mainUserPage?faces-redirect=true";
+        } catch (NullPointerException e) {
+            return "";
+        }
+        
+    }
+    
+      public String isInvited() {
+          int id;
+          try {
+              id = eventMap.get(event.getId());
+          } catch (NullPointerException e) {
+            return "display";
+        }
+        User user = userFacade.getLoggedUser();
+        List<Participant> participants = this.participantFacade.searchByEvent(id);
+        User creator = null;
+        for (Participant p : participants) {
+            if (p.getOrganiser().equals("YES")) {
+                creator = p.getUser1();
+                break;
+            }
+        }
+        if (user.equals(creator)) {
+            return "display";
+        } else {
+            return "none";
+        }
     }
 
     public void setEventController(ShowEventController eventController) {
         this.eventController = eventController;
     }
-     
+
 }
