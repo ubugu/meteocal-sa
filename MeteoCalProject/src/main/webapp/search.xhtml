@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <head jsf:id="head">     
+        <title>Search</title>
+        <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body jsf:id="body" class="noFrame">   
+        <!--Element of the first line on the top bar-->
+        <div id="topHeader"> 
+            <img id="logo" src="Images/meteocalsnow.png"  name="meteocalLogo" title="meteocallogo"/>
+              
+            <div class="logoutForm">         
+                <h:form>
+                    <p:commandButton value="Logout" action="#{loginBean.logout()}"/>                     
+                </h:form>
+            </div>
+        </div>
+        
+        <div id="topHeader">
+            <h:form>
+                <p:inputText id="searchText" value="#{SearchController.searchedUser}" />
+                <p:commandButton  value="Search" action="#{SearchController.searchUser()}"/>    
+            </h:form>
+        </div>
+        
+        <div id="LeftHeader">
+            <ul class="buttonList">
+                <h:form>
+                    <li><p:button class="leftBarButton"  value="Home" outcome="mainUserPage"/></li>   
+                    <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent()}"/></li>     
+                    <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
+                    <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li> 
+                    <!-- prova -->
+                    <li><p:commandButton class="leftBarButton"  value="UpdateEvent" action="#{EventController.changeEvent()}"/> </li>
+                </h:form>
+            </ul>
+        </div>
+
+        <!-- Variable part -->
+
+        <table id="searchedUser" width="400"  border="2" >
+            <p:column headerText="Username">
+                <h:outputText value="#{SearchController.user.username}" />
+            </p:column>
+            <p:column headerText="Calendar">
+                <h:outputText value="#{SearchController.user.calendar.privacy}" />
+            </p:column>
+            <p:column headerText="GoToHome">
+                <p:button id="goToHome" value="Go To #{SearchController.user.username} 's Calendar" />
+            </p:column>            
+        </table>
+        
+    </body>
+</html>

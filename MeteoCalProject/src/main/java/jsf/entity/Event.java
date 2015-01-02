@@ -25,7 +25,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
 /**
  *
  * @author claudio
@@ -34,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "event")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "Event.findDateTimeInTheMiddle", query="SELECT e FROM Event e LEFT JOIN Participant p ON E.id = p.participantPK.event WHERE (((e.date > :startSqlDate AND e.date < :endSqlDate) or (e.date = :startSqlDate and e.endingTime >= :startSqlTime) or (e.date = :endSqlDate and e.startingTime <= :endSqlTime)) and ( (e.calendar.id = :calendarId) or ( (p.participantPK.user = :username) and (p.participantPK.event = e.id) and (p.participant = 'YES') ) ))"),
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
     @NamedQuery(name = "Event.findByCalendar", query = "SELECT e FROM Event e WHERE e.calendar = :calendar"),
     @NamedQuery(name = "Event.findById", query = "SELECT e FROM Event e WHERE e.id = :id"),

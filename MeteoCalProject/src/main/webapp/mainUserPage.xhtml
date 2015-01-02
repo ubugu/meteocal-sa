@@ -16,18 +16,29 @@
              <h1 id="userCalendar">#{loginBean.loggedUser.username}'s Calendar</h1>  
               
             <div class="logoutForm">         
-                <h:form>
-                    <p:commandButton value="Logout" action="#{loginBean.logout()}"/>                     
+                <h:form id="logout">
+                    <p:commandButton id="logoutButton" value="Logout" action="#{loginBean.logout()}"/>                     
                 </h:form>
             </div>
         </div>
         
+        <div id="topHeader">
+            <h:form id="search">
+                <p:inputText id="searchText" value="#{SearchController.searchedUser}" />
+                <p:commandButton id="searchButton" value="Search"  action="#{SearchController.searchUser()}"/>    
+            </h:form>
+        </div>
+        
         <div id="LeftHeader">
             <ul class="buttonList">
-                 <li><p:button class="leftBarButton"  value="Home" outcome="mainUserPage"/></li>   
-                 <li><p:button class="leftBarButton"  value="AddEvent" outcome="addEvent"/></li>          
-                 <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
-                 <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li>  
+                <h:form>
+                    <li><p:button class="leftBarButton"  value="Home" outcome="mainUserPage"/></li>   
+                    <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent()}"/></li>     
+                    <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
+                    <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li> 
+                    <!-- prova -->
+                    <li><p:commandButton class="leftBarButton"  value="UpdateEvent" action="#{EventController.changeEvent()}"/> </li>
+                </h:form>
             </ul>
         </div>
         <div>   
