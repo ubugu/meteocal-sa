@@ -86,7 +86,7 @@ public class SchedulerController implements Serializable {
         events.clear();
         Calendar calendar = calendarFacade.searchByUser(user);
         List<Event> ownEvents = eventFacade.searchByCalendar(calendar);
-        List<Event>  invitedEvents = this.participantFacade.searchEventByUsername(user.getUsername());
+        List<Event>  invitedEvents = this.participantFacade.searchAcceptedEventByUsername(user.getUsername());
         events.addAll(ownEvents);
         events.addAll(invitedEvents);
         
