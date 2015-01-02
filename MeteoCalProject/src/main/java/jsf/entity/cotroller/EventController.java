@@ -15,7 +15,10 @@ import jsf.entity.Event;
 import jsf.entity.facade.BadconditionsFacade;
 import jsf.entity.facade.EventFacade;
 import java.util.Date; 
+import java.util.List;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
@@ -81,8 +84,28 @@ public class EventController {
     private String[] invitatedUsers;
     
     private String rejectedUsers="";
-        
-    // variables not belonging to database
+    
+    private String style = "none";
+
+    private Boolean edit = false;
+
+    // end variables not belonging to database 
+    
+    public Boolean getEdit() {
+        return edit;
+    }
+
+    public void setEdit(Boolean edit) {
+        this.edit = edit;
+    }
+    
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
     
     public String[] getInvitatedUsers() {
         return invitatedUsers;
@@ -195,6 +218,11 @@ public class EventController {
         RequestContext requestContext = RequestContext.getCurrentInstance();
         //controlData
 
+        if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername())  ){
+            requestContext.execute("PF('DateInTheMiddle Error').show();");
+            error=true;
+        }
+        
         if(DateTimeComparator.getDateOnlyInstance().compare( new DateTime(event.getDate()) , new DateTime()) < 0){     
             requestContext.execute("PF('NoPast Error').show();");
             error=true;
@@ -210,7 +238,7 @@ public class EventController {
             error=true;
         }
         
-        if(DateTimeComparator.getTimeOnlyInstance().compare( new DateTime(event.getEndingTime()) , new DateTime(event.getStartingTime())) < 0){
+        if( (DateTimeComparator.getTimeOnlyInstance().compare( new DateTime(event.getEndingTime()) , new DateTime(event.getStartingTime())) < 0) && (DateTimeComparator.getDateOnlyInstance().compare( new DateTime(getEndate()) , new DateTime(event.getDate())) == 0)){
             requestContext.execute("PF('EndTime Error').show();");
             error=true;
         }
@@ -240,7 +268,7 @@ public class EventController {
         //creationEvent
         prepareCreateEvent();
         
-        return "Success" ;
+        return "mainUserPage?faces-redirect=true" ;
     }
     
     /**
@@ -292,11 +320,17 @@ public class EventController {
  
         while(nextDate.compareTo(getUntillDate()) < 0){
             
-            event.setId( eventFacade.getMaxEventID() + 1);
+            if(!edit){
+                event.setId( eventFacade.getMaxEventID() + 1);
+            }
             
             //event creation
             try{
-                eventFacade.create(event);
+                if(edit){
+                    eventFacade.edit(event);
+                }else{
+                    eventFacade.create(event);
+                }
             }catch(Exception e){
                 //TODO
             };
@@ -350,20 +384,22 @@ public class EventController {
         Date endingTime=null;
         if( getEndate().compareTo(event.getDate()) > 0){
             
-            days = Days.daysBetween(new DateTime(event.getDate()), new DateTime(getEndate())).getDays();            
+            days = Days.daysBetween(new DateTime(event.getDate()), new DateTime(getEndate())).getDays(); 
             endingTime = event.getEndingTime();
         }
         
         for(int i=0; i <= days; i++ ){
         
-            event.setId( eventFacade.getMaxEventID() + 1);
+            if(!edit){
+                event.setId( eventFacade.getMaxEventID() + 1);
+            }
             
             //if the cycle is repeated then the successive starting date must be set to 00:00
             // we have to do this only one time.
             if(i==1){
                 event.setStartingTime(new Date(Time.valueOf("00:00:00").getTime()));
             }
-            if(i+1 > days && days > 1){
+            if(i+1 > days && days > 0){
                 event.setEndingTime(endingTime);
             }else{ 
                 if(days!=0){
@@ -373,7 +409,11 @@ public class EventController {
                    
             //we can try to create the event
             try{
-                eventFacade.create(event);
+                if(edit){
+                    eventFacade.edit(event);
+                }else{
+                    eventFacade.create(event);
+                }
             }catch(Exception e){
                 //TODO
             }
@@ -391,7 +431,7 @@ public class EventController {
                 prepareCreateParticipant(event);
             }
             
-            if(days>1){            
+            if(days>0){            
                 DateTime datetime = new DateTime(event.getDate());
                 datetime = datetime.plusDays(1);
                 event.setDate(datetime.toDate());
@@ -406,8 +446,10 @@ public class EventController {
      */
     private void prepareCreateBadConditions(Event event){
         
-        badconditions.setId( badconditionsFacade.getMaxBadConditionsID() + 1 );
-        badconditions.setEventID(event);
+        if(!edit){
+            badconditions.setId( badconditionsFacade.getMaxBadConditionsID() + 1 );
+            badconditions.setEventID(event);
+        }
         
         if(temp==false){
             badconditions.setTemperature(null);
@@ -420,8 +462,11 @@ public class EventController {
         //we can try to create the badconditions
             
         try{
-            System.out.print("layer = " + badconditions.getLayer() + " temp: " + badconditions.getTemperature() + "prec: " + badconditions.getPrecipitations());
-            badconditionsFacade.create(badconditions);
+            if(edit){
+                badconditionsFacade.edit(badconditions);
+            }else{
+                badconditionsFacade.create(badconditions);
+            }           
         }catch(Exception e){
             //TODO
         }
@@ -437,7 +482,7 @@ public class EventController {
         notification.setType("INVITED");
         notification.setEventID(event);
         notification.setVisualized("NO");
-        notification.setDescription("You have been invited to the event " + event.getTitle() + " by the user " + event.getCalendar().getOwner() + " on the " + event.getDate());
+        notification.setDescription("You have been invited to the event " + event.getTitle() + " by the user " + event.getCalendar().getOwner().getUsername() + " on the " + event.getDate());
         
         for (String invitatedUser : getInvitatedUsers()) {
             notification.setUser(userFacade.searchForUser(invitatedUser));
@@ -469,58 +514,55 @@ public class EventController {
         participantFacade.create(participant);     
     }
     
-    // validators
-    
     /**
-     * control that The ending date is before the starting date
-     * @param context
-     * @param component
-     * @param value
-     * @throws ValidatorException 
+     * method that will be called in order to set to the Edit Mode the class addEvent
+     * it will check and set the value of the event that the user want to change in 
+     * order to show the precompiled field, this avoid us to create an updateeventcontroller
+     * and an updateevent page
+     * @return redirect to the addeventpage
      */
-    public void validateEndate(FacesContext context, UIComponent component, Object value) throws ValidatorException{
-        if( getEndate().compareTo(event.getDate()) < 0){
-            throw new ValidatorException(new FacesMessage("The ending date is before the starting time"));
+    public String changeEvent(){
+        
+        event = eventFacade.find(3);
+        badconditions = badconditionsFacade.searchByEvent(event);
+        
+        if(badconditions.getPrecipitations()!=null){
+            setPrec(true);
         }
+        if(badconditions.getTemperature()!=null){
+            setTemp(true);
+        }
+        
+        if(badconditions.getId()!= null){
+            bad=true;
+            style="block";
+        }
+        
+        setEdit(true);
+        
+        return "addEvent?faces-redirect=true"; 
     }
     
     /**
-     * control that The ending time is before the starting date
-     * @param context
-     * @param component
-     * @param value
-     * @throws ValidatorException 
+     * method that will be called in order to create new event and badconditions
+     * @return redirect to the addeventpage
      */
-    public void validateEndtime(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        if( event.getEndingTime().compareTo(event.getStartingTime()) < 0){
-            throw new ValidatorException(new FacesMessage("The ending time is before the starting time"));
-        }
-    }
-    
-    /**
-     * control that The ending date is before the starting date
-     * @param context
-     * @param component
-     * @param value
-     * @throws ValidatorException 
-     */
-    public void validateUntilldate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        if( getUntillDate().compareTo(event.getDate()) < 0){
-            throw new ValidatorException(new FacesMessage("The ending date is before the starting date"));
-        }
-    }
-    
-    /**
-     * control that You can not repeat an event that last more than 1 day for now
-     * @param context
-     * @param component
-     * @param value
-     * @throws ValidatorException 
-     */
-    public void validateRepeats(FacesContext context, UIComponent component, Object value) throws ValidatorException{
-        if( (!getRepeats().equals("no")) && (getEndate().compareTo(event.getDate())!=0) ){
-            throw new ValidatorException(new FacesMessage("You can not repeat an event that last more than 1 day for now"));
-        }
+    public String newEvent(){
+        
+        event = new Event();
+        badconditions = new Badconditions();
+        
+        setPrec(false);
+        setTemp(false);
+        bad=false;
+        style="none";
+        setEdit(false);
+        setEndate(event.getDate());
+        setInvitations("");
+        setInviteSelect(false);
+        setRejectedUsers("");
+        
+        return "addEvent?faces-redirect=true"; 
     }
     
 }

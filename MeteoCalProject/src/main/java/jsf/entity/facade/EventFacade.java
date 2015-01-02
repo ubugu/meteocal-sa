@@ -5,6 +5,7 @@
  */
 package jsf.entity.facade;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -42,7 +43,38 @@ public class EventFacade extends AbstractFacade<Event> {
             return 0;
         } 
     }
-    
+
+    /**
+     * method that control if there are other event in the middle of the one the user want to create
+     * @param startDate of the event that is going to be created
+     * @param endDate of the event that is going to be created
+     * @param startTime of the event that is going to be created
+     * @param endTime of the event that is going to be created
+     * @param CalendarID of the logged user
+     * @param usern the username of the logged user
+     * @return true, if there are other event, of the logged user or where the logged user want to participate, in the middle, false otherwise
+     */
+    public Boolean dateAndTimeInTheMiddle(Date startDate,Date endDate,Date startTime, Date endTime,int CalendarID,String usern) {
+        java.sql.Date startSqlDate;
+        startSqlDate = new java.sql.Date(startDate.getTime());
+        java.sql.Date endSqlDate;
+        endSqlDate = new java.sql.Date(endDate.getTime());
+        java.sql.Time startSqlTime;
+        startSqlTime = new java.sql.Time(startTime.getTime());
+        java.sql.Time endSqlTime;
+        endSqlTime = new java.sql.Time(endTime.getTime());
+        try{
+            if( em.createNamedQuery("Event.findDateTimeInTheMiddle").setParameter("startSqlDate",startSqlDate).setParameter("endSqlDate",endSqlDate).setParameter("startSqlTime",startSqlTime).setParameter("endSqlTime",endSqlTime).setParameter("calendarId",CalendarID).setParameter("username",usern).getSingleResult() != null  ){
+                return true;
+            }
+            
+        }catch(Exception e){
+            return false;
+        }
+        
+        return false;
+    }
+   
     public List<Event> searchByCalendar(Calendar calendar) {
         return (List<Event>) em.createNamedQuery("Event.findByCalendar").setParameter("calendar", calendar).getResultList(); 
     }

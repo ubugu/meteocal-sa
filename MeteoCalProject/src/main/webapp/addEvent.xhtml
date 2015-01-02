@@ -25,21 +25,24 @@
         
         <div id="LeftHeader">
             <ul class="buttonList">
-                 <li><p:button class="leftBarButton"  value="Home" outcome="mainUserPage"/></li>   
-                 <li><p:button class="leftBarButton"  value="AddEvent" outcome="addEvent"/></li>     
-                 <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
-                 <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li>    
+                <h:form>
+                    <li><p:button class="leftBarButton"  value="Home" outcome="mainUserPage"/></li>   
+                    <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent()}"/></li>     
+                    <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
+                    <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li> 
+                </h:form>
             </ul>
 
         </div>
-               
+         
+        <!-- Common Header -->
+        
             <h:form id="Event">
               <p:messages autoUpdate="true"/>
                 <div id="eventForm">
 
                     <h1> Event Creation</h1>
 
-                    <!-- copied -->
                     <h:panelGrid columns="3"> 
                         <p:outputLabel for="title" value="Title:"/>
                         <p:inputText id="title" value="#{EventController.event.title}" required="true" requiredMessage="The title is required." />
@@ -98,7 +101,7 @@
                
                     <br />
                     
-                    <div id="badConditionsDiv" style="display: none">
+                    <div id="badConditionsDiv" style="display: #{EventController.style}}">
                             
                         <!-- bad weather layer -->
                     
@@ -151,7 +154,7 @@
                 <div id="weatherForm">
                     <h1> Weather Preview</h1>
                     
-                    <h:graphicImage id="image" value="#{ImageChanger.image}"/>
+                    <h:graphicImage id="image"  value="#{ImageChanger.image}"/>
                     
                     <h:panelGrid columns="2"> 
                         
@@ -208,8 +211,10 @@
                 <h:outputText value="The Starting Time is before the current Time!" />
                 </p:dialog>
                 
-                
-                
+                <p:dialog header="Error" widgetVar="DateInTheMiddle Error" minHeight="40" resizable="false" >
+                <h:outputText value="There are some event in the middle of the one you want to create!!" />
+                </p:dialog>
+              
                 <!-- dialog error -->
                 
             </h:form>
