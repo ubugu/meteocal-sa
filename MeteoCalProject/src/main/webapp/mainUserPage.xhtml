@@ -33,7 +33,7 @@
             <ul class="buttonList">
                 <h:form>
                     <li><p:button class="leftBarButton"  value="Home" outcome="mainUserPage"/></li>   
-                    <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent()}"/></li>     
+                    <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent}"/></li>     
                     <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
                     <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li> 
                 </h:form>
@@ -63,10 +63,10 @@
                 <br/>
                 <p:button id="eventButton" value="Go To Event" onclick="#{scheduleController.showEvent()}" outcome="showEvent"/>
                 <h:form id="updateButton">
-                    <p:commandButton  value="Update Event"  action="#{scheduleController.updateEvent()}"/>
+                    <p:commandButton  value="Update Event"  action="#{scheduleController.updateEvent()}" style="display : #{scheduleController.isInvited()}"/>
                 </h:form>
                 <h:form id="deleteButton">
-                    <p:commandButton  value="Delete Event"  actionListener="#{scheduleController.delete()}" style="display : #{scheduleController.isInvited()}"/>
+                    <p:commandButton  value="Delete Event"  action="#{scheduleController.delete()}" style="display : #{scheduleController.isInvited()}"/>
                 </h:form>
             </p:dialog>
 

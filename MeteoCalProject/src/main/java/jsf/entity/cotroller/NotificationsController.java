@@ -75,16 +75,18 @@ public class NotificationsController {
     }
     
 
-    public void showEvent() {
+    public String showEvent() {
         if (this.selectedNotification == null) {
-            return;
+            return "";
         }
         Event event = this.selectedNotification.getEventID();
         if (event == null) {
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('eventDeleted').show();");
+            return "";
         } else {
             eventController.setSelectedEvent(event);
+            return "/showEvent?faces-redirect=true";
            
         }
 
