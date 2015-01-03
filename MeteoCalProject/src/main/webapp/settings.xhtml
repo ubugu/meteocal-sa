@@ -3,76 +3,107 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:jsf="http://xmlns.jcp.org/jsf">
-    <head jsf:id="head">     
-        <title>Home</title>
+    <h:head >     
+        <title>Settings</title>
         <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
-    </head>
-    <body jsf:id="body" class="noFrame">   
+    </h:head>
+    <h:body class="noFrame">      
         <!--Element of the first line on the top bar-->
         <div id="topHeader">
-            <img id="logo" src="Images/meteocalsnow.png"  name="meteocalLogo" title="meteocallogo"/>
-            <h2 id="userCalendar">#{loginBean.loggedUser.username}'s Calendar</h2>   
-
+             <img id="logo" src="Images/meteocalsnow.png"  name="meteocalLogo" title="meteocallogo"/>
+             <h1 id="userCalendar">#{loginBean.loggedUser.username}'s Calendar</h1>  
+              
             <div class="logoutForm">         
-                <h:form>
-                    <p:commandButton value="Logout" action="#{loginBean.logout()}"/>                     
+                <h:form id="logout">
+                    <p:commandButton id="logoutButton" value="Logout" action="#{loginBean.logout()}"/>                     
                 </h:form>
             </div>
+        </div>
+        
+        <div id="topHeader">
+            <h:form id="search">
+                <p:inputText id="searchText" value="#{SearchController.searchedUser}" />
+                <p:commandButton id="searchButton" value="Search"  action="#{SearchController.searchUser()}"/>    
+            </h:form>
         </div>
 
         <div id="LeftHeader">
             <ul class="buttonList">
-                <li><p:commandButton class="leftBarButton"  value="Home" action="#{scheduleController.loadOwnCalendar()}"/></li>   
-                <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent}"/></li>  
-                <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
-                <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li>    
+                <h:form>
+                    <li><p:commandButton class="leftBarButton"  value="Home" action="#{scheduleController.loadOwnCalendar()}"/></li>   
+                    <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent}"/></li>     
+                    <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
+                    <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li> 
+                </h:form>
             </ul>
+        </div>
 
+
+        <div class="guestFrame">
+            <h:form>
+                <p:messages autoUpdate="true"/>
+                <p:panelGrid columns="3" >
+                    <f:facet name="header">
+                        Settings
+                    </f:facet>
+
+                    <p:panel style="border:  none">
+                        <h:outputLabel for="email" value="New Email: "/> 
+                        <p:selectBooleanCheckbox value="#{settingsController.setNewEmail}">
+                            <p:ajax update="email"/>
+                        </p:selectBooleanCheckbox>
+                    </p:panel>
+                                      
+                    <p:inputText id="email" value="#{settingsController.user.email}" disabled="#{settingsController.displayNewEmail()}" placeholder="example@info.it" >
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <p:message for="email" />
+                    
+                    <p:panel style="border:  none">
+                        <h:outputLabel for="pwd1" value="New Password:    " /> 
+                        <p:selectBooleanCheckbox value="#{settingsController.setNewPassword}">
+                            <p:ajax update="pwd1,pwd2"/>
+                        </p:selectBooleanCheckbox>
+                    </p:panel>
+                    <p:password id="pwd1" value="#{settingsController.user.password}" match="pwd2" feedback="true" disabled="#{settingsController.displayNewPassword()}" >
+                        <f:validateLength minimum="5"/>
+                    </p:password>
+                    <p:message for="pwd1" />
+
+                    <h:outputLabel for="pwd2" value="Repeat New Passowrd: " />
+                    <p:password id="pwd2" value="#{settingsController.user.password}" disabled="#{settingsController.displayNewPassword()}"/>
+                    <p:message for="pwd2" />
+
+
+                    <p:outputLabel for="privacy" value="Privacy: " />
+                    <p:selectOneRadio id="privacy" value="#{settingsController.privacy}"     >
+                        <f:selectItem itemLabel="Private" itemValue="PRIVATE"/>
+                        <f:selectItem itemLabel="Shared" itemValue="SHARED" />
+                        <f:selectItem itemLabel="Public" itemValue="PUBLIC" />
+                    </p:selectOneRadio>
+                    <p:message for="privacy"/>
+
+                    
+                    <p:outputLabel for="oldPassword" value="Old Password:" style="font-weight:bold"/>                   
+                    <p:password id="oldPassword" value="#{settingsController.oldPassword}"  required="true" requiredMessage="Insert old password" />
+                    <p:message for="oldPassword" />
+
+                    <p:commandButton value="Save Settings" ajax="true" action="#{settingsController.updateSettings()}" update="wrongPassword" validateClient="true"  style="margin-right:10px"  />
+                </p:panelGrid>
+                
+                <p:dialog id="wrongPassword" header="Error" widgetVar="wrongPassword" minHeight="40" resizable="false" >
+                    <h:outputText value="Wrong OldPassowrd inserted" />
+                </p:dialog><p:dialog header="Error" widgetVar="emailError" minHeight="40" resizable="false" >
+                    <h:outputText value="E-Mail Already used" />
+                </p:dialog>
+                
+                
+            
+            </h:form>
         </div>
-        
-        <div id="registrationForm" class="guestFrame">
-            <form>
-                <fieldset>
-                    <legend>Settings</legend>
-                    <ol>
-                        <li>
-                            <label for="newEmail">
-                                   <input type="checkbox" name="newEmail" onclick="enable('email')"/>
-                                   Change Email : 
-                            </label>
-                            <input id="email" name="email" type="email" placeholder="example@domain.com" disabled="true"/>
-                        </li>
-                        <li>
-                            <label for="newPassword">
-                                <input type="checkbox" name="newPassword" onclick="enable('password')" />
-                                Change password : 
-                            </label>
-                            <input id="password" name="password" type="password" pattern=".{5,}"  disabled="true"/>
-                        </li>
-                        <li>
-                            <label>Calendar's privacy : </label>
-                            <br />
-                            <input id="private" name="privacy" type="radio" checked="true" onclick="enableOnButton('sharedUser','shared')"/>
-                            <label for="private">Private</label> 
-                            <br />
-                            <input id="public" name="privacy" type="radio" onclick="enableOnButton('sharedUser','shared')"/>
-                            <label for="public" >Public </label>
-                            <br />
-                            <input id="shared" name="privacy" type="radio" onclick="enableOnButton('sharedUser','shared')"/>
-                            <label for="shared">Shared</label> 
-                            <textarea id="sharedUser" rows="4" cols="50" disabled="true">Write all the User you want to share with separated by a semicolon (';')
-                             </textarea>
-                        </li> 
-                    </ol>
-                    <label>Insert old passwod : </label> 
-                    <input id="oldPassword" name="oldPassword" type="password" required="true"/>  
-                    <br />
-                    <button type="submit">Save</button>
-                </fieldset>
-            </form>
-        </div>
-        
+
          <!--Function to enable text-->
          <script type="text/javascript" language="javascript">
                 
@@ -101,21 +132,5 @@
              }
          </script>
          
-         
-         
-         
-  
-        <div  class="rights">
-            All right reserved 2014 @ Claudio Sanna, Walter samà 
-        </div>
-        
-
-        <script language="javascript" type="text/javascript">
-            <!--Function to load a page indicated with the string value.-->
-            function loadPage(paget) 
-            {
-                window.open(page);
-            }
-        </script>
-    </body>
+    </h:body>
 </html>
