@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import jsf.entity.User;
+import jsf.entity.facade.CalendarFacade;
 import jsf.entity.facade.UserFacade;
 
 /**
@@ -28,6 +29,9 @@ public class SearchController {
            
     @EJB
     private UserFacade userFacade = new UserFacade();
+    
+    @EJB
+    private CalendarFacade calendarFacade = new CalendarFacade();
 
     //getter & setter
     
@@ -65,7 +69,7 @@ public class SearchController {
             return "search?faces-redirect=true";
         }
         
-        if(user.getCalendar().getPrivacy().equals("PUBLIC") ){
+        if(calendarFacade.searchByUser(user).getPrivacy().equals("PUBLIC") ){
             setPrivateCalendar(false);
         } else {
             setPrivateCalendar(true);
