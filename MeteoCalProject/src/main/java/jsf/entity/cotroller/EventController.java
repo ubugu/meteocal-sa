@@ -14,7 +14,6 @@ import jsf.entity.Event;
 import jsf.entity.facade.BadconditionsFacade;
 import jsf.entity.facade.EventFacade;
 import java.util.Date; 
-import javax.faces.bean.ManagedProperty;
 import jsf.entity.Notification;
 import jsf.entity.Participant;
 import jsf.entity.ParticipantPK;
@@ -81,8 +80,18 @@ public class EventController {
     private String style = "none";
 
     private Boolean edit = false;
+    
+    private Boolean editAddingBad = false;
 
     // end variables not belonging to database 
+    
+    public Boolean getEditAddingBad() {
+        return editAddingBad;
+    }
+
+    public void setEditAddingBad(Boolean editAddingBad) {
+        this.editAddingBad = editAddingBad;
+    }
     
     public Boolean getEdit() {
         return edit;
@@ -268,7 +277,7 @@ public class EventController {
         
         requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("PF('complete').show();");
-        return "mainUserPage?faces-redirect=true";
+        return "";
     }
 
     /**
@@ -341,10 +350,15 @@ public class EventController {
             }
             
             //invite & notify if there are invited
-            if(getInviteSelect()){
+            if(getInviteSelect() || edit ){
+                
                 //create notification
                 prepareCreateNotification();
-
+                
+            }
+            
+            if(getInviteSelect()){
+                
                 //create participant
                 prepareCreateParticipant();
             }
@@ -433,10 +447,15 @@ public class EventController {
             }
             
             //invite & notify if there are invited
-            if(getInviteSelect()){
+            if(getInviteSelect() || edit ){
+                
                 //create notification
                 prepareCreateNotification();
-
+                
+            }
+            
+            if(getInviteSelect()){
+                
                 //create participant
                 prepareCreateParticipant();
             }
@@ -462,26 +481,30 @@ public class EventController {
      */
     private void prepareCreateBadConditions(){
         
-        if(!edit){
+        if((!edit && bad) || (editAddingBad && bad)){
             badconditions.setId( badconditionsFacade.getMaxBadConditionsID() + 1 );
             badconditions.setEventID(event);
+                                
+            if(temp==false){
+                badconditions.setTemperature(null);
+            }
+
+            if(prec==false){
+                badconditions.setPrecipitations(null);
+            }
+            
         }
-        
-        if(temp==false){
-            badconditions.setTemperature(null);
-        }
-        
-        if(prec==false){
-            badconditions.setPrecipitations(null);
-        }
+
         
         //we can try to create the badconditions
             
         try{
-            if(edit){
+            if(edit && !editAddingBad){
                 badconditionsFacade.edit(badconditions);
             }else{
-                badconditionsFacade.create(badconditions);
+                if(!edit && bad){
+                    badconditionsFacade.create(badconditions);
+                }
             }           
         }catch(Exception e){
             //TODO
@@ -494,19 +517,45 @@ public class EventController {
      * @param event 
      */
     private void prepareCreateNotification(){
-        notification.setId( notificationFacade.getMaxNotificationID() +1 );
-        notification.setType("INVITED");
         notification.setEventID(event);
         notification.setVisualized("NO");
+        
+        if(edit){
+            prepareUpdateNotification();
+        }else{
+            prepareInviteNotification();
+        }
+    }
+   
+    /**
+     * method that will create a new Update Notification
+     */
+    private void prepareUpdateNotification() {
+        notification.setType("UPDATE");
+        notification.setDescription("The event " + event.getTitle() + "that will be held on the " + event.getDate() + " has been modified by " + event.getCalendar().getOwner().getUsername() );
+ 
+        for(Participant participants : participantFacade.searchByEvent(event.getId())){
+            //TODO prova
+            notification.setId( notificationFacade.getMaxNotificationID() +1 );
+            notification.setUser(participants.getUser1());
+            notificationFacade.create(notification); 
+        }
+    }
+        
+    /**
+     * method that will create a new Invite Notification
+     */
+    private void prepareInviteNotification(){
+        notification.setType("INVITED");
         notification.setDescription("You have been invited to the event " + event.getTitle() + " by the user " + event.getCalendar().getOwner().getUsername() + " on the " + event.getDate());
         
         for (String invitatedUser : getInvitatedUsers()) {
+            notification.setId( notificationFacade.getMaxNotificationID() +1 );
             notification.setUser(userFacade.searchForUser(invitatedUser));
             notificationFacade.create(notification);
         }
-        
     }
-   
+    
     /**
      * method that will create a record in the participant table in which the organiser is setted 
      * and the invited User are setted to "unknown" response to the participation
@@ -551,21 +600,23 @@ public class EventController {
         
         if(badconditions!=null){
             
-            bad=true;
-            style="block";
+            setBad(true);
+            setStyle("block");
             
             if(badconditions.getPrecipitations()!=null){
                 setPrec(true);
             }
             if(badconditions.getTemperature()!=null){
                 setTemp(true);
-            }     
+            } 
 
         }else{
             badconditions = new Badconditions();
+            setEditAddingBad(true);
         }
         
         setEdit(true);
+        setEndate(event.getDate());
         
         return "addEvent?faces-redirect=true"; 
     }
@@ -579,10 +630,11 @@ public class EventController {
         event = new Event();
         badconditions = new Badconditions();
         
+        //reset all the field
         setPrec(false);
         setTemp(false);
-        bad=false;
-        style="none";
+        setBad(false);
+        setStyle("none");
         setEdit(false);
         setEndate(null);
         setInvitations("");
@@ -590,6 +642,9 @@ public class EventController {
         setRejectedUsers("");
         setUntillDate(null);
         setRepeats("no");
+        setEditAddingBad(false);
+        setTemp(false);
+        setPrec(false);
         
         return "addEvent?faces-redirect=true"; 
     }
