@@ -56,7 +56,7 @@
                         </p:selectBooleanCheckbox>
                     </p:panel>
                                       
-                    <p:inputText id="email" value="#{settingsController.user.email}" disabled="#{settingsController.displayNewEmail()}" placeholder="example@info.it" >
+                    <p:inputText id="email" value="#{settingsController.user.email}" disabled="#{!settingsController.setNewEmail}" placeholder="example@info.it" >
                         <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                     </p:inputText>
                     <p:message for="email" />
@@ -67,23 +67,24 @@
                             <p:ajax update="pwd1,pwd2"/>
                         </p:selectBooleanCheckbox>
                     </p:panel>
-                    <p:password id="pwd1" value="#{settingsController.user.password}" match="pwd2" feedback="true" disabled="#{settingsController.displayNewPassword()}" >
+                    <p:password id="pwd1" value="#{settingsController.user.password}" match="pwd2" feedback="true" disabled="#{!settingsController.setNewPassword}" >
                         <f:validateLength minimum="5"/>
                     </p:password>
                     <p:message for="pwd1" />
 
                     <h:outputLabel for="pwd2" value="Repeat New Passowrd: " />
-                    <p:password id="pwd2" value="#{settingsController.user.password}" disabled="#{settingsController.displayNewPassword()}"/>
+                    <p:password id="pwd2" value="#{settingsController.user.password}" disabled="#{!settingsController.setNewPassword}"/>
                     <p:message for="pwd2" />
 
 
                     <p:outputLabel for="privacy" value="Privacy: " />
-                    <p:selectOneRadio id="privacy" value="#{settingsController.privacy}"     >
-                        <f:selectItem itemLabel="Private" itemValue="PRIVATE"/>
+                    <p:selectOneRadio id="privacy" value="#{settingsController.privacy}"      >
+                        <p:ajax update="shared"/>
+                        <f:selectItem itemLabel="Private" itemValue="PRIVATE" />
                         <f:selectItem itemLabel="Shared" itemValue="SHARED" />
                         <f:selectItem itemLabel="Public" itemValue="PUBLIC" />
                     </p:selectOneRadio>
-                    <p:message for="privacy"/>
+                    <p:inputTextarea placeholder="Example: user1; user2; user3; " value="#{settingsController.sharedUsers}" id="shared" disabled="#{!settingsController.setSharedPrivacy}" rows="4" cols="35" />
 
                     
                     <p:outputLabel for="oldPassword" value="Old Password:" style="font-weight:bold"/>                   
@@ -95,7 +96,11 @@
                 
                 <p:dialog id="wrongPassword" header="Error" widgetVar="wrongPassword" minHeight="40" resizable="false" >
                     <h:outputText value="Wrong OldPassowrd inserted" />
-                </p:dialog><p:dialog header="Error" widgetVar="emailError" minHeight="40" resizable="false" >
+                </p:dialog>
+                 <p:dialog id="wrongUsername" header="Error" widgetVar="wrongUsername" minHeight="40" resizable="false" >
+                    <h:outputText value="Wrong username inserted in shared list" />
+                </p:dialog>
+                <p:dialog header="Error" widgetVar="emailError" minHeight="40" resizable="false" >
                     <h:outputText value="E-Mail Already used" />
                 </p:dialog>
                 

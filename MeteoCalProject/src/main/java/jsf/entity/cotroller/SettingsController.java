@@ -5,10 +5,12 @@
  */
 package jsf.entity.cotroller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import jsf.entity.Calendar;
 import jsf.entity.User;
@@ -29,9 +31,13 @@ public class SettingsController {
 
     private Boolean setNewEmail = false;
     
+    private Boolean setSharedPrivacy = false;
+    
     private String privacy;
     
     private String oldPassword = "";
+    
+    private String sharedUsers = "ciao";
 
  
     @EJB
@@ -40,6 +46,12 @@ public class SettingsController {
     @EJB
     CalendarFacade calendarFacade = new CalendarFacade();
 
+    @PostConstruct
+    public void init() {
+        if (this.calendarFacade.searchByUser(this.userFacade.getLoggedUser()).getPrivacy().equals("SHARED")) {
+            this.setSharedPrivacy = true;
+        }
+    }
     public String getPrivacy() {
         if (privacy == null) {
            privacy = calendarFacade.searchByUser(userFacade.getLoggedUser()).getPrivacy();
@@ -49,6 +61,7 @@ public class SettingsController {
 
     public void setPrivacy(String privacy) {
         this.privacy = privacy;
+        this.setSharedPrivacy = privacy.equals("SHARED");
     }
  
     public User getUser() {
@@ -74,15 +87,6 @@ public class SettingsController {
     public void setSetNewEmail(Boolean setNewEmail) {
         this.setNewEmail = setNewEmail;
     }
-    
-    public Boolean displayNewPassword() {
-        return !this.setNewPassword;
-    }
-    
-    public Boolean displayNewEmail() {
-        return !this.setNewEmail;
-    }
-
 
     public void setOldPassword(String oldPassword) {
         this.oldPassword = PasswordEncrypter.encryptPassword(oldPassword);
@@ -91,8 +95,23 @@ public class SettingsController {
     public String getOldPassword() {
         return oldPassword;
     }
-    
-    
+
+    public Boolean getSetSharedPrivacy() {
+        return setSharedPrivacy;
+    }
+
+    public void setSetSharedPrivacy(Boolean setSharedPrivacy) {
+        this.setSharedPrivacy = setSharedPrivacy;
+    }
+
+    public String getSharedUsers() {
+        return sharedUsers;
+    }
+
+    public void setSharedUsers(String shareUsers) {
+        this.sharedUsers = shareUsers;
+    }
+
     public Boolean checkPassowrd() {
         if (userFacade.getLoggedUser().getPassword().equals(this.oldPassword)) {
             return true;
@@ -123,7 +142,24 @@ public class SettingsController {
         } else {
             Calendar calendar = this.calendarFacade.searchByUser(this.userFacade.getLoggedUser());
             calendar.setPrivacy(this.privacy);
+            User addUser = null;
+            if (this.privacy.equals("SHARED")) {
+                List<String> sharedUsernames = getUsername(this.sharedUsers);
+                for (String s : sharedUsernames) {
+                    addUser = this.userFacade.searchForUser(s);
+                    if (addUser == null) {
+                        RequestContext requestContext = RequestContext.getCurrentInstance();
+                        requestContext.execute("PF('wrongUsername').show();");
+                        return "";
+                    }
+                }
+                
+                
+                
+            }
+            
             calendarFacade.edit(calendar);
+
             User loggedUser = this.userFacade.getLoggedUser();
             
             if ((!this.setNewEmail) && (!this.setNewPassword)) {
@@ -148,6 +184,14 @@ public class SettingsController {
             
             return "/settings?faces-redirect=true";
         }
+    }
+
+    private List<String> getUsername(String sharedUsers) {
+        String[] sharedUsername = sharedUsers.split(";");
+        for (int i = 0; i < sharedUsername.length; i++) {
+            sharedUsername[i] = sharedUsername[i].replaceAll(" ", "");
+        }
+        return Arrays.asList(sharedUsername);
     }
 
     
