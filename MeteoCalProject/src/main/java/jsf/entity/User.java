@@ -177,5 +177,9 @@ public class User implements Serializable {
     public String toString() {
         return "jsf.entity.User[ username=" + username + " ]";
     }
+
+    public void setAlreadyEncryptedPassword(String password) {
+        this.password = password;
+    }
     
 }

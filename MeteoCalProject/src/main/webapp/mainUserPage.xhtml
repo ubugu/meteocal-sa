@@ -41,7 +41,7 @@
         </div>
         <div>   
             <h:panelGrid style="width: 1000px">
-                <p:schedule id="calendar" value="#{scheduleController.eventModel}" draggable="false" >
+                <p:schedule id="calendar" value="#{scheduleController.eventModel}" draggable="false" ignoreTimezone="false" resizable="false" >
                     <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails, eventButton, deleteButton, updateButton"   />
                 </p:schedule>
             </h:panelGrid>
