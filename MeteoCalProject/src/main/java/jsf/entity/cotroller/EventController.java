@@ -268,7 +268,7 @@ public class EventController {
         
         requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("PF('complete').show();");
-        return "";
+        return "mainUserPage?faces-redirect=true";
     }
 
     /**
@@ -349,8 +349,10 @@ public class EventController {
                 prepareCreateParticipant();
             }
             
-            //set the owner as a participant
-            setOwnerParticipant();
+            //set the owner as a participant if it is not an update
+            if(!edit){
+                setOwnerParticipant();
+            }
   
                 
             //repetition
@@ -439,8 +441,10 @@ public class EventController {
                 prepareCreateParticipant();
             }
             
-            //set the owner as a participant
-            setOwnerParticipant();
+            //set the owner as a participant if it is not an update
+            if(!edit){
+                setOwnerParticipant();
+            }
             
             //add one day and repeat
             if(days>0){            
@@ -557,6 +561,8 @@ public class EventController {
                 setTemp(true);
             }     
 
+        }else{
+            badconditions = new Badconditions();
         }
         
         setEdit(true);
