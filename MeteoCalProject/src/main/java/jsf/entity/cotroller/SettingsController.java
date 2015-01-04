@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package jsf.entity.cotroller;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +36,7 @@ public class SettingsController {
     
     private String oldPassword = "";
     
-    private String sharedUsers = "ciao";
+    private String sharedUsersString = "";
 
  
     @EJB
@@ -51,6 +50,8 @@ public class SettingsController {
         if (this.calendarFacade.searchByUser(this.userFacade.getLoggedUser()).getPrivacy().equals("SHARED")) {
             this.setSharedPrivacy = true;
         }
+        List<User> allUser = this.userFacade.findAll();
+        
     }
     public String getPrivacy() {
         if (privacy == null) {
@@ -104,12 +105,12 @@ public class SettingsController {
         this.setSharedPrivacy = setSharedPrivacy;
     }
 
-    public String getSharedUsers() {
-        return sharedUsers;
+    public String getSharedUsersString() {
+        return sharedUsersString;
     }
 
-    public void setSharedUsers(String shareUsers) {
-        this.sharedUsers = shareUsers;
+    public void setSharedUsersString(String sharedUsersString) {
+        this.sharedUsersString = sharedUsersString;
     }
 
     public Boolean checkPassowrd() {
@@ -143,8 +144,11 @@ public class SettingsController {
             Calendar calendar = this.calendarFacade.searchByUser(this.userFacade.getLoggedUser());
             calendar.setPrivacy(this.privacy);
             User addUser = null;
+            
             if (this.privacy.equals("SHARED")) {
-                List<String> sharedUsernames = getUsername(this.sharedUsers);
+                List<String> sharedUsernames = getUsername(this.sharedUsersString);
+                List<User> sharedUsers = new ArrayList<>();
+                //Check if a wrong username is inserted
                 for (String s : sharedUsernames) {
                     addUser = this.userFacade.searchForUser(s);
                     if (addUser == null) {
@@ -152,10 +156,19 @@ public class SettingsController {
                         requestContext.execute("PF('wrongUsername').show();");
                         return "";
                     }
+                    sharedUsers.add(addUser);
                 }
                 
-                
-                
+                calendar.setUserList(sharedUsers);
+                for (User u : sharedUsers) {
+                    List<Calendar> calendarList = u.getCalendarList();
+                    if (calendarList == null) {
+                        calendarList = new ArrayList<>();
+                    }
+                    calendarList.add(calendar);
+                    u.setCalendarList(calendarList);
+                    this.userFacade.edit(u);
+                }
             }
             
             calendarFacade.edit(calendar);

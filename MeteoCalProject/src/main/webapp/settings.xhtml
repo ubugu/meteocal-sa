@@ -84,7 +84,7 @@
                         <f:selectItem itemLabel="Shared" itemValue="SHARED" />
                         <f:selectItem itemLabel="Public" itemValue="PUBLIC" />
                     </p:selectOneRadio>
-                    <p:inputTextarea placeholder="Example: user1; user2; user3; " value="#{settingsController.sharedUsers}" id="shared" disabled="#{!settingsController.setSharedPrivacy}" rows="4" cols="35" />
+                    <p:inputTextarea placeholder="Example: user1; user2; user3; " value="#{settingsController.sharedUsersString}" id="shared" disabled="#{!settingsController.setSharedPrivacy}" rows="4" cols="35" />
 
                     
                     <p:outputLabel for="oldPassword" value="Old Password:" style="font-weight:bold"/>                   
