@@ -8,6 +8,7 @@ package jsf.entity.cotroller;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import jsf.entity.Calendar;
 import jsf.entity.User;
 import jsf.entity.facade.CalendarFacade;
 import jsf.entity.facade.UserFacade;
@@ -69,10 +70,26 @@ public class SearchController {
             return "search?faces-redirect=true";
         }
         
-        if(calendarFacade.searchByUser(user).getPrivacy().equals("PUBLIC") ){
-            setPrivateCalendar(false);
-        } else {
+        Calendar searchedCalendar = calendarFacade.searchByUser(user);
+        
+         if(searchedCalendar.getPrivacy().equals("PRIVATE") ){
             setPrivateCalendar(true);
+        }
+        
+        if(searchedCalendar.getPrivacy().equals("PUBLIC") ){
+            setPrivateCalendar(false);
+        }
+        
+        if(searchedCalendar.getPrivacy().equals("SHARED") ){
+            
+            User loggedUser = this.userFacade.getLoggedUser();
+            if (loggedUser.getCalendarList().contains(searchedCalendar)) {
+                setPrivateCalendar(false);
+            } else {
+                setPrivateCalendar(true);
+            }
+            
+            
         }
         
         return("search?faces-redirect=true");
