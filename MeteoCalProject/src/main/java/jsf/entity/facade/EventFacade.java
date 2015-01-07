@@ -52,9 +52,10 @@ public class EventFacade extends AbstractFacade<Event> {
      * @param endTime of the event that is going to be created
      * @param CalendarID of the logged user
      * @param usern the username of the logged user
+     * @param eventID the id of the current event, usefull to check for the update
      * @return true, if there are other event, of the logged user or where the logged user want to participate, in the middle, false otherwise
      */
-    public Boolean dateAndTimeInTheMiddle(Date startDate,Date endDate,Date startTime, Date endTime,int CalendarID,String usern) {
+    public Boolean dateAndTimeInTheMiddle(Date startDate,Date endDate,Date startTime, Date endTime,int CalendarID,String usern,int eventID) {
         java.sql.Date startSqlDate;
         startSqlDate = new java.sql.Date(startDate.getTime());
         java.sql.Date endSqlDate;
@@ -63,13 +64,25 @@ public class EventFacade extends AbstractFacade<Event> {
         startSqlTime = new java.sql.Time(startTime.getTime());
         java.sql.Time endSqlTime;
         endSqlTime = new java.sql.Time(endTime.getTime());
+        
         try{
-            if( em.createNamedQuery("Event.findDateTimeInTheMiddle").setParameter("startSqlDate",startSqlDate).setParameter("endSqlDate",endSqlDate).setParameter("startSqlTime",startSqlTime).setParameter("endSqlTime",endSqlTime).setParameter("calendarId",CalendarID).setParameter("username",usern).getSingleResult() != null  ){
-                return true;
+            List<Event> events = em.createNamedQuery("Event.findDateTimeInTheMiddle").setParameter("startSqlDate",startSqlDate).setParameter("endSqlDate",endSqlDate).setParameter("startSqlTime",startSqlTime).setParameter("endSqlTime",endSqlTime).setParameter("calendarId",CalendarID).setParameter("username",usern).getResultList();
+
+            if(!events.isEmpty()){
+                if( events.get(0).getId()!= eventID ){
+                    System.out.println(eventID);
+                    System.out.println("ci sono risultati o mona");
+                    System.out.println(em.createNamedQuery("Event.findDateTimeInTheMiddle").setParameter("startSqlDate",startSqlDate).setParameter("endSqlDate",endSqlDate).setParameter("startSqlTime",startSqlTime).setParameter("endSqlTime",endSqlTime).setParameter("calendarId",CalendarID).setParameter("username",usern).getResultList());
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
             }
             
         }catch(Exception e){
-            return false;
+            //TODO
         }
         
         return false;

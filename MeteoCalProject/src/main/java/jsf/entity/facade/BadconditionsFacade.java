@@ -42,6 +42,11 @@ public class BadconditionsFacade extends AbstractFacade<Badconditions> {
         }
     }
 
+    /**
+     * method that will return the unique bad condition that is associated to this event, if there are more bad conditions in future we have to update this field
+     * @param event, event of the bad conditions that we want to retrieve
+     * @return Badcondition associate to the event
+     */
     public Badconditions searchByEvent(Event event) {
         try {
             return (Badconditions) em.createNamedQuery("Badconditions.findByEvent").setParameter("event", event).getSingleResult();
