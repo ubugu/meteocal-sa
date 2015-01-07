@@ -14,8 +14,6 @@ import jsf.entity.Event;
 import jsf.entity.facade.BadconditionsFacade;
 import jsf.entity.facade.EventFacade;
 import java.util.Date; 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import jsf.entity.Notification;
 import jsf.entity.Participant;
 import jsf.entity.ParticipantPK;
@@ -222,7 +220,7 @@ public class EventController {
         RequestContext requestContext = RequestContext.getCurrentInstance();
         //controlData
 
-        if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername())  ){
+        if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
             requestContext.execute("PF('DateInTheMiddle Error').show();");
             error=true;
         }
@@ -274,11 +272,13 @@ public class EventController {
            return ""; 
         }
         
-        //creationEvent
-        prepareCreateEvent();
+        //creationEvent it will return the redirect
+        String ret = prepareCreateEvent();
+        if(ret.equals("")){
+            requestContext = RequestContext.getCurrentInstance();
+            requestContext.execute("PF('complete').show();");
+        }
         
-        requestContext = RequestContext.getCurrentInstance();
-        requestContext.execute("PF('complete').show();");
         return "";
     }
 
@@ -297,9 +297,11 @@ public class EventController {
         setInvitatedUsers(getInvitations().split(";"));
         
         for (String invitatedUser : getInvitatedUsers()) {
-            if (userFacade.searchForUser(invitatedUser) == null) {
-                setRejectedUsers(getRejectedUsers() + invitatedUser + " ;");
-                result = false;
+            if(invitatedUser != null){
+                if (userFacade.searchForUser(invitatedUser) == null) {
+                    setRejectedUsers(getRejectedUsers() + invitatedUser + " ;");
+                    result = false;
+                }
             }
         }
         
@@ -309,26 +311,69 @@ public class EventController {
     /**
      * method that will control the creation of the events and then it will use
      * the facades to create the records in the database
+     * @return the redirection link to the jsf page
      */ 
-    private void prepareCreateEvent(){
+    private String prepareCreateEvent(){
         
         //we can set here the calendar for the event
         event.setCalendar(userFacade.getLoggedUser().getCalendar());
         
         if(getRepeats().equals("no")){
-            normalCreation();
+            return normalCreation();
         }else{
-            repeatingCreation();
+            return repeatingCreation();
         }
         
     } 
     
     /**
      * creation in case of repetitions
+     * @return the redirection link to a jsf page
      */
-    private void repeatingCreation(){
+    private String repeatingCreation(){
+        
         Date nextDate=event.getDate();
+        
+        Date controlDate=nextDate;
+        
+        //control loop, if there are only one event in the middle of the other an error message is sent to the user
  
+        while(nextDate.compareTo(getUntillDate()) < 0){
+            
+            if(  eventFacade.dateAndTimeInTheMiddle(nextDate,nextDate,event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
+                RequestContext requestContext = RequestContext.getCurrentInstance();        
+                requestContext.execute("PF('DateInTheMiddleRepeat Error').show();");
+                return "error";
+            }
+            
+          //repetition
+            switch(getRepeats()){
+                case "everyday"   : {
+                    nextDate= (new DateTime(nextDate).plusDays(1).toDate());
+                    break;
+                }
+                case "everyweek"  : {
+                    nextDate= (new DateTime(nextDate).plusWeeks(1).toDate());
+                    break;
+                }
+                case "everymonth" : {
+                    nextDate= (new DateTime(nextDate).plusMonths(1).toDate());
+                    break;
+                }
+                case "everyyear"  : {
+                    nextDate= (new DateTime(nextDate).plusYears(1).toDate());
+                    break;
+                }
+            }
+  
+        }
+        
+        //reset to controlDate
+        
+        nextDate = controlDate;
+        
+        //creation loop
+        
         while(nextDate.compareTo(getUntillDate()) < 0){
             
             if(!edit){
@@ -391,11 +436,17 @@ public class EventController {
                 }
             }
             
+            if(  eventFacade.dateAndTimeInTheMiddle(nextDate,nextDate,event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
+                RequestContext requestContext = RequestContext.getCurrentInstance();        
+                requestContext.execute("PF('DateInTheMiddle Error').show();");
+                return "";
+            }
+            
             event.setDate(nextDate);
             
-            
-            
         }
+        
+        return "";
     }
     
     /**
@@ -404,7 +455,7 @@ public class EventController {
      * after having calculate the days in which we have to repeat the event we set the starting time to
      * 00:00 and the ending time to 23:59 unless the days is the first or the last
      */
-    private void normalCreation(){
+    private String normalCreation(){
         int days = 0;
         Date endingTime=null;
         if( getEndate().compareTo(event.getDate()) > 0){
@@ -413,6 +464,27 @@ public class EventController {
             endingTime = event.getEndingTime();
         }
         
+        Date controlDate = event.getDate();
+        
+        //check error loop
+        for(int i=0; i <= days; i++ ){
+            if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
+                RequestContext requestContext = RequestContext.getCurrentInstance();        
+                requestContext.execute("PF('DateInTheMiddleRepeat Error').show();");
+                return "error";
+            } 
+            
+            //add one day and repeat
+            if(days>0){            
+                DateTime datetime = new DateTime(event.getDate());
+                datetime = datetime.plusDays(1);
+                event.setDate(datetime.toDate());
+            }
+        }
+        
+        event.setDate(controlDate);
+        
+        //creation loop
         for(int i=0; i <= days; i++ ){
         
             if(!edit){
@@ -431,7 +503,7 @@ public class EventController {
                     event.setEndingTime(new Date(Time.valueOf("23:59:59").getTime()));
                 }
             }
-                   
+                        
             //we can try to create the event
             try{
                 if(edit){
@@ -475,6 +547,8 @@ public class EventController {
             }
             
         }
+        
+        return "";
     }
     
     /**
@@ -496,22 +570,24 @@ public class EventController {
             }
             
         }
-
         
-        //we can try to create the badconditions
+        //we can delete it if it was the user decision or we can try to create the badconditions
             
-        try{
-            if(edit && !editAddingBad){
-                badconditionsFacade.edit(badconditions);
-            }else{
-                if(!edit && bad){
-                    badconditionsFacade.create(badconditions);
-                }
-            }           
-        }catch(Exception e){
-            //TODO
+        if( (!bad) && (badconditions.getId()!=null) ){
+            badconditionsFacade.remove(badconditions);
+        }else{
+            try{
+                if(edit && !editAddingBad){
+                    badconditionsFacade.edit(badconditions);
+                }else{
+                    if(bad){
+                        badconditionsFacade.create(badconditions);
+                    }
+                }           
+            }catch(Exception e){
+                //TODO
+            }
         }
-        
     }
     
     /**
@@ -524,9 +600,12 @@ public class EventController {
         
         if(edit){
             prepareUpdateNotification();
-        }else{
+        }
+            
+        if(getInviteSelect()){
             prepareInviteNotification();
         }
+        
     }
    
     /**
@@ -611,12 +690,18 @@ public class EventController {
             if(badconditions.getTemperature()!=null){
                 setTemp(true);
             } 
+            
+            setEditAddingBad(false);
 
         }else{
             badconditions = new Badconditions();
             setEditAddingBad(true);
+            setBad(false);
+            setPrec(false);
+            setTemp(false);
         }
         
+        setInviteSelect(false);
         setEdit(true);
         setEndate(event.getDate());
         
