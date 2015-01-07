@@ -12,18 +12,21 @@
     <h:body class="noFrame">      
         <!--Element of the first line on the top bar-->
         <div id="topHeader">
-             <img id="logo" src="Images/meteocalsnow.png"  name="meteocalLogo" title="meteocallogo"/>
-
+            <img id="logo" src="Images/meteocalsnow.png"  name="meteocalLogo" title="meteocallogo"/>
             <div class="loginForm"> 
 
                 <span>Username</span>
                 <span id="passwordLabel">Password</span>
 
-                <div> 
-                    <input  type="text" name="username" placeholder="Username"/>
-                    <input  type="text" name="password" placeholder="Password"/>   
-                    <p:button  value="Login" outcome="mainUserPage"/>         
-                </div>
+                <h:form> 
+                    <p:inputText id="username" value="#{loginBean.username}" required="true"/>
+                    <p:password id="password" value="#{loginBean.password}" required="true"/>
+                    <p:commandButton value="Login" action="#{loginBean.login()}"  />
+
+                    <p:dialog header="Error" widgetVar="loginFailed" minHeight="40" resizable="false" >
+                        <h:outputText value="Login failde: username or passoword not recognized." />
+                    </p:dialog>
+                </h:form>
 
                 <div id="forgotten">
                     <a href="create.html">  Forgotten password? </a>  
