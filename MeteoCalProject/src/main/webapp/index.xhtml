@@ -25,7 +25,8 @@
                 <h:form> 
                     <p:inputText id="username" value="#{loginBean.username}" required="true"/>
                     <p:password id="password" value="#{loginBean.password}" required="true"/>
-                    <p:commandButton value="Login" action="#{loginBean.login()}" ajax="true" update="@all" />
+                    <p:commandButton value="Login" action="#{loginBean.login()}"  />
+                    
                     <p:dialog header="Error" widgetVar="loginFailed" minHeight="40" resizable="false" >
                         <h:outputText value="Login failde: username or passoword not recognized." />
                     </p:dialog>

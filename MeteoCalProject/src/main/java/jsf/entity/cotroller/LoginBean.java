@@ -5,9 +5,12 @@
  */
 package jsf.entity.cotroller;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -49,16 +52,16 @@ public class LoginBean {
     }
 
     public String login() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         try {
-            request.login(this.username, this.password);
-            return "mainUserPage";
-        } catch (ServletException e) {
+           request.login(this.username, this.password);
+            return "mainUserPage"; 
+        } catch (ServletException ex) {
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('loginFailed').show();");
-            return null;
-        }
+            return "";   
+        }          
     }
 
     public User getLoggedUser() {

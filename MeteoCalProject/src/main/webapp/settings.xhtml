@@ -44,7 +44,7 @@
         <div class="guestFrame">
             <h:form>
                 <p:messages autoUpdate="true"/>
-                <p:panelGrid columns="3" >
+                <h:panelGrid columns="3"  >
                     <f:facet name="header">
                         Settings
                     </f:facet>
@@ -92,7 +92,7 @@
                     <p:message for="oldPassword" />
 
                     <p:commandButton value="Save Settings" ajax="true" action="#{settingsController.updateSettings()}" update="wrongPassword" validateClient="true"  style="margin-right:10px"  />
-                </p:panelGrid>
+                </h:panelGrid>
                 
                 <p:dialog id="wrongPassword" header="Error" widgetVar="wrongPassword" minHeight="40" resizable="false" >
                     <h:outputText value="Wrong OldPassowrd inserted" />
