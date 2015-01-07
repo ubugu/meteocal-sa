@@ -14,6 +14,8 @@ import jsf.entity.Event;
 import jsf.entity.facade.BadconditionsFacade;
 import jsf.entity.facade.EventFacade;
 import java.util.Date; 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import jsf.entity.Notification;
 import jsf.entity.Participant;
 import jsf.entity.ParticipantPK;

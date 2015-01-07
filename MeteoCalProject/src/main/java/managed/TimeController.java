@@ -9,6 +9,7 @@ package managed;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.logging.Level;
@@ -18,6 +19,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.faces.bean.ManagedBean;
 import javax.ws.rs.POST;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -33,15 +35,9 @@ public class TimeController {
     public void lookTime() {
 
         //the Date and time at which you want to execute
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = null;
+        Date date;
 
-        try {
-            date = dateFormatter.parse("2015-01-06 20:17:00");
-        } catch (ParseException ex) {
-            Logger.getLogger(TimeController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        date=new DateTime().plusDays(1).toDate();
         //Creation of the time and schedule of it
         
         Timer timer = new Timer();
@@ -49,7 +45,7 @@ public class TimeController {
         //Use this if you want to execute it repeatedly
         //1000=1 second
         
-        timer.schedule(new MyTimerTask(), date, 60000);
+        timer.schedule(new MyTimerTask(),date,60000);
 
         
     } 
