@@ -37,7 +37,7 @@ public class TimeController {
         Date date = null;
 
         try {
-            date = dateFormatter.parse("2015-01-05 20:17:00");
+            date = dateFormatter.parse("2015-01-06 20:17:00");
         } catch (ParseException ex) {
             Logger.getLogger(TimeController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -49,7 +49,7 @@ public class TimeController {
         //Use this if you want to execute it repeatedly
         //1000=1 second
         
-        timer.schedule(new MyTimerTask(), date, 4000);
+        timer.schedule(new MyTimerTask(), date, 60000);
 
         
     } 
