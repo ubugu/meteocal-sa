@@ -30,7 +30,7 @@ public class LoginBean {
     private String username;
     private String password;
     @EJB
-    private UserFacade facade = new UserFacade();
+    private UserFacade facade;
 
     public LoginBean() {
     }

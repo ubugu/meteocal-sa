@@ -60,19 +60,19 @@ public class SchedulerController implements Serializable {
 
     
     @EJB
-    CalendarFacade calendarFacade = new CalendarFacade();
+    CalendarFacade calendarFacade;
     
     @EJB
-    EventFacade eventFacade = new EventFacade();
+    EventFacade eventFacade;
     
     @EJB
-    UserFacade userFacade = new UserFacade();
+    UserFacade userFacade;
     
     @EJB
-    NotificationFacade notificationFacade = new NotificationFacade();
+    NotificationFacade notificationFacade;
     
     @EJB
-    ParticipantFacade participantFacade = new ParticipantFacade();
+    ParticipantFacade participantFacade;
  
     @PostConstruct
     public void init() {

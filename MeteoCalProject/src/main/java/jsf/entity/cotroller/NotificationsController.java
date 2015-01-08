@@ -39,9 +39,9 @@ public class NotificationsController {
     private Notification selectedNotification;
     
     @EJB
-    private NotificationFacade facade = new NotificationFacade();
+    private NotificationFacade facade;
     @EJB
-    private UserFacade userFacade = new UserFacade();
+    private UserFacade userFacade;
     
     
     public List<Notification> getUserNotification() {

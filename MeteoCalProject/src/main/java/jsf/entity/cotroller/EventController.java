@@ -42,15 +42,15 @@ public class EventController {
     private Participant participant = new Participant();
     
     @EJB
-    private EventFacade eventFacade = new EventFacade();
+    private EventFacade eventFacade;
     @EJB
-    private BadconditionsFacade badconditionsFacade = new BadconditionsFacade();
+    private BadconditionsFacade badconditionsFacade;
     @EJB
-    private UserFacade userFacade = new UserFacade();
+    private UserFacade userFacade;
     @EJB
-    private NotificationFacade notificationFacade = new NotificationFacade();
+    private NotificationFacade notificationFacade;
     @EJB
-    private ParticipantFacade participantFacade = new ParticipantFacade();
+    private ParticipantFacade participantFacade;
     
     
     // variables useful to set the correct events in the database
@@ -220,9 +220,16 @@ public class EventController {
         RequestContext requestContext = RequestContext.getCurrentInstance();
         //controlData
 
-        if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
-            requestContext.execute("PF('DateInTheMiddle Error').show();");
-            error=true;
+        if(edit){
+            if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
+                requestContext.execute("PF('DateInTheMiddle Error').show();");
+                error=true;
+            }
+        }else{
+            if(  eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername())  ){
+                requestContext.execute("PF('DateInTheMiddle Error').show();");
+                error=true;
+            }
         }
         
         if(DateTimeComparator.getDateOnlyInstance().compare( new DateTime(event.getDate()) , new DateTime()) < 0){     
@@ -335,16 +342,24 @@ public class EventController {
         Date nextDate=event.getDate();
         
         Date controlDate=nextDate;
+        RequestContext requestContext = RequestContext.getCurrentInstance();        
         
         //control loop, if there are only one event in the middle of the other an error message is sent to the user
  
         while(nextDate.compareTo(getUntillDate()) < 0){
-            
-            if(  eventFacade.dateAndTimeInTheMiddle(nextDate,nextDate,event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
-                RequestContext requestContext = RequestContext.getCurrentInstance();        
-                requestContext.execute("PF('DateInTheMiddleRepeat Error').show();");
-                return "error";
+                      
+            if(edit){
+                if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
+                    requestContext.execute("PF('DateInTheMiddleRepeat Error').show();");
+                    return "error";
+                }
+            }else{
+                if(  eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername())  ){
+                    requestContext.execute("PF('DateInTheMiddleRepeat Error').show();");
+                    return "error";
+                }
             }
+
             
           //repetition
             switch(getRepeats()){
@@ -436,8 +451,7 @@ public class EventController {
                 }
             }
             
-            if(  eventFacade.dateAndTimeInTheMiddle(nextDate,nextDate,event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
-                RequestContext requestContext = RequestContext.getCurrentInstance();        
+            if(  eventFacade.dateAndTimeInTheMiddle(nextDate,nextDate,event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){       
                 requestContext.execute("PF('DateInTheMiddle Error').show();");
                 return "";
             }
@@ -465,15 +479,23 @@ public class EventController {
         }
         
         Date controlDate = event.getDate();
-        
+        RequestContext requestContext = RequestContext.getCurrentInstance();        
+            
         //check error loop
         for(int i=0; i <= days; i++ ){
-            if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
-                RequestContext requestContext = RequestContext.getCurrentInstance();        
-                requestContext.execute("PF('DateInTheMiddleRepeat Error').show();");
-                return "error";
-            } 
             
+            if(edit){
+                if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
+                    requestContext.execute("PF('DateInTheMiddle Error').show();");
+                    return "error";
+                }
+            }else{
+                if(  eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername())  ){
+                    requestContext.execute("PF('DateInTheMiddle Error').show();");
+                    return "error";
+                }
+            }
+
             //add one day and repeat
             if(days>0){            
                 DateTime datetime = new DateTime(event.getDate());
