@@ -16,7 +16,7 @@ body.noFrame {
 #topHeader {
     width:100%; 
     height: 90px;
-    background: #00A4FF;
+    background: #3D8AF7;
     border-bottom-color: #356e94; 
     border-bottom-style: solid;
     border-bottom-width: 1px;
@@ -27,7 +27,7 @@ body.noFrame {
     width: 150px; 
     padding-bottom: 30%;
     margin: 0px;
-    background: #00A4FF;
+    background: #3D8AF7;
     float : left;
 }
 
@@ -37,7 +37,7 @@ body.noFrame {
     margin: 0px;
     padding-top: 5px; 
     padding-left: 50px;
-    background: #00A4FF;
+    background: #3D8AF7;
     font-family: "Comic Sans MS", cursive sans-serif;
     float : left;
 }
