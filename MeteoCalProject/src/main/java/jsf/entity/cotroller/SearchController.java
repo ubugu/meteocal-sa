@@ -29,10 +29,10 @@ public class SearchController {
     private Boolean privateCalendar = true; 
            
     @EJB
-    private UserFacade userFacade = new UserFacade();
+    private UserFacade userFacade;
     
     @EJB
-    private CalendarFacade calendarFacade = new CalendarFacade();
+    private CalendarFacade calendarFacade;
 
     //getter & setter
     

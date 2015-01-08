@@ -27,10 +27,10 @@ public class RegistrationController {
     private Calendar calendar;
     
     @EJB
-    private UserFacade facade = new UserFacade();
+    private UserFacade facade;
     
     @EJB
-    private CalendarFacade calendarFacade = new CalendarFacade();
+    private CalendarFacade calendarFacade;
     
 
 

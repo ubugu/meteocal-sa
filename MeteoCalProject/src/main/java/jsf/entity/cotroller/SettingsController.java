@@ -41,10 +41,10 @@ public class SettingsController {
     private List<User> oldSharedUsers = new ArrayList<>();
 
     @EJB
-    UserFacade userFacade = new UserFacade();
+    UserFacade userFacade;
 
     @EJB
-    CalendarFacade calendarFacade = new CalendarFacade();
+    CalendarFacade calendarFacade;
 
     @PostConstruct
     public void init() {

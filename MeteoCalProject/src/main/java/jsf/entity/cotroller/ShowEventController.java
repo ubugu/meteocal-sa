@@ -31,13 +31,13 @@ public class ShowEventController {
     Event selectedEvent;
     
     @EJB
-    ParticipantFacade participantFacade = new ParticipantFacade();
+    ParticipantFacade participantFacade;
     @EJB
-    BadconditionsFacade badConditionsFacade = new BadconditionsFacade();
+    BadconditionsFacade badConditionsFacade;
     @EJB
-    NotificationFacade notificationFacade = new NotificationFacade();
+    NotificationFacade notificationFacade;
     @EJB
-    UserFacade userFacade = new UserFacade();
+    UserFacade userFacade;
     
     private List<Participant> participants;
     private List<Participant> invited;
