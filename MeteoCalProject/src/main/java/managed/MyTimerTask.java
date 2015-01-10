@@ -8,6 +8,7 @@ package managed;
 import java.util.TimerTask;
 import javax.ejb.Stateless;
 
+
 /**
  *
  * @author Walter
@@ -17,9 +18,8 @@ public class MyTimerTask extends TimerTask{
        
     @Override
     public void run(){
-                
-        System.out.println("ok");
+     
         
-    } 
-    
+        System.out.println("ook");
+    }
 }

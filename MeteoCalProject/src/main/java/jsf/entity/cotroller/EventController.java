@@ -405,9 +405,10 @@ public class EventController {
         
         while(nextDate.compareTo(getUntillDate()) < 0){
             
+            /*
             if(!edit){
                 event.setId( eventFacade.getMaxEventID() + 1);
-            }
+            }*/
             
             //event creation
             try{
@@ -545,9 +546,10 @@ public class EventController {
         //creation loop
         for(int i=0; i <= days; i++ ){
         
+            /*
             if(!edit){
                 event.setId( eventFacade.getMaxEventID() + 1);
-            }
+            }*/
             
             //if the cycle is repeated then the successive starting date must be set to 00:00
             // we have to do this only one time in order to optimize the code.
@@ -616,7 +618,9 @@ public class EventController {
     private void prepareCreateBadConditions(){
         
         if((!edit && bad) || (editAddingBad && bad)){
+            /*
             badconditions.setId( badconditionsFacade.getMaxBadConditionsID() + 1 );
+            */
             badconditions.setEventID(event);
                                 
             if(temp==false){
@@ -678,7 +682,9 @@ public class EventController {
         notification.setDescription("The event " + event.getTitle() + "that will be held on the " + event.getDate() + " has been modified by " + event.getCalendar().getOwner().getUsername() );
  
         for(Participant participants : participantFacade.searchByEvent(event.getId())){
+            /*
             notification.setId( notificationFacade.getMaxNotificationID() +1 );
+            */
             notification.setUser(participants.getUser1());
             notificationFacade.create(notification); 
         }
@@ -692,7 +698,9 @@ public class EventController {
         notification.setDescription("You have been invited to the event " + event.getTitle() + " by the user " + event.getCalendar().getOwner().getUsername() + " on the " + event.getDate());
         
         for (String invitatedUser : getInvitatedUsers()) {
+            /*
             notification.setId( notificationFacade.getMaxNotificationID() +1 );
+            */
             notification.setUser(userFacade.searchForUser(invitatedUser));
             notificationFacade.create(notification);
         }
