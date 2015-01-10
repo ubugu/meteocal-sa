@@ -216,11 +216,43 @@ public class EventController {
     
     public String controlDataCreation(){
         
-        Boolean error = false;
+        Boolean error;
         RequestContext requestContext = RequestContext.getCurrentInstance();
-        //controlData
-
-        if(edit){
+        
+        // here we control if there are input errors
+        error = checkInsertionErrors(requestContext);
+        
+        /*if there are simplier error we will return to the event creation page 
+            showing the errors to avoid useless further computation */
+        if(error){
+           return ""; 
+        }
+        
+        /*creationEvent will return the redirection to the page
+            if there are some error regarding a wrong insertion of the data,
+            like repeated event or event that last more than 1 day we will
+            return to the event page showing the errors*/
+        String ret = prepareCreateEvent();
+        
+        if(ret.equals("")){
+            requestContext.execute("PF('complete').show();");
+        }
+        
+        return "";
+    }
+    
+    /**
+     * method that will control the input from the user and if the data are feasible or not
+     * it will show the errors in the dialog executing them.
+     * @param requestContext Incapsula le informazioni sulla richiesta HTTP corrente,corrispondente a quella dello user loggato
+     * @return true if there are error, false otherwise
+     */
+    private Boolean checkInsertionErrors(RequestContext requestContext){
+        
+        Boolean error=false;
+        
+        //control if there are event in the middle, if we are in the updateEvent case here we don't have to consider the current event in the query
+        if(getEdit()){
             if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
                 requestContext.execute("PF('DateInTheMiddle Error').show();");
                 error=true;
@@ -232,42 +264,52 @@ public class EventController {
             }
         }
         
+        //control if the starting date is before today
         if(DateTimeComparator.getDateOnlyInstance().compare( new DateTime(event.getDate()) , new DateTime()) < 0){     
             requestContext.execute("PF('NoPast Error').show();");
             error=true;
         }
         
+        //control if the event date is today but the time is in the past
         if((DateTimeComparator.getTimeOnlyInstance().compare( new DateTime(event.getStartingTime()) , new DateTime()) < 0) && (DateTimeComparator.getDateOnlyInstance().compare( new DateTime() , new DateTime(event.getDate())) == 0)){
             requestContext.execute("PF('StartTime Error').show();");
             error=true;
         }
-                    
+         
+        //control if the enddate is before the starting date
         if(DateTimeComparator.getDateOnlyInstance().compare( new DateTime(getEndate()) , new DateTime(event.getDate())) < 0){
             requestContext.execute("PF('EndDate Error').show();");
             error=true;
         }
         
+        //control if the endtime is before the starting time
         if( (DateTimeComparator.getTimeOnlyInstance().compare( new DateTime(event.getEndingTime()) , new DateTime(event.getStartingTime())) < 0) && (DateTimeComparator.getDateOnlyInstance().compare( new DateTime(getEndate()) , new DateTime(event.getDate())) == 0)){
             requestContext.execute("PF('EndTime Error').show();");
             error=true;
         }
         
+        //control if the untilldate is before the event date in the case of repetitions
         if((!getRepeats().equals("no")) && (getUntillDate()!=null) && (DateTimeComparator.getDateOnlyInstance().compare( new DateTime(getUntillDate()) , new DateTime(event.getDate())) < 0)){
             requestContext.execute("PF('EndUntillDate Error').show();");
             error=true;
         }
-        
+
+        //in order to avoid further advanced features for now we don't allow a repetition for the events that last more than 1 day
         if((!getRepeats().equals("no")) && (DateTimeComparator.getDateOnlyInstance().compare( new DateTime(getEndate()) , new DateTime(event.getDate())) != 0)){
             requestContext.execute("PF('Repeat Error').show();");
             error=true;
         }
         
+        //control if the user select a repetition without naming an untilldate
         if((!getRepeats().equals("no")) && (getUntillDate()==null)){
             requestContext.execute("PF('Untill Error').show();");
             error=true;
         }
         
-        //it will return false also if the field is disabled
+        /*control if the user select the invite field without naming at least 1 username 
+            or if the username doesn't exist 
+            it will return false also if the field is disabled
+        */
         if(getInviteSelect()){
             if(!searchInvited()){
                 requestContext.execute("PF('Invite Error').show();");
@@ -275,18 +317,7 @@ public class EventController {
             }
         }
         
-        if(error){
-           return ""; 
-        }
-        
-        //creationEvent it will return the redirect
-        String ret = prepareCreateEvent();
-        if(ret.equals("")){
-            requestContext = RequestContext.getCurrentInstance();
-            requestContext.execute("PF('complete').show();");
-        }
-        
-        return "";
+        return error;
     }
 
     /**
@@ -297,6 +328,7 @@ public class EventController {
         
         Boolean result = true;
         
+        //false if there are no invited people in the textarea
         if(getInvitations()== null || getInvitations().equals("")){
             return false;
         }
@@ -360,30 +392,12 @@ public class EventController {
                 }
             }
 
-            
-          //repetition
-            switch(getRepeats()){
-                case "everyday"   : {
-                    nextDate= (new DateTime(nextDate).plusDays(1).toDate());
-                    break;
-                }
-                case "everyweek"  : {
-                    nextDate= (new DateTime(nextDate).plusWeeks(1).toDate());
-                    break;
-                }
-                case "everymonth" : {
-                    nextDate= (new DateTime(nextDate).plusMonths(1).toDate());
-                    break;
-                }
-                case "everyyear"  : {
-                    nextDate= (new DateTime(nextDate).plusYears(1).toDate());
-                    break;
-                }
-            }
+            //repetition
+            nextDate = nextRepetitionDate(nextDate);
   
         }
         
-        //reset to controlDate
+        //reset to the initial date
         
         nextDate = controlDate;
         
@@ -412,15 +426,12 @@ public class EventController {
             }
             
             //invite & notify if there are invited
-            if(getInviteSelect() || edit ){
-                
+            if(getInviteSelect() || edit ){               
                 //create notification
-                prepareCreateNotification();
-                
+                prepareCreateNotification();                
             }
             
-            if(getInviteSelect()){
-                
+            if(getInviteSelect()){               
                 //create participant
                 prepareCreateParticipant();
             }
@@ -429,38 +440,45 @@ public class EventController {
             if(!edit){
                 setOwnerParticipant();
             }
-  
                 
-            //repetition
-            switch(getRepeats()){
-                case "everyday"   : {
-                    nextDate= (new DateTime(nextDate).plusDays(1).toDate());
-                    break;
-                }
-                case "everyweek"  : {
-                    nextDate= (new DateTime(nextDate).plusWeeks(1).toDate());
-                    break;
-                }
-                case "everymonth" : {
-                    nextDate= (new DateTime(nextDate).plusMonths(1).toDate());
-                    break;
-                }
-                case "everyyear"  : {
-                    nextDate= (new DateTime(nextDate).plusYears(1).toDate());
-                    break;
-                }
-            }
-            
-            if(  eventFacade.dateAndTimeInTheMiddle(nextDate,nextDate,event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){       
-                requestContext.execute("PF('DateInTheMiddle Error').show();");
-                return "";
-            }
-            
+            //repetition & set of the new date
+            nextDate = nextRepetitionDate(nextDate);           
             event.setDate(nextDate);
             
         }
         
         return "";
+    }
+    
+    /**
+     * method that will calculate the nextdate based on the repeats user's input
+     * @param currentDate, last date of the added event
+     * @return newDate, the nextDate
+     */
+    private Date nextRepetitionDate(Date currentDate){
+        
+        Date newDate = currentDate;
+        
+        switch(getRepeats()){
+            case "everyday"   : {
+                newDate= (new DateTime(currentDate).plusDays(1).toDate());
+                break;
+            }
+            case "everyweek"  : {
+                newDate= (new DateTime(currentDate).plusWeeks(1).toDate());
+                break;
+            }
+            case "everymonth" : {
+                newDate= (new DateTime(currentDate).plusMonths(1).toDate());
+                break;
+            }
+            case "everyyear"  : {
+                newDate= (new DateTime(currentDate).plusYears(1).toDate());
+                break;
+            }
+        }
+        
+        return newDate;
     }
     
     /**
@@ -472,10 +490,14 @@ public class EventController {
     private String normalCreation(){
         int days = 0;
         Date endingTime=null;
+        Date startingTime=null;
+        
+        //here we find the difference in days between the enddate and the startingdate
         if( getEndate().compareTo(event.getDate()) > 0){
             
             days = Days.daysBetween(new DateTime(event.getDate()), new DateTime(getEndate())).getDays(); 
             endingTime = event.getEndingTime();
+            startingTime = event.getStartingTime();
         }
         
         Date controlDate = event.getDate();
@@ -483,6 +505,19 @@ public class EventController {
             
         //check error loop
         for(int i=0; i <= days; i++ ){
+            
+            //if the cycle is repeated then the successive starting date must be set to 00:00
+            // we have to do this only one time in order to optimize the code.
+            if(i==1){
+                event.setStartingTime(new Date(Time.valueOf("00:00:00").getTime()));
+            }
+            if(i+1 > days && days > 0){
+                event.setEndingTime(endingTime);
+            }else{ 
+                if(days!=0){
+                    event.setEndingTime(new Date(Time.valueOf("23:59:59").getTime()));
+                }
+            }
             
             if(edit){
                 if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
@@ -505,6 +540,7 @@ public class EventController {
         }
         
         event.setDate(controlDate);
+        event.setStartingTime(startingTime);
         
         //creation loop
         for(int i=0; i <= days; i++ ){
@@ -514,7 +550,7 @@ public class EventController {
             }
             
             //if the cycle is repeated then the successive starting date must be set to 00:00
-            // we have to do this only one time.
+            // we have to do this only one time in order to optimize the code.
             if(i==1){
                 event.setStartingTime(new Date(Time.valueOf("00:00:00").getTime()));
             }
@@ -596,7 +632,11 @@ public class EventController {
         //we can delete it if it was the user decision or we can try to create the badconditions
             
         if( (!bad) && (badconditions.getId()!=null) ){
-            badconditionsFacade.remove(badconditions);
+            try{
+                badconditionsFacade.remove(badconditions);
+            }catch(Exception e){
+                //TODO
+            }
         }else{
             try{
                 if(edit && !editAddingBad){
@@ -638,7 +678,6 @@ public class EventController {
         notification.setDescription("The event " + event.getTitle() + "that will be held on the " + event.getDate() + " has been modified by " + event.getCalendar().getOwner().getUsername() );
  
         for(Participant participants : participantFacade.searchByEvent(event.getId())){
-            //TODO prova
             notification.setId( notificationFacade.getMaxNotificationID() +1 );
             notification.setUser(participants.getUser1());
             notificationFacade.create(notification); 
