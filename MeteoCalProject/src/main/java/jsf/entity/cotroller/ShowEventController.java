@@ -134,8 +134,10 @@ public class ShowEventController {
     
     public void sendNotification(String response, User user) {
         Notification notification = new Notification();
+        /*
         int id = this.notificationFacade.getMaxNotificationID() + 1;
         notification.setId(id);
+        */
         notification.setEventID(selectedEvent);
         notification.setType("RESPONSE");
         notification.setVisualized("NO");

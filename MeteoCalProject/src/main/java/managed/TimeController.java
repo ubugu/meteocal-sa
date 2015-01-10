@@ -37,7 +37,7 @@ public class TimeController {
         //the Date and time at which you want to execute
         Date date;
 
-        date=new DateTime().plusDays(1).toDate();
+        date=new DateTime().plusMinutes(1).toDate();
         //Creation of the time and schedule of it
         
         Timer timer = new Timer();
@@ -45,7 +45,7 @@ public class TimeController {
         //Use this if you want to execute it repeatedly
         //1000=1 second
         
-        timer.schedule(new MyTimerTask(),date,60000);
+        timer.schedule(new MyTimerTask(),date,10000);
 
         
     } 
