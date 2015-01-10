@@ -27,21 +27,6 @@
                 <p:inputText id="searchText" value="#{SearchController.searchedUser}" />
                 <p:commandButton id="searchButton" value="Search"  action="#{SearchController.searchUser()}"/>    
             </h:form>
-            <h:form>
-                 <p:tabMenu activeIndex="#{scheduleController.viewType}">
-                <p:menuitem value="Month"  icon="ui-icon-star">
-                    <f:param name="month" value="1" />
-                </p:menuitem>
-                  <p:menuitem value="Week" icon="ui-icon-document">
-                    <f:param name="week" value="2" />
-                </p:menuitem>
-
-                <p:menuitem value="Day" icon="ui-icon-search">
-                    <f:param name="day" value="3" />
-                </p:menuitem>
-              
-            </p:tabMenu>
-            </h:form>
            
         </div>
         
