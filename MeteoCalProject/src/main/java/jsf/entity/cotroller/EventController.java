@@ -5,6 +5,7 @@
  */
 package jsf.entity.cotroller;
 
+import java.io.IOException;
 import java.sql.Time;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -14,15 +15,24 @@ import jsf.entity.Event;
 import jsf.entity.facade.BadconditionsFacade;
 import jsf.entity.facade.EventFacade;
 import java.util.Date; 
+import javax.persistence.NoResultException;
 import jsf.entity.Notification;
 import jsf.entity.Participant;
 import jsf.entity.ParticipantPK;
+import jsf.entity.Weather;
 import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.ParticipantFacade;
 import jsf.entity.facade.UserFacade;
+import jsf.entity.facade.WeatherFacade;
+import net.aksingh.owmjapis.AbstractForecast;
+import net.aksingh.owmjapis.AbstractForecast.Forecast;
+import net.aksingh.owmjapis.CurrentWeather;
+import net.aksingh.owmjapis.DailyForecast;
+import net.aksingh.owmjapis.OpenWeatherMap;
 import org.joda.time.DateTime; 
 import org.joda.time.DateTimeComparator;
 import org.joda.time.Days;
+import org.json.JSONException;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -51,6 +61,8 @@ public class EventController {
     private NotificationFacade notificationFacade;
     @EJB
     private ParticipantFacade participantFacade;
+    @EJB
+    private WeatherFacade weatherFacade;
     
     
     // variables useful to set the correct events in the database
@@ -477,13 +489,18 @@ public class EventController {
         nextDate = controlDate;
         
         //creation loop
-        
+        Weather weather;
         while(nextDate.compareTo(getUntillDate()) < 0){
             
             if(!getEdit()){
                 event.setId( eventFacade.getMaxEventID() + 1);
             }
             
+     
+            //create wheather for the event
+            weather = createWeather();
+            event.setWeatherID(weather);
+           
             //event creation
             try{
                 if(edit){
@@ -524,6 +541,61 @@ public class EventController {
         
         return "";
     }
+    
+    private Weather createWeather() {
+        if (event.getCity() == null) {
+            return null;
+        }
+         RequestContext requestContext = RequestContext.getCurrentInstance(); 
+        OpenWeatherMap owm = new OpenWeatherMap("");
+        
+        // getting current weather data for the "London" city
+        DailyForecast forecast = null;
+        
+        DateTime currentDate = new DateTime();
+        DateTime targetDate = new DateTime(event.getDate());
+        Integer dayForecast = targetDate.getDayOfYear() - currentDate.getDayOfYear() + 1;  
+
+        if (dayForecast > 13) { 
+            requestContext.execute("PF('weather').show();");  
+            return null;
+        }
+        
+        //check if meteo for inserted date and city already exixst in the database
+   
+        Weather oldWeather = this.weatherFacade.searchByCityAndDate(event.getCity(), event.getDate());
+        if (oldWeather != null) {
+            return oldWeather;
+        }
+
+
+
+       
+        Weather weather = new Weather();
+        DailyForecast forescast;
+        try {
+            forecast = owm.dailyForecastByCityName(event.getCity(), dayForecast.byteValue());
+            weather.setId(this.weatherFacade.getMaxNotificationID() + 1);
+            weather.setCity(forecast.getCityInstance().getCityName());
+            weather.setClouds(forecast.getForecastInstance(dayForecast-1).getPercentageOfClouds());
+            weather.setDate(forecast.getForecastInstance(dayForecast-1).getDateTime());
+            weather.setHumidity(forecast.getForecastInstance(dayForecast-1).getHumidity());
+            weather.setPrecipitations((int)forecast.getForecastInstance(dayForecast - 1).getRain());
+            weather.setPressure(forecast.getForecastInstance(dayForecast-1).getPressure());
+            weather.setTemperature(forecast.getForecastInstance(dayForecast-1).getTemperatureInstance().getDayTemperature());
+            weather.setWind(forecast.getForecastInstance(dayForecast-1).getWindSpeed());
+            this.weatherFacade.create(weather);
+            return weather;  
+        } catch (IOException | JSONException ex) {
+            System.out.println(ex.getMessage());
+        } catch (NullPointerException e) {
+            //TODO
+        }
+        
+        requestContext.execute("PF('weather').show();"); 
+        return null;
+    }
+
     
     /**
      * method that will calculate the nextdate based on the repeats user's input
@@ -576,7 +648,7 @@ public class EventController {
         startingTime = event.getStartingTime();
         endingTime = event.getEndingTime();
         RequestContext requestContext = RequestContext.getCurrentInstance();        
-            
+       
         //check error loop
         for(int i=0; i <= days; i++ ){
             
@@ -637,8 +709,13 @@ public class EventController {
                     event.setEndingTime(new Date(Time.valueOf("23:59:59").getTime()));
                 }
             }
-                        
-            //we can try to create the event
+            
+            //create weather for the event
+            Weather weather = createWeather();
+            event.setWeatherID(weather);
+          
+            
+            //we can try to create the event 
             try{
                 if(edit){
                     eventFacade.edit(event);

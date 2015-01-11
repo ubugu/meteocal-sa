@@ -22,11 +22,13 @@ import jsf.entity.Event;
 import jsf.entity.Notification;
 import jsf.entity.Participant;
 import jsf.entity.User;
+import jsf.entity.Weather;
 import jsf.entity.facade.CalendarFacade;
 import jsf.entity.facade.EventFacade;
 import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.ParticipantFacade;
 import jsf.entity.facade.UserFacade;
+import jsf.entity.facade.WeatherFacade;
 import org.joda.time.DateTime;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -73,6 +75,9 @@ public class SchedulerController implements Serializable {
     
     @EJB
     ParticipantFacade participantFacade;
+    
+    @EJB
+    WeatherFacade weatherFacade;
  
     @PostConstruct
     public void init() {
@@ -207,8 +212,8 @@ public class SchedulerController implements Serializable {
                 }
             }
 
-            List<Participant> participants = this.participantFacade.searchByEvent(id);
-
+            //Delete the participant 
+            List<Participant> participants = this.participantFacade.searchByEvent(id);  
             for (Participant p : participants) {
                 if (p.getParticipant().equals("YES") && p.getOrganiser().equals("NO")) {
                     User user = p.getUser1();
@@ -225,13 +230,32 @@ public class SchedulerController implements Serializable {
                 
             }
 
+            //Remove notifications about that event
             List<Notification> notifications = this.notificationFacade.searchByEventID(id);
-            
             for (Notification n : notifications) {
                 this.notificationFacade.remove(n);
             }
-
+            
+            //remove the event
             this.eventFacade.remove(event);
+            events.remove(event);
+            
+            //remove the weather if no other events has link to it
+            Weather weatherEvent = event.getWeatherID();
+         
+            if (weatherEvent == null) {
+                init();
+                return "/mainUserPage?faces-redirect=true";
+            }
+
+            for (Event e : eventFacade.findAll()) {
+                if (e.getWeatherID().equals(weatherEvent)) {
+                    init();
+                    return "/mainUserPage?faces-redirect=true";
+                }
+            }
+            
+            weatherFacade.remove(weatherEvent);
             init();
             return "/mainUserPage?faces-redirect=true";
         } catch (NullPointerException e) {
