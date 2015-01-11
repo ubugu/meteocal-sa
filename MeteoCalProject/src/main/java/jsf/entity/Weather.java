@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Weather.findAll", query = "SELECT w FROM Weather w"),
     @NamedQuery(name = "Weather.findByCity", query = "SELECT w FROM Weather w WHERE w.city = :city"),
     @NamedQuery(name = "Weather.findByDate", query = "SELECT w FROM Weather w WHERE w.date = :date"),
+    @NamedQuery(name = "Weather.findByDateAndCity", query = "SELECT w FROM Weather w WHERE w.date = :date AND w.city = :city"),
     @NamedQuery(name = "Weather.findByPrecipitations", query = "SELECT w FROM Weather w WHERE w.precipitations = :precipitations"),
     @NamedQuery(name = "Weather.findByTemperature", query = "SELECT w FROM Weather w WHERE w.temperature = :temperature"),
     @NamedQuery(name = "Weather.findByWind", query = "SELECT w FROM Weather w WHERE w.wind = :wind"),
