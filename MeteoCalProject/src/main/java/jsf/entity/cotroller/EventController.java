@@ -214,6 +214,81 @@ public class EventController {
     }
     // end variables
     
+        
+    /**
+     * method that will be called in order to set to the Edit Mode the class addEvent
+     * it will check and set the value of the event that the user want to change in 
+     * order to show the precompiled field, this avoid us to create an updateeventcontroller
+     * and an updateevent page
+     * @param id of the event to update, is obtained by the schedule controller
+     * @return redirect to the addeventpage
+     */
+    public String changeEvent(int id){
+        
+        event = eventFacade.find(id);
+        badconditions = badconditionsFacade.searchByEvent(event);
+        
+        if(badconditions!=null){
+            
+            setBad(true);
+            setStyle("block");
+            
+            if(badconditions.getPrecipitations()!=null){
+                setPrec(true);
+            }
+            if(badconditions.getTemperature()!=null){
+                setTemp(true);
+            } 
+            
+            setEditAddingBad(false);
+
+        }else{
+            badconditions = new Badconditions();
+            setEditAddingBad(true);
+            setBad(false);
+            setPrec(false);
+            setTemp(false);
+        }
+        
+        setInviteSelect(false);
+        setEdit(true);
+        setEndate(event.getDate());
+        
+        return "addEvent?faces-redirect=true"; 
+    }
+    
+    /**
+     * method that will be called in order to create new event and badconditions
+     * @return redirect to the addeventpage
+     */
+    public String newEvent(){
+        
+        event = new Event();
+        badconditions = new Badconditions();
+        
+        //reset all the field
+        setPrec(false);
+        setTemp(false);
+        setBad(false);
+        setStyle("none");
+        setEdit(false);
+        setEndate(null);
+        setInvitations("");
+        setInviteSelect(false);
+        setRejectedUsers("");
+        setUntillDate(null);
+        setRepeats("no");
+        setEditAddingBad(false);
+        setTemp(false);
+        setPrec(false);
+        
+        return "addEvent?faces-redirect=true"; 
+    }
+    
+    /**
+     * method that will start the creation of the event, it will control the input fields
+     * @return always a redirection to the current page, showing error or creating events
+     */
     public String controlDataCreation(){
         
         Boolean error;
@@ -490,18 +565,17 @@ public class EventController {
      */
     private String normalCreation(){
         int days = 0;
-        Date endingTime=null;
-        Date startingTime=null;
-        
+        Date endingTime;
+        Date startingTime;
+       
         //here we find the difference in days between the enddate and the startingdate
-        if( getEndate().compareTo(event.getDate()) > 0){
-            
-            days = Days.daysBetween(new DateTime(event.getDate()), new DateTime(getEndate())).getDays(); 
-            endingTime = event.getEndingTime();
-            startingTime = event.getStartingTime();
+        if( getEndate().compareTo(event.getDate()) > 0){           
+            days = Days.daysBetween(new DateTime(event.getDate()), new DateTime(getEndate())).getDays();           
         }
         
         Date controlDate = event.getDate();
+        startingTime = event.getStartingTime();
+        endingTime = event.getEndingTime();
         RequestContext requestContext = RequestContext.getCurrentInstance();        
             
         //check error loop
@@ -542,6 +616,7 @@ public class EventController {
         
         event.setDate(controlDate);
         event.setStartingTime(startingTime);
+        event.setEndingTime(endingTime);
         
         //creation loop
         for(int i=0; i <= days; i++ ){
@@ -733,76 +808,6 @@ public class EventController {
         participant.setParticipant("YES");
         participant.setParticipantPK(new ParticipantPK(participant.getUser1().getUsername(),participant.getEvent1().getId()));
         participantFacade.create(participant);
-    }
-    
-    /**
-     * method that will be called in order to set to the Edit Mode the class addEvent
-     * it will check and set the value of the event that the user want to change in 
-     * order to show the precompiled field, this avoid us to create an updateeventcontroller
-     * and an updateevent page
-     * @param id of the event to update, is obtained by the schedule controller
-     * @return redirect to the addeventpage
-     */
-    public String changeEvent(int id){
-        
-        event = eventFacade.find(id);
-        badconditions = badconditionsFacade.searchByEvent(event);
-        
-        if(badconditions!=null){
-            
-            setBad(true);
-            setStyle("block");
-            
-            if(badconditions.getPrecipitations()!=null){
-                setPrec(true);
-            }
-            if(badconditions.getTemperature()!=null){
-                setTemp(true);
-            } 
-            
-            setEditAddingBad(false);
-
-        }else{
-            badconditions = new Badconditions();
-            setEditAddingBad(true);
-            setBad(false);
-            setPrec(false);
-            setTemp(false);
-        }
-        
-        setInviteSelect(false);
-        setEdit(true);
-        setEndate(event.getDate());
-        
-        return "addEvent?faces-redirect=true"; 
-    }
-    
-    /**
-     * method that will be called in order to create new event and badconditions
-     * @return redirect to the addeventpage
-     */
-    public String newEvent(){
-        
-        event = new Event();
-        badconditions = new Badconditions();
-        
-        //reset all the field
-        setPrec(false);
-        setTemp(false);
-        setBad(false);
-        setStyle("none");
-        setEdit(false);
-        setEndate(null);
-        setInvitations("");
-        setInviteSelect(false);
-        setRejectedUsers("");
-        setUntillDate(null);
-        setRepeats("no");
-        setEditAddingBad(false);
-        setTemp(false);
-        setPrec(false);
-        
-        return "addEvent?faces-redirect=true"; 
     }
     
 }
