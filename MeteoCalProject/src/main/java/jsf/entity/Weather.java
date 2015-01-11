@@ -11,7 +11,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -47,7 +46,6 @@ public class Weather implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @GeneratedValue
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)

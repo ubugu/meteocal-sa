@@ -70,9 +70,7 @@ public class RegistrationController {
         try {
             facade.create(user);
             calendar.setOwner(user);
-            /*
             calendar.setId(calendarFacade.getMaxCalendarID() + 1);
-            */
             calendarFacade.create(calendar);
         } catch (Exception e) {
             e.getMessage();
