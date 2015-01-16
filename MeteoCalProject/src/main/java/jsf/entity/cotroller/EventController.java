@@ -576,12 +576,25 @@ public class EventController {
         try {
             forecast = owm.dailyForecastByCityName(event.getCity(), dayForecast.byteValue());
             weather.setId(this.weatherFacade.getMaxNotificationID() + 1);
+            if (forecast.getCityInstance().getCityName().equals("")) {
+                requestContext.execute("PF('weather').show();");
+                return null;
+            }
             weather.setCity(forecast.getCityInstance().getCityName());
             weather.setClouds(forecast.getForecastInstance(dayForecast-1).getPercentageOfClouds());
             weather.setDate(forecast.getForecastInstance(dayForecast-1).getDateTime());
             weather.setHumidity(forecast.getForecastInstance(dayForecast-1).getHumidity());
-            weather.setPrecipitations((int)forecast.getForecastInstance(dayForecast - 1).getRain());
-            weather.setPressure(forecast.getForecastInstance(dayForecast-1).getPressure());
+            int rain = (int)forecast.getForecastInstance(dayForecast - 1).getRain();
+            int snow = (int)forecast.getForecastInstance(dayForecast - 1).getSnow();
+            if (rain > snow) {
+                weather.setPrecipitations(rain);
+                weather.setPrecipitationType("RAIN");
+            } else {
+                weather.setPrecipitations(snow);
+                weather.setPrecipitationType("SNOW");
+            }
+
+             weather.setPressure(forecast.getForecastInstance(dayForecast-1).getPressure());
             weather.setTemperature(forecast.getForecastInstance(dayForecast-1).getTemperatureInstance().getDayTemperature());
             weather.setWind(forecast.getForecastInstance(dayForecast-1).getWindSpeed());
             this.weatherFacade.create(weather);
