@@ -293,6 +293,8 @@ public class TimeController {
     * Search for event that has (city != null) and have weather = null due to 
     */
     public void updateNull() {
+        
+        
         List<Event> noWeatherEvents = eventFacade.searchByNullWeather();
         for (Event e : noWeatherEvents) {
             // getting current weather data for the "London" city
