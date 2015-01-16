@@ -6,7 +6,9 @@
 package jsf.entity.cotroller;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.Time;
+import java.util.Arrays;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -20,6 +22,7 @@ import jsf.entity.Notification;
 import jsf.entity.Participant;
 import jsf.entity.ParticipantPK;
 import jsf.entity.Weather;
+import jsf.entity.facade.CalendarFacade;
 import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.ParticipantFacade;
 import jsf.entity.facade.UserFacade;
@@ -41,9 +44,9 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean( name= "EventController" , eager = true)
 @SessionScoped
-public class EventController {
+public class EventController implements Serializable{
     
-    private Event event;
+    private Event event = new Event();
 
     private Badconditions badconditions = new Badconditions();
     
@@ -52,17 +55,19 @@ public class EventController {
     private Participant participant = new Participant();
     
     @EJB
-    private EventFacade eventFacade;
+    EventFacade eventFacade;
     @EJB
-    private BadconditionsFacade badconditionsFacade;
+    BadconditionsFacade badconditionsFacade;
     @EJB
-    private UserFacade userFacade;
+    UserFacade userFacade;
     @EJB
-    private NotificationFacade notificationFacade;
+    CalendarFacade calendarFacade;
     @EJB
-    private ParticipantFacade participantFacade;
+    NotificationFacade notificationFacade;
     @EJB
-    private WeatherFacade weatherFacade;
+    ParticipantFacade participantFacade;
+    @EJB
+    WeatherFacade weatherFacade;
     
     
     // variables useful to set the correct events in the database
@@ -340,12 +345,12 @@ public class EventController {
         
         //control if there are event in the middle, if we are in the updateEvent case here we don't have to consider the current event in the query
         if(getEdit()){
-            if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
+            if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
                 requestContext.execute("PF('DateInTheMiddle Error').show();");
                 error=true;
             }
         }else{
-            if(  eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername())  ){
+            if(  eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(),userFacade.getLoggedUser().getUsername())  ){
                 requestContext.execute("PF('DateInTheMiddle Error').show();");
                 error=true;
             }
@@ -442,7 +447,7 @@ public class EventController {
     private String prepareCreateEvent(){
         
         //we can set here the calendar for the event
-        event.setCalendar(userFacade.getLoggedUser().getCalendar());
+        event.setCalendar(calendarFacade.searchByUser(userFacade.getLoggedUser()));
         
         if(getRepeats().equals("no")){
             return normalCreation();
@@ -468,12 +473,12 @@ public class EventController {
         while(nextDate.compareTo(getUntillDate()) < 0){
                       
             if(edit){
-                if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
+                if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
                     requestContext.execute("PF('DateInTheMiddleRepeat Error').show();");
                     return "error";
                 }
             }else{
-                if(  eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername())  ){
+                if(  eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(),userFacade.getLoggedUser().getUsername())  ){
                     requestContext.execute("PF('DateInTheMiddleRepeat Error').show();");
                     return "error";
                 }
@@ -492,10 +497,11 @@ public class EventController {
         Weather weather;
         while(nextDate.compareTo(getUntillDate()) < 0){
             
+            /*
             if(!getEdit()){
                 event.setId( eventFacade.getMaxEventID() + 1);
             }
-            
+            */
      
             //create wheather for the event
             weather = createWeather();
@@ -506,6 +512,7 @@ public class EventController {
                 if(edit){
                     eventFacade.edit(event);
                 }else{
+                    event.setId(null);
                     eventFacade.create(event);
                 }
             }catch(Exception e){
@@ -575,7 +582,7 @@ public class EventController {
         DailyForecast forescast;
         try {
             forecast = owm.dailyForecastByCityName(event.getCity(), dayForecast.byteValue());
-            weather.setId(this.weatherFacade.getMaxNotificationID() + 1);
+            //weather.setId(this.weatherFacade.getMaxNotificationID() + 1);
             if (forecast.getCityInstance().getCityName().equals("")) {
                 requestContext.execute("PF('weather').show();");
                 return null;
@@ -597,6 +604,7 @@ public class EventController {
              weather.setPressure(forecast.getForecastInstance(dayForecast-1).getPressure());
             weather.setTemperature(forecast.getForecastInstance(dayForecast-1).getTemperatureInstance().getDayTemperature());
             weather.setWind(forecast.getForecastInstance(dayForecast-1).getWindSpeed());
+            weather.setId(null);
             this.weatherFacade.create(weather);
             return weather;  
         } catch (IOException | JSONException ex) {
@@ -679,12 +687,12 @@ public class EventController {
             }
             
             if(edit){
-                if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
+                if(  eventFacade.dateAndTimeInTheMiddle(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(),userFacade.getLoggedUser().getUsername(),event.getId())  ){
                     requestContext.execute("PF('DateInTheMiddle Error').show();");
                     return "error";
                 }
             }else{
-                if(  eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),userFacade.getLoggedUser().getCalendar().getId(),userFacade.getLoggedUser().getUsername())  ){
+                if(  eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(),getEndate(),event.getStartingTime(),event.getEndingTime(),calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(),userFacade.getLoggedUser().getUsername())  ){
                     requestContext.execute("PF('DateInTheMiddle Error').show();");
                     return "error";
                 }
@@ -705,11 +713,11 @@ public class EventController {
         //creation loop
         for(int i=0; i <= days; i++ ){
         
-            
+            /*
             if(!edit){
                 event.setId( eventFacade.getMaxEventID() + 1);
             }
-            
+            */
             //if the cycle is repeated then the successive starting date must be set to 00:00
             // we have to do this only one time in order to optimize the code.
             if(i==1){
@@ -733,6 +741,7 @@ public class EventController {
                 if(edit){
                     eventFacade.edit(event);
                 }else{
+                    event.setId(null);
                     eventFacade.create(event);
                 }
             }catch(Exception e){
@@ -783,7 +792,7 @@ public class EventController {
         
         if((!edit && bad) || (editAddingBad && bad)){
 
-            badconditions.setId( badconditionsFacade.getMaxBadConditionsID() + 1 );
+            //badconditions.setId( badconditionsFacade.getMaxBadConditionsID() + 1 );
             badconditions.setEventID(event);
                                 
             if(temp==false){
@@ -810,6 +819,7 @@ public class EventController {
                     badconditionsFacade.edit(badconditions);
                 }else{
                     if(bad){
+                        badconditions.setId(null);
                         badconditionsFacade.create(badconditions);
                     }
                 }           
@@ -845,9 +855,9 @@ public class EventController {
         notification.setDescription("The event " + event.getTitle() + "that will be held on the " + event.getDate() + " has been modified by " + event.getCalendar().getOwner().getUsername() );
  
         for(Participant participants : participantFacade.searchByEvent(event.getId())){
-
-            notification.setId( notificationFacade.getMaxNotificationID() +1 );
+            
             notification.setUser(participants.getUser1());
+            notification.setId(null);
             notificationFacade.create(notification); 
         }
     }
@@ -857,12 +867,12 @@ public class EventController {
      */
     private void prepareInviteNotification(){
         notification.setType("INVITED");
-        notification.setDescription("You have been invited to the event " + event.getTitle() + " by the user " + event.getCalendar().getOwner().getUsername() + " on the " + event.getDate());
+        notification.setDescription("You have been invited to the event " + event.getTitle() + " by the user " + userFacade.getLoggedUser().getUsername() + " on the " + event.getDate());
         
         for (String invitatedUser : getInvitatedUsers()) {
 
-            notification.setId( notificationFacade.getMaxNotificationID() +1 );
             notification.setUser(userFacade.searchForUser(invitatedUser));
+            notification.setId(null);
             notificationFacade.create(notification);
         }
     }
@@ -890,7 +900,7 @@ public class EventController {
     private void setOwnerParticipant(){
         participant.setEvent1(event);
         participant.setOrganiser("YES");
-        participant.setUser1(event.getCalendar().getOwner());
+        participant.setUser1(userFacade.getLoggedUser());
         participant.setParticipant("YES");
         participant.setParticipantPK(new ParticipantPK(participant.getUser1().getUsername(),participant.getEvent1().getId()));
         participantFacade.create(participant);

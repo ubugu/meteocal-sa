@@ -8,17 +8,18 @@ This is the css style of the web pages.
 body.noFrame {
     margin:0; 
     padding:0 0%; 
-    min-height: 650px;
+    min-height: 500px;
     min-width: 1024px;
 }
                 
 /*Define top header coloured bar*/
+
 #topHeader {
     width:100%; 
     height: 90px;
     background: #3D8AF7;
     border-bottom-color: #356e94; 
-    border-bottom-style: solid;
+    border-bottom-style: none;
     border-bottom-width: 1px;
 }
 
@@ -29,6 +30,15 @@ body.noFrame {
     margin: 0px;
     background: #3D8AF7;
     float : left;
+}
+
+#searchHeader {
+    width:100%; 
+    height: 45px;
+    background: #3D8AF7;
+    border-bottom-color: #356e94; 
+    border-bottom-style: none;
+    border-bottom-width: 1px;
 }
 
 /*Define meteocal logo */
@@ -93,7 +103,7 @@ ul.buttonList {
 div.loginForm {     
     padding-top: 20px;
     padding-left: 60%;
-    background-color:#00A4FF;           
+    background-color:#3D8AF7;           
 } 
 
 div.rights  {     
@@ -122,7 +132,7 @@ div.guestFrame {
 div.logoutForm {     
     padding-top: 40px;
     padding-left: 90%;
-    background-color:#00A4FF;           
+    background-color:#3D8AF7;           
 } 
 
 #userCalendar {  
@@ -130,7 +140,7 @@ div.logoutForm {
     margin: 0px;
     padding-top: 30px; 
     padding-left: 100px;
-    background: #00A4FF;
+    background: #3D8AF7;
     font-family: "Comic Sans MS", cursive sans-serif;
     float : left;
 }
@@ -142,16 +152,16 @@ div.logoutForm {
     float:left; 
     display:block; 
     width:500px; 
-    height:800px; 
+    height:500px; 
     background-color: #FFFFFF; 
     text-align: center;
 }
 
-#weatherForm { 
-    float:right;
+#rightEventForm { 
+    float:left;
     display:block; 
-    width:400px; 
-    height:700px; 
+    width:470px; 
+    height:500px; 
     background-color:#FFFFFF;    
     text-align: center;
 }
@@ -159,10 +169,9 @@ div.logoutForm {
 #badConditions {     
     float:left; 
     display:block; 
-    width:300px; 
-    height:30px; 
-    background-color: #FFFFFF; 
-    text-align: right;
+    width:450px; 
+    height:40px;  
+    text-align: center;
     padding-top: 6px;
 }
 
@@ -174,7 +183,8 @@ div.logoutForm {
 }
 
 #badConditionsDiv{ 
-    width:550px;  
+    width:450px;  
+    border:none;
     background-color: #FFFFFF; 
     text-align: center;
 }

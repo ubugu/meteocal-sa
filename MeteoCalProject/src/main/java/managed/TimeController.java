@@ -61,7 +61,7 @@ public class TimeController {
     
     List<Weather> allWeather;
     
-     @Schedule(second = "*/59", minute = "*", hour = "*", persistent = false)
+     @Schedule(second = "*", minute = "*/2", hour = "*", persistent = false)
      public void UpdateWeather() throws InterruptedException {
          DateTime time = new DateTime();
          
@@ -106,10 +106,11 @@ public class TimeController {
                    notification.setDescription("The event " + associatedEvent.getTitle() + " scheduled for "
                    + associatedEvent.getDate() + " does not satisfy the event conditions set by the event creator.");
                    notification.setEventID(associatedEvent);
-                   notification.setId(notificationFacade.getMaxNotificationID() + 1);
                    notification.setType("BADCONDITIONS");
                    notification.setUser(p.getUser1());
                    notification.setVisualized("NO");
+                   
+                   notification.setId(null);
                    notificationFacade.create(notification);
                }
                
@@ -132,10 +133,11 @@ public class TimeController {
             Notification notification = new Notification();
             notification.setDescription(description);
             notification.setEventID(associatedEvent);
-            notification.setId(notificationFacade.getMaxNotificationID() + 1);
             notification.setType("BADCONDITIONS");
             notification.setUser(creator);
             notification.setVisualized("NO");
+            
+            notification.setId(null);
             notificationFacade.create(notification);
         }
     }
@@ -166,7 +168,7 @@ public class TimeController {
                 }
 
             }
-
+ 
             if (days.equals("")) {
                 return "No city Found";
             } else {
@@ -320,7 +322,7 @@ public class TimeController {
             DailyForecast forescast;
             try {
                 forecast = owm.dailyForecastByCityName(e.getCity(), dayForecast.byteValue());
-                weather.setId(this.weatherFacade.getMaxNotificationID() + 1);
+                weather.setId(null);
                 weather.setCity(forecast.getCityInstance().getCityName());
                 weather.setClouds(forecast.getForecastInstance(dayForecast - 1).getPercentageOfClouds());
                 weather.setDate(forecast.getForecastInstance(dayForecast - 1).getDateTime());
@@ -337,6 +339,8 @@ public class TimeController {
                 weather.setPressure(forecast.getForecastInstance(dayForecast - 1).getPressure());
                 weather.setTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getDayTemperature());
                 weather.setWind(forecast.getForecastInstance(dayForecast - 1).getWindSpeed());
+                
+                weather.setId(null);
                 this.weatherFacade.create(weather);
                 e.setWeatherID(weather);
                 eventFacade.edit(e);

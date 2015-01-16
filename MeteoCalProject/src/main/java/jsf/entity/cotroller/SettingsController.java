@@ -5,6 +5,7 @@
  */
 package jsf.entity.cotroller;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +25,7 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean(name = "settingsController", eager = true)
 @ViewScoped
-public class SettingsController {
+public class SettingsController implements Serializable{
     private User user = new User();
     private Boolean setNewPassword = false;
 

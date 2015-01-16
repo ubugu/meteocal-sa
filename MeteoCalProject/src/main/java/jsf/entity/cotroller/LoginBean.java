@@ -5,12 +5,10 @@
  */
 package jsf.entity.cotroller;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,13 +22,13 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean( name= "loginBean" , eager = true)
 @RequestScoped
-public class LoginBean {
+public class LoginBean implements Serializable{
     
 
     private String username;
     private String password;
     @EJB
-    private UserFacade facade;
+    UserFacade facade;
 
     public LoginBean() {
     }
