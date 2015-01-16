@@ -9,7 +9,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import jsf.entity.Event;
 import jsf.entity.Notification;
 import jsf.entity.User;
 
@@ -38,19 +37,6 @@ public class NotificationFacade extends AbstractFacade<Notification> {
     
     public NotificationFacade() {
         super(Notification.class);
-    }
-    
-    /**
-     * method to get the 
-     * @return the maximum number of all the ids of the records in the Notification table or 0 if there are no records
-     *  
-     */
-    public int getMaxNotificationID(){
-        try{
-            return (Integer) em.createNativeQuery("Select MAX(ID) from Notification").getSingleResult();    
-        }catch(Exception e){
-            return 0;
-        } 
     }
     
 }

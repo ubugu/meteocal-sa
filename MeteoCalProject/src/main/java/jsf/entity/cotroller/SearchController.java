@@ -27,12 +27,13 @@ public class SearchController {
     private String searchedUser=null;
     
     private Boolean privateCalendar = true; 
+    
            
     @EJB
-    private UserFacade userFacade;
+    UserFacade userFacade;
     
     @EJB
-    private CalendarFacade calendarFacade;
+    CalendarFacade calendarFacade;
 
     //getter & setter
     
@@ -71,6 +72,7 @@ public class SearchController {
         }
         
         Calendar searchedCalendar = calendarFacade.searchByUser(user);
+        user.setCalendar(searchedCalendar);
         
          if(searchedCalendar.getPrivacy().equals("PRIVATE") ){
             setPrivateCalendar(true);

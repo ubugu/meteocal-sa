@@ -33,21 +33,8 @@ public class WeatherFacade extends AbstractFacade<Weather> {
     public WeatherFacade() {
         super(Weather.class);
     }
-    
-       /**
-     * method to get the 
-     * @return the maximum number of all the ids of the records in the Notification table or 0 if there are no records
-     *  
-     */
-    public int getMaxNotificationID(){
-        try{
-            return (Integer) em.createNativeQuery("Select MAX(ID) from Weather").getSingleResult();    
-        }catch(Exception e){
-            return 0;
-        } 
-    }
 
-       public Weather searchByCityAndDate(String city, Date date) {
+    public Weather searchByCityAndDate(String city, Date date) {
         List<Weather> cityWeather = (List<Weather>) em.createNamedQuery("Weather.findByCity").setParameter("city", city).getResultList();
         DateTime insertedDate = new DateTime(date);
         DateTime searchedDate;

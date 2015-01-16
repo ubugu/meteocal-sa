@@ -16,7 +16,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import jsf.entity.Calendar;
 import jsf.entity.Event;
 import jsf.entity.Notification;
@@ -44,13 +43,13 @@ public class SchedulerController implements Serializable {
     private ScheduleModel eventModel; 
     
     @ManagedProperty(value="#{showEventController}")
-    private ShowEventController showEventController;
+    ShowEventController showEventController;
     
     @ManagedProperty(value="#{EventController}")
-    private EventController eventController;
+    EventController eventController;
 
     @ManagedProperty(value = "#{SearchController}")
-    private SearchController searchController;
+    SearchController searchController;
 
     private ScheduleEvent event = new DefaultScheduleEvent();
 
@@ -218,12 +217,14 @@ public class SchedulerController implements Serializable {
                 if (p.getParticipant().equals("YES") && p.getOrganiser().equals("NO")) {
                     User user = p.getUser1();
                     Notification newNotification = new Notification();
-                    newNotification.setId(this.notificationFacade.getMaxNotificationID() + 1);
+                   // newNotification.setId(this.notificationFacade.getMaxNotificationID() + 1);
                     newNotification.setDescription("The event " + event.getTitle() + " has been deleted.");
                     newNotification.setEventID(null);
                     newNotification.setType("DELETE");
                     newNotification.setUser(user);
                     newNotification.setVisualized("NO");
+                    
+                    newNotification.setId(null);
                     this.notificationFacade.create(newNotification);  
                 }
                 this.participantFacade.remove(p);

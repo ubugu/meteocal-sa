@@ -28,19 +28,6 @@ public class BadconditionsFacade extends AbstractFacade<Badconditions> {
     public BadconditionsFacade() {
         super(Badconditions.class);
     }
-    
-    /**
-     * method to get the 
-     * @return the maximum number of all the ids of the records in the BadConditions table or 0 if there are no records
-     *  
-     */
-    public int getMaxBadConditionsID(){
-        try{
-            return (Integer) em.createNativeQuery("Select MAX(ID) from Badconditions").getSingleResult();    
-        }catch(Exception e){
-            return 0;
-        }
-    }
 
     /**
      * method that will return the unique bad condition that is associated to this event, if there are more bad conditions in future we have to update this field

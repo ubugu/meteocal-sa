@@ -87,10 +87,13 @@
                         <p:message for="untillDate" />
                         
                         <p:outputLabel for="description" value="Description (optional):"/>
-                        <p:inputTextarea id="description" rows="4" cols="35" value="#{EventController.event.description}" />
+                        <p:inputTextarea id="description" autoResize="false" rows="6" cols="28" value="#{EventController.event.description}" />
                         <p:message for="description" />
                         
                     </h:panelGrid>
+                  
+                </div>    
+                <div id="rightEventForm">
                     
                     <br />                    
                     <div id="badConditions"> 
@@ -103,11 +106,11 @@
                
                     <br />
                     
-                    <p:panel id="badConditionsDiv" visible="#{EventController.bad}" style="border:none">
+                    <p:panel  style="width:450px;border:none;" id="badConditionsDiv" visible="#{EventController.bad}">
                             
                         <!-- bad weather layer -->
                     
-                        <h:panelGrid  cellpadding="20px" width="450px" columns="2">
+                        <h:panelGrid cellpadding="10px" width="450px" columns="2">
                     
                             <p:outputLabel for="layer" value="Layer Type:"/>
                             <p:selectOneMenu id="layer" value="#{EventController.badconditions.layer}" style="width:100px">
@@ -121,21 +124,21 @@
                         
                             <!-- bad weather advance setting -->
                         
-                            <h:panelGrid style="bottom: 5px;top: 10px" cellpadding="20px" width="450px" columns="6">
+                        <h:panelGrid cellpadding="10px" width="450px" columns="6">
                         
                             <p:selectBooleanCheckbox id="temperaturecheck" value="#{EventController.temp}"/>
                             <h:outputText value="Temperature"/>
                             <h:outputText id="temperatureoutput" value="C #{EventController.badconditions.temperature}" />
                             <h:inputHidden id="temperature" value="#{EventController.badconditions.temperature}" />
                             <h:outputText id="Clabel" value="C" />
-                            <p:slider for="temperature" display="temperatureoutput" minValue="-20" maxValue="50" style="width: 200px" displayTemplate="{value}" />
+                            <p:slider for="temperature" display="temperatureoutput" minValue="-20" maxValue="50" style="width: 150px" displayTemplate="{value}" />
                             
                             <p:selectBooleanCheckbox id="precipitationscheck" value="#{EventController.prec}"/>
                             <h:outputText value="Precipitations"/>
                             <h:outputText id="precipitationsoutput" value="% #{EventController.badconditions.precipitations}" />
                             <h:inputHidden id="precipitations" value="#{EventController.badconditions.precipitations}" />
                             <h:outputText id="Plabel" value="%" />
-                            <p:slider  for="precipitations" display="precipitationsoutput" style="width: 200px"  displayTemplate="{value}" />
+                            <p:slider  for="precipitations" display="precipitationsoutput" style="width: 150px"  displayTemplate="{value}" />
     
                         </h:panelGrid>
                         
@@ -143,26 +146,17 @@
                     <br />
                     <br />
                     
-                     
-                    
                 
-                    <h:panelGrid columns="3"> 
+                    <h:panelGrid cellpadding="10px" width="450px" columns="4"> 
                         <p:selectBooleanCheckbox id="invitationcheck" value="#{EventController.inviteSelect}"/>     
                         <h:outputText value="Send an Invitation to: "/>
                         <p:ajax event="click" update="invitation"/>                      
-                        <p:inputTextarea id="invitation" disabled="#{!EventController.inviteSelect}" rows="4" cols="35" value="#{EventController.invitations}"/>
+                        <p:inputTextarea id="invitation" disabled="#{!EventController.inviteSelect}" autoResize="false" rows="4" cols="28" value="#{EventController.invitations}"/>
                     </h:panelGrid> 
-                
-                </div>
-
-                <div id="weatherForm">
-                    <h1> Weather Preview</h1>
-                    
-                    <h:graphicImage id="image"  value="#{ImageChanger.image}"/>
-                    
-                    <h:panelGrid columns="2"> 
+                   
+                    <h:panelGrid cellpadding="10px" width="450px" columns="6"> 
                         
-                        <p:outputLabel for="color" value="Color Type:"/>
+                        <h:outputText value="Event Color:"/>
                         <p:selectOneMenu id="color" value="#{EventController.event.color}" style="width:100px">
                             <f:selectItem itemLabel="Grey" itemValue="grey" />
                             <f:selectItem itemLabel="Red" itemValue="red" />
@@ -172,7 +166,7 @@
                         </p:selectOneMenu>
                         <p:message for="color" />
 
-                        <p:outputLabel for="privacy" value="Set Event Privacy to:"/>
+                        <h:outputText value="Set Event Privacy:"/>
                         <p:selectOneMenu id="privacy" value="#{EventController.event.privacy}" style="width:100px">
                             <f:selectItem itemLabel="Private" itemValue="private" />
                             <f:selectItem itemLabel="Public" itemValue="public" />
@@ -182,9 +176,10 @@
                     </h:panelGrid>
               
                     <p:commandButton value="Create Event" ajax="true" validateClient="true" action="#{EventController.controlDataCreation()}" id="iconOnly" icon="ui-icon-calendar"/>
-                    <p:dialog widgetVar="complete" header="Sucess">
+                    <p:dialog widgetVar="complete" header="Success">
                         Event Created!
                     </p:dialog>
+                    
                 </div> 
                 
                 <!-- dialog error -->

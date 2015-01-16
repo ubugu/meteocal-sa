@@ -27,10 +27,10 @@ public class RegistrationController {
     private Calendar calendar;
     
     @EJB
-    private UserFacade facade;
+    UserFacade facade;
     
     @EJB
-    private CalendarFacade calendarFacade;
+    CalendarFacade calendarFacade;
     
 
 
@@ -70,7 +70,6 @@ public class RegistrationController {
         try {
             facade.create(user);
             calendar.setOwner(user);
-            calendar.setId(calendarFacade.getMaxCalendarID() + 1);
             calendarFacade.create(calendar);
         } catch (Exception e) {
             e.getMessage();

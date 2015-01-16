@@ -24,7 +24,7 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class NotificationsController {
     @ManagedProperty(value="#{showEventController}")
-    private ShowEventController eventController;
+    ShowEventController eventController;
     
     private int ID = 0;
     private enum NotificationType {
