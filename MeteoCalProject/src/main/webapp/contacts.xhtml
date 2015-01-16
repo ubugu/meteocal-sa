@@ -8,31 +8,30 @@
         <title>Contacts</title>
         <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
     </head>
-    <body class="noFrame">      
+   <body class="noFrame">      
         <!--Element of the first line on the top bar-->
         <div id="topHeader">
-            <img id="logo" src="Images/meteocalsnow.png"  name="meteocalLogo" title="meteocallogo"/>
+               
+            <img src="Images/meteocalsnow.png" id="logo" name="meteocalLogo" title="meteocallogo"/>
+
             <div class="loginForm"> 
                 <span>Username</span>
                 <span id="passwordLabel">Password</span>
+
                 <h:form> 
                     <p:inputText id="username" value="#{loginBean.username}" required="true"/>
-                    <p:password id="password" value="#{loginBean.password}" required="true"/>
-                    <p:commandButton value="Login" action="#{loginBean.login()}"  />
-
+                    <p:password  id="password" value="#{loginBean.password}" required="true"/>
+                    <p:commandButton value="Login" action="#{loginBean.login()}"   />
+                    
                     <p:dialog header="Error" widgetVar="loginFailed" minHeight="40" resizable="false" >
-                        <h:outputText value="Login failde: username or passoword not recognized." />
+                        <h:outputText value="Login failed: username or passoword not recognized." />
                     </p:dialog>
                 </h:form>
-                <div id="forgotten">
-                    <a href="create.html">  Forgotten password? </a>  
-                </div>   
             </div>
-
         </div>
 
         <div id="LeftHeader">
-            <ul class="buttonList"> 
+            <ul class="buttonList">
                 <li><p:button class="leftBarButton" value="Home" outcome="index"/></li>
                 <li><p:button class="leftBarButton" value="Register" outcome="register"/></li>
                 <li><p:button class="leftBarButton" value="Contacts" outcome="contacts"/></li>
@@ -43,10 +42,6 @@
         <div class="guestFrame">
             You can contact us at meteocal@gmail.com.<br />
             thanks for your support.
-        </div>
-
-        <div  class="rights">
-            All right reserved 2014 @ Claudio Sanna, Walter samà 
         </div>
     </body>
 </html>

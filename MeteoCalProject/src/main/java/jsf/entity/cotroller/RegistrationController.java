@@ -24,6 +24,7 @@ import org.primefaces.context.RequestContext;
 public class RegistrationController {
     
     private User user;
+    
     private Calendar calendar;
     
     @EJB
@@ -32,13 +33,6 @@ public class RegistrationController {
     @EJB
     CalendarFacade calendarFacade;
     
-
-
-    /**
-     * Creates a new instance of RegistrationController
-     */
-    public RegistrationController() {
-    }
     
     public User getUser() {
         if (user == null) {
@@ -62,6 +56,11 @@ public class RegistrationController {
         this.calendar = calendar;
     }
 
+    /**
+     * Register in the database a new user with the inserted information. A new calendar associated to the user is also created.
+     * Email and Username validity is checked. If one rule is violated an error is shown on the web page.
+     * @return the redirect to the home
+     */
     public String register() {
         user.setGroupName("USER");
         if (checkEmail()) {
@@ -80,6 +79,10 @@ public class RegistrationController {
         return "index?faces-redirect=true";
     }
 
+    /**
+     * check if the email inserted has been already used.
+     * @return  true if the email inserted is found in the database.
+     */
     private boolean checkEmail() {
         List<User> allUser = facade.findAll();
   

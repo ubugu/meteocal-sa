@@ -13,7 +13,7 @@
          <!--Element of the first line on the top bar-->
         <div id="topHeader">
              <img id="logo" src="Images/meteocalsnow.png"  name="meteocalLogo" title="meteocallogo"/>
-             <h2 id="userCalendar">#{loginBean.loggedUser.username}'s Calendar</h2>   
+             <h1 id="userCalendar">#{loginBean.loggedUser.username}'s Calendar</h1>   
              
             <div class="logoutForm">        
                 <h:form>
@@ -52,7 +52,7 @@
                     <br/>
                     <br/>
                     <br/>
-                    <p:commandButton id="eventButton" value="Go To Event" action="#{notificationsController.showEvent()}"  style="display: #{notificationsController.hasEvent()}" />
+                    <p:commandButton id="eventButton" value="Go To Event" action="#{notificationsController.showEvent()}"  style="display: #{notificationsController.hasEvent()}"/>
                     
                 </p:dialog>
              

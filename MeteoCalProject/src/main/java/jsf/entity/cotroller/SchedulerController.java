@@ -171,6 +171,7 @@ public class SchedulerController implements Serializable {
             for (Event e : events) {
             if (e.getId() == id) {
                 showEventController.setSelectedEvent(e);
+                showEventController.initChart();
                 break;
             }
         }

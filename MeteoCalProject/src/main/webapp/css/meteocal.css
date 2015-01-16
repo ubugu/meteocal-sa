@@ -26,9 +26,26 @@ body.noFrame {
 /*Define left header coloured bar*/
 #LeftHeader {
     width: 150px; 
+    padding: 0;
     padding-bottom: 30%;
     margin: 0px;
-    background: #3D8AF7;
+    /* IE10 Consumer Preview */ 
+    background-image: -ms-linear-gradient(bottom, #FFFFFF 0%, #3D8AF7 40%);
+
+    /* Mozilla Firefox */ 
+    background-image: -moz-linear-gradient(bottom, #FFFFFF 0%, #3D8AF7 40%);
+
+    /* Opera */ 
+    background-image: -o-linear-gradient(bottom, #FFFFFF 0%, #3D8AF7 40%);
+
+    /* Webkit (Safari/Chrome 10) */ 
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #FFFFFF), color-stop(0.4, #3D8AF7));
+
+    /* Webkit (Chrome 11+) */ 
+    background-image: -webkit-linear-gradient(bottom, #FFFFFF 0%, #3D8AF7 40%);
+
+    /* W3C Markup, IE10 Release Preview */ 
+    background-image: linear-gradient(to top, #FFFFFF 0%, #3D8AF7 40%);
     float : left;
 }
 
@@ -56,7 +73,8 @@ body.noFrame {
 #centralFrame {
     border: none;
     width: 82%; 
-    height : 500px;    
+    height : 500px;   
+    
 }
 
 /*define padding for the button lists*/
@@ -64,33 +82,19 @@ ul.buttonList {
     list-style-type: none;
     margin: 0;
     padding-left: 10px;
-    padding-top:  50px;
+    padding-top:  60px;
 }
 
 /*define button style*/
 
 .leftBarButton {
-    background: #141314;
-    background-image: -webkit-linear-gradient(top, #141314, #425f70);
-    background-image: -moz-linear-gradient(top, #141314, #425f70);
-    background-image: -ms-linear-gradient(top, #141314, #425f70);
-    background-image: -o-linear-gradient(top, #141314, #425f70);
-    background-image: linear-gradient(to bottom, #141314, #425f70);
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0px;
-    font-family: Georgia;
-    color: #ffffff;
-    font-size: 20px;
-    width: 130px;
-    padding: 10px 20px 10px 20px;
-    border: solid #3c454a 1px;
-    text-decoration: none;
-}
-
-#leftBarButton:hover {
-    background: #949ca1;
-    text-decoration: none;
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+  font-size: 17px;
+  padding: 9px 20px 10px 20px;
+  width:  130px;
+  text-decoration: none;
 }
 
 
@@ -102,49 +106,73 @@ ul.buttonList {
 
 div.loginForm {     
     padding-top: 20px;
-    padding-left: 60%;
+    padding-left: 48%;
     background-color:#3D8AF7;           
 } 
 
 div.rights  {     
-
     padding-left: 64%;
 } 
 
 div.guestFrame {     
     padding-top: 2%;
-    padding-left: 25%;                    
+    padding-left: 25%;      
+    /* IE10 Consumer Preview */ 
+    background-image: -ms-linear-gradient(bottom, #FFFFFF 0%, #EEEEEE 30%);
+
+    /* Mozilla Firefox */ 
+    background-image: -moz-linear-gradient(bottom, #FFFFFF 0%, #EEEEEE 90%);
+
+    /* Opera */ 
+    background-image: -o-linear-gradient(bottom, #FFFFFF 0%, #EEEEEE 90%);
+
+    /* Webkit (Safari/Chrome 10) */ 
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #FFFFFF), color-stop(0.9, #EEEEEE));
+
+    /* Webkit (Chrome 11+) */ 
+    background-image: -webkit-linear-gradient(bottom, #FFFFFF 0%, #EEEEEE 90%);
+
+    /* W3C Markup, IE10 Release Preview */ 
+    background-image: linear-gradient(to top, #FFFFFF 0%, #EEEEEE 90%);
 } 
 
 /*In this section are define singular elements throught the id model.*/
 
 #passwordLabel {
-    padding-left: 109px;
+    padding-left: 177px;
 }
 
-#forgotten {
-    padding-left: 178px;
-    font-size: 13px;
+.register {
+    position: relative;
+    left : 24%;
+    border : none;
 }
+
 
 /* ############# USER MAIN PAGE ELEMENTS ######################## */
 
 div.logoutForm {     
-    padding-top: 40px;
+    padding-top: 20px;
     padding-left: 90%;
     background-color:#3D8AF7;           
 } 
 
 #userCalendar {  
-    width: 300px;
     margin: 0px;
-    padding-top: 30px; 
-    padding-left: 100px;
+    padding-top: 10px; 
+    padding-left: 20px;
     background: #3D8AF7;
     font-family: "Comic Sans MS", cursive sans-serif;
     float : left;
 }
 
+.schedule {
+    width: 92%;
+}
+
+.eventButton {
+    width : 160px;
+}
 
 /* ############# ADD EVENT ELEMENTS ######################## */
 
@@ -198,6 +226,10 @@ div.logoutForm {
     bottom: 70px;
 }
 
+.notResize {
+    resize: none;
+}
+
 /* ### schedule event color ### */
 .red {
     background: red;
@@ -223,65 +255,3 @@ div.logoutForm {
 .green {
     background: green;
 }
-
-
-/* ### Button onOff ### */
-
-.onoffswitch {
-    position: relative; width: 90px;
-    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-}
-.onoffswitch-checkbox {
-    display: none;
-}
-.onoffswitch-label {
-    display: block; overflow: hidden; cursor: pointer;
-    border: 2px solid #999999; border-radius: 20px;
-}
-.onoffswitch-inner {
-    display: block; width: 200%; margin-left: -100%;
-    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
-    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
-}
-.onoffswitch-inner:before, .onoffswitch-inner:after {
-    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
-    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
-}
-.onoffswitch-inner:before {
-    content: "ON";
-    padding-left: 10px;
-    background-color: #34A7C1; color: #FFFFFF;
-}
-.onoffswitch-inner:after {
-    content: "OFF";
-    padding-right: 10px;
-    background-color: #EEEEEE; color: #999999;
-    text-align: right;
-}
-.onoffswitch-switch {
-    display: block; width: 18px; margin: 6px;
-    background: #FFFFFF;
-    border: 2px solid #999999; border-radius: 20px;
-    position: absolute; top: 0; bottom: 0; right: 56px;
-    -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
-    -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-    margin-left: 0;
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-    right: 0px; 
-}
-
-.header {
-    background-color:#141314;
-    float : left;
-}
-
-#header {
-    background-color:#141314;
-    float : left;
-}
-
-/* ### end Button onOff ### */

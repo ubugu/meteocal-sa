@@ -19,6 +19,11 @@ import jsf.entity.User;
  */
 public class PasswordEncrypter {
 
+    /**
+     * Method that encrypt a password
+     * @param password to encrypt
+     * @return  the password encrypted
+     */
     public static String encryptPassword(String password) {
         String encPass = null;
         try {

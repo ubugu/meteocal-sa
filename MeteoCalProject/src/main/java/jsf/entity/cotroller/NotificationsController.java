@@ -25,8 +25,7 @@ import org.primefaces.context.RequestContext;
 public class NotificationsController {
     @ManagedProperty(value="#{showEventController}")
     ShowEventController eventController;
-    
-    private int ID = 0;
+
     private enum NotificationType {
         INVITED, UPDATE, RESPONSE, BADCONDITIONS, SYSTEM, DELETE,
     }
@@ -40,19 +39,32 @@ public class NotificationsController {
     
     @EJB
     private NotificationFacade facade;
+    
     @EJB
     private UserFacade userFacade;
     
+    public Notification getSelectedNotification() {
+        return selectedNotification;
+    }
+    
+    public ShowEventController getEventController() {
+        return eventController;
+    }
+
+    public void setEventController(ShowEventController eventController) {
+        this.eventController = eventController;
+    }
     
     public List<Notification> getUserNotification() {
         List<Notification> list = facade.searchForUser(userFacade.getLoggedUser());
         return list;
     }
     
-    public int searchForLastID() {
-        return   facade.findAll().size();
-    }
-
+    /**
+     * Check if a notification is visualized or not
+     * @param notification to check
+     * @return none if the notification hasn't been view yet, otherwise display.
+     */
     public String isVisualized(Notification notification) {
         if (notification.getVisualized().equals("NO")) {
             return "none";
@@ -61,6 +73,11 @@ public class NotificationsController {
         }
     }
     
+    /**
+     * Check if a notification is not visualized
+     * @param notification
+     * @return 
+     */
     public String isNotVisualized(Notification notification) {
         if (notification.getVisualized().equals("YES")) {
             return "none";
@@ -68,13 +85,12 @@ public class NotificationsController {
             return "display";
         }
     }
-    
-   
-    public Notification getSelectedNotification() {
-        return selectedNotification;
-    }
-    
 
+
+    /**
+     * 
+     * @return 
+     */
     public String showEvent() {
         if (this.selectedNotification == null) {
             return "";
@@ -92,6 +108,10 @@ public class NotificationsController {
 
     }
 
+    /**
+     * Set the current selected notification and chage its status in the database from visualized = NO to visualized = YES
+     * @param selectedNotification to set
+     */
     public void setSelectedNotification(Notification selectedNotification) {
         this.selectedNotification = selectedNotification;
         
@@ -104,6 +124,10 @@ public class NotificationsController {
   
     }
     
+    /**
+     * specify the selected notification has an event
+     * @return none if the selectedNotification is null or its associated event is null otherwise will return display
+     */
     public String hasEvent() {
         if (this.selectedNotification == null) {
             return "none";
@@ -113,13 +137,5 @@ public class NotificationsController {
         } else {
             return "display";
         }
-    }
-    
-    public ShowEventController getEventController() {
-        return eventController;
-    }
-
-    public void setEventController(ShowEventController eventController) {
-        this.eventController = eventController;
     }
 }
