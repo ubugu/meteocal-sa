@@ -14,7 +14,7 @@
         <div id="topHeader">
              <img id="logo" src="Images/meteocalsnow.png"  name="meteocalLogo" title="meteocallogo"/>
 
-                <h2 id="userCalendar">#{loginBean.loggedUser.username}'s Calendar</h2>   
+                <h1 id="userCalendar">#{loginBean.loggedUser.username}'s Calendar</h1>   
               
             <div class="logoutForm">         
                 <h:form>
@@ -87,7 +87,7 @@
                         <p:message for="untillDate" />
                         
                         <p:outputLabel for="description" value="Description (optional):"/>
-                        <p:inputTextarea id="description" autoResize="false" rows="6" cols="28" value="#{EventController.event.description}" />
+                        <p:inputTextarea class="notResize"  id="description" autoResize="false" rows="6" cols="28" value="#{EventController.event.description}"    />
                         <p:message for="description" />
                         
                     </h:panelGrid>
@@ -151,7 +151,7 @@
                         <p:selectBooleanCheckbox id="invitationcheck" value="#{EventController.inviteSelect}"/>     
                         <h:outputText value="Send an Invitation to: "/>
                         <p:ajax event="click" update="invitation"/>                      
-                        <p:inputTextarea id="invitation" disabled="#{!EventController.inviteSelect}" autoResize="false" rows="4" cols="28" value="#{EventController.invitations}"/>
+                        <p:inputTextarea class="notResize" id="invitation"  disabled="#{!EventController.inviteSelect}" autoResize="false" rows="4" cols="28" value="#{EventController.invitations}"/>
                     </h:panelGrid> 
                    
                     <h:panelGrid cellpadding="10px" width="450px" columns="6"> 

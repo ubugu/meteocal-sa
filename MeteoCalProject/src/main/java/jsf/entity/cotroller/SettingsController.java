@@ -47,6 +47,10 @@ public class SettingsController implements Serializable{
     @EJB
     CalendarFacade calendarFacade;
 
+
+    /**
+     * Find and create the list of oldSharedUser.
+     */
     @PostConstruct
     public void init() {
         if (this.calendarFacade.searchByUser(this.userFacade.getLoggedUser()).getPrivacy().equals("SHARED")) {
@@ -129,6 +133,10 @@ public class SettingsController implements Serializable{
         this.sharedUsersString = sharedUsersString;
     }
 
+    /**
+     * Check if the passowrd inserted is equals to the old one
+     * @return  true if password matches otherwise false
+     */
     public Boolean checkPassowrd() {
         if (userFacade.getLoggedUser().getPassword().equals(this.oldPassword)) {
             return true;
@@ -137,6 +145,10 @@ public class SettingsController implements Serializable{
         }
     }
 
+    /**
+     * Check if the new email inserted is already inserted in the database.
+     * @return  true if an user with the same email inserted is found.
+     */
     private boolean checkEmail() {
         List<User> allUser = userFacade.findAll();
 
@@ -150,6 +162,10 @@ public class SettingsController implements Serializable{
         return false;
     }
 
+    /**
+     * Update new settings (password,email,privacy) if changed
+     * @return the redirect to the settings page
+     */
     public String updateSettings() {
         
         if (!checkPassowrd()) {

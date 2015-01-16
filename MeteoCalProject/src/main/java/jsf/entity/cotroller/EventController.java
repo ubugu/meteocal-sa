@@ -8,7 +8,6 @@ package jsf.entity.cotroller;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Time;
-import java.util.Arrays;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -17,7 +16,6 @@ import jsf.entity.Event;
 import jsf.entity.facade.BadconditionsFacade;
 import jsf.entity.facade.EventFacade;
 import java.util.Date; 
-import javax.persistence.NoResultException;
 import jsf.entity.Notification;
 import jsf.entity.Participant;
 import jsf.entity.ParticipantPK;
@@ -27,9 +25,6 @@ import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.ParticipantFacade;
 import jsf.entity.facade.UserFacade;
 import jsf.entity.facade.WeatherFacade;
-import net.aksingh.owmjapis.AbstractForecast;
-import net.aksingh.owmjapis.AbstractForecast.Forecast;
-import net.aksingh.owmjapis.CurrentWeather;
 import net.aksingh.owmjapis.DailyForecast;
 import net.aksingh.owmjapis.OpenWeatherMap;
 import org.joda.time.DateTime; 
@@ -517,7 +512,7 @@ public class EventController implements Serializable{
                 }
             }catch(Exception e){
                 //TODO
-            };
+            }
             
             //badcondition creation if they are set
             if(getBad()){

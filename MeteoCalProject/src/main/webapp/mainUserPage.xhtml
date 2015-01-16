@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:jsf="http://xmlns.jcp.org/jsf">
     <head jsf:id="head">     
         <title>Home</title>
@@ -41,8 +40,8 @@
             </ul>
         </div>
         <div>   
-            <h:panelGrid style="width: 1000px">
-                <p:schedule id="calendar" value="#{scheduleController.eventModel}" draggable="false" ignoreTimezone="false" resizable="false" >
+            <h:panelGrid class="schedule">
+                <p:schedule class="schedule" id="calendar" value="#{scheduleController.eventModel}" draggable="false" ignoreTimezone="false" resizable="false" >
                     <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails, eventButton, deleteButton, updateButton"   />
                 </p:schedule>
             </h:panelGrid>
@@ -59,15 +58,13 @@
                     <h:outputText id="endingTime" value="#{scheduleController.event.endDate}" />
           
                 </h:panelGrid>
-                <br/>
-                <br/>
-                <br/>
-                <p:button id="eventButton" value="Go To Event" onclick="#{scheduleController.showEvent()}" outcome="showEvent"/>
+
+                <p:button class="eventButton" id="eventButton" value="Go To Event" onclick="#{scheduleController.showEvent()}" outcome="showEvent"/>
                 <h:form id="updateButton">
-                    <p:commandButton  value="Update Event"  action="#{scheduleController.updateEvent()}" style="display : #{scheduleController.isInvited()}"/>
+                    <p:commandButton class="eventButton" value="Update Event"  action="#{scheduleController.updateEvent()}" style="display : #{scheduleController.isInvited()}"/>
                 </h:form>
                 <h:form id="deleteButton">
-                    <p:commandButton  value="Delete Event"  action="#{scheduleController.delete()}" style="display : #{scheduleController.isInvited()}"/>
+                    <p:commandButton class="eventButton"  value="Delete Event"  action="#{scheduleController.delete()}" style="display : #{scheduleController.isInvited()}"/>
                 </h:form>
             </p:dialog>
 

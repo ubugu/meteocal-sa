@@ -61,15 +61,12 @@ public class TimeController {
     
     List<Weather> allWeather;
     
-     @Schedule(second = "*", minute = "*/2", hour = "*", persistent = false)
+     @Schedule( hour = "1", persistent = false)
      public void UpdateWeather() throws InterruptedException {
          DateTime time = new DateTime();
          
          int hour =  time.getHourOfDay();
-         
-       /*  int waitTime = 0;
-         waitTime += (24 - hour) * 3600 * 1000;
-         Thread.sleep(waitTime);*/
+
         System.out.println("Weather Update at  " + time);
         update();
         updateNull();

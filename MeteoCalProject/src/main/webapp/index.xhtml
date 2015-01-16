@@ -8,30 +8,25 @@
         <title>Guest Home</title>
         <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
     </head>
-    <body jsf:id="body" class="noFrame">      
+    <body class="noFrame">      
         <!--Element of the first line on the top bar-->
         <div id="topHeader">
                
             <img src="Images/meteocalsnow.png" id="logo" name="meteocalLogo" title="meteocallogo"/>
 
             <div class="loginForm"> 
-
                 <span>Username</span>
                 <span id="passwordLabel">Password</span>
 
                 <h:form> 
                     <p:inputText id="username" value="#{loginBean.username}" required="true"/>
-                    <p:password id="password" value="#{loginBean.password}" required="true"/>
-                    <p:commandButton value="Login" action="#{loginBean.login()}"  />
+                    <p:password  id="password" value="#{loginBean.password}" required="true"/>
+                    <p:commandButton value="Login" action="#{loginBean.login()}"   />
                     
                     <p:dialog header="Error" widgetVar="loginFailed" minHeight="40" resizable="false" >
-                        <h:outputText value="Login failde: username or passoword not recognized." />
+                        <h:outputText value="Login failed: username or passoword not recognized." />
                     </p:dialog>
                 </h:form>
-
-                <div id="forgotten">
-                    <a href="create.html">  Forgotten password? </a>  
-                </div>   
             </div>
         </div>
 
@@ -42,14 +37,13 @@
                 <li><p:button class="leftBarButton" value="Contacts" outcome="contacts"/></li>
                 <li><p:button class="leftBarButton" value="AboutUs" outcome="aboutUs"/></li>
             </ul>
-
         </div>
 
-        <div class='guestFrame' style=" height:  680px">
-            <div style=" margin-left: -80px; margin-top: 80px;">
-                <h2 style="margin-left: -30px;" >Meteocal: the meteo in your calendar!</h2>
-                <h5 style="margin-left: -30px;" >What is meteocal?</h5>
-                <p class="informations" style="margin-left: -25px;"  >
+        <div class='guestFrame' >
+            <div >
+                <h2 >Meteocal: the meteo in your calendar!</h2>
+                <h5 >What is meteocal?</h5>
+                <p class="informations" >
                     Meteocal is an applications that provides a meteo and <br /> a calendar all stick together. <br />
                     Bad weather will not ruin your free time activity anymore! <br />
                     You will be provided with:    <br />
@@ -63,7 +57,6 @@
                     What are you waiting for? register now it's free!
                 </p>
             </div>
-
         </div>
 
         <div  class="rights">

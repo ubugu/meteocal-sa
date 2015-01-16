@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:jsf="http://xmlns.jcp.org/jsf"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
     <head jsf:id="head">     
         <title>Home</title>
         <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
@@ -110,7 +109,8 @@
             <div id="rightEventForm">
                 <h1> Weather Preview</h1>
 
-                <h:graphicImage id="image" value="#{ImageChanger.image}"/>
+
+                <p:chart type="line" model="#{showEventController.multiAxisModel}" style="height:400px;"/>
 
                 <h:panelGrid columns="2"  cellpadding="8px"> 
 

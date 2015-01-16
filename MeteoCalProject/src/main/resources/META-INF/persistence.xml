@@ -3,6 +3,8 @@
   <persistence-unit name="com.mycompany_MeteoCalProject_war_1.0-SNAPSHOTPU" transaction-type="JTA">
     <jta-data-source>MeteocalResource</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties/>
+    <properties>
+        <property name="javax.persistence.schema-generation.database.action" value="create" />
+    </properties>
   </persistence-unit>
 </persistence>
