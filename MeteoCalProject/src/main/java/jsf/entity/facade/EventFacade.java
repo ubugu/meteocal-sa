@@ -130,4 +130,10 @@ public class EventFacade extends AbstractFacade<Event> {
         return (List<Event>) em.createNamedQuery("Event.findByCalendar").setParameter("calendar", calendar).getResultList(); 
     }
     
+    public List<Event> searchByNullWeather() {
+        return (List<Event>) em.createNamedQuery("Event.findNullWeather").getResultList(); 
+    }
+    
+    
+    
 }

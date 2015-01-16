@@ -43,6 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Weather.findByClouds", query = "SELECT w FROM Weather w WHERE w.clouds = :clouds"),
     @NamedQuery(name = "Weather.findById", query = "SELECT w FROM Weather w WHERE w.id = :id")})
 public class Weather implements Serializable {
+    @Size(max = 10)
+    @Column(name = "precipitationType")
+    private String precipitationType;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -192,6 +195,14 @@ public class Weather implements Serializable {
     @Override
     public String toString() {
         return "jsf.entity.Weather[ id=" + id + " ]";
+    }
+
+    public String getPrecipitationType() {
+        return precipitationType;
+    }
+
+    public void setPrecipitationType(String precipitationType) {
+        this.precipitationType = precipitationType;
     }
     
 }
