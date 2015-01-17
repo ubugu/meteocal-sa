@@ -167,7 +167,7 @@ div.logoutForm {
 }
 
 .schedule {
-    width: 92%;
+    width: 88%;
 }
 
 .eventButton {
@@ -229,6 +229,24 @@ div.logoutForm {
 .notResize {
     resize: none;
 }
+
+
+/* ### show event ### */
+#weatherImage {
+    width: 50px;
+    height: 50px;
+}
+
+.weatherGrid {
+    position:relative;
+    left:90px;
+}
+
+.weatherPreview {
+    position:relative;
+    right: 15px;
+}
+
 
 /* ### schedule event color ### */
 .red {

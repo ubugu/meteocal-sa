@@ -45,6 +45,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Weather.findByClouds", query = "SELECT w FROM Weather w WHERE w.clouds = :clouds"),
     @NamedQuery(name = "Weather.findById", query = "SELECT w FROM Weather w WHERE w.id = :id")})
 public class Weather implements Serializable {
+    @Column(name = "precipitations")
+    private Integer precipitations;
+    @Column(name = "minTemperature")
+    private Float minTemperature;
+    @Column(name = "maxTemperature")
+    private Float maxTemperature;
+
     @Size(max = 10)
     @Column(name = "precipitationType")
     private String precipitationType;
@@ -65,8 +72,6 @@ public class Weather implements Serializable {
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
-    @Column(name = "precipitations")
-    private Integer precipitations;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "temperature")
     private Float temperature;
@@ -110,15 +115,8 @@ public class Weather implements Serializable {
         this.date = date;
     }
 
-    public Integer getPrecipitations() {
-        return precipitations;
-    }
 
-    public void setPrecipitations(Integer precipitations) {
-        this.precipitations = precipitations;
-    }
-
-    public Float getTemperature() {
+    public float getTemperature() {
         return temperature;
     }
 
@@ -207,5 +205,29 @@ public class Weather implements Serializable {
     public void setPrecipitationType(String precipitationType) {
         this.precipitationType = precipitationType;
     }
-    
+
+    public Integer getPrecipitations() {
+        return precipitations;
+    }
+
+    public void setPrecipitations(Integer precipitations) {
+        this.precipitations = precipitations;
+    }
+
+    public Float getMinTemperature() {
+        return minTemperature;
+    }
+
+    public void setMinTemperature(Float minTemperature) {
+        this.minTemperature = minTemperature;
+    }
+
+    public Float getMaxTemperature() {
+        return maxTemperature;
+    }
+
+    public void setMaxTemperature(Float maxTemperature) {
+        this.maxTemperature = maxTemperature;
+    }
+
 }

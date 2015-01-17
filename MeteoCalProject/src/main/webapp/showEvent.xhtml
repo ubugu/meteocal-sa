@@ -50,14 +50,20 @@
                     <h:outputText id="city" value="#{showEventController.selectedEvent.city}"/>
 
                     <p:outputLabel for="startingDate" value="Starting Date:" />
-                    <h:outputText id="startingDate" value="#{showEventController.selectedEvent.date}" />
+                    <h:outputText id="startingDate" value="#{showEventController.date}" />
 
                     <p:outputLabel for="startingTime" value="Starting Time:" />
-                    <h:outputText id="startingTime" value="#{showEventController.selectedEvent.startingTime}" />
+                    <h:outputText id="startingTime" value="#{showEventController.startingTime}" />
 
                     <p:outputLabel for="endingTime" value="Ending Time:" />
-                    <h:outputText id="endingTime" value="#{showEventController.selectedEvent.endingTime}"/>
+                    <h:outputText id="endingTime" value="#{showEventController.endingTime}"/>
 
+                    <p:outputLabel for="color" value="Color Type:"/>
+                    <h:outputText id="color" value="#{showEventController.selectedEvent.color}" style="width:100px"/>
+
+                    <p:outputLabel for="privacy" value="Set Event Privacy to:"/>
+                    <h:outputText id="privacy" value="#{showEventController.selectedEvent.privacy}" style="width:100px"/>
+                    
                     <p:outputLabel for="description" value="Description :"/>
                     <h:outputText id="description" value="#{showEventController.selectedEvent.description}" /> 
                 </h:panelGrid>
@@ -97,33 +103,44 @@
                 <br />
                 <br />
 
-                <h:outputText id="participantText" value="    You have been invited to this event by  #{showEventController.creator.username}; you currently have response #{showEventController.getResponse()}; 
-                              " style="display : #{showEventController.isInvited()}" />
-              
-                <p:commandButton value="Participate" style="display : #{showEventController.isInvited()}" ajax="true" update="participantText" actionListener="#{showEventController.setInvited('YES')}" />
-                <p:commandButton value="Decline" style="display : #{showEventController.isInvited()}" ajax="true" update="participantText" actionListener="#{showEventController.setInvited('NO')}" />                 
+                <p:outputLabel id="participantText" value="    You have been invited to this event by  #{showEventController.creator.username}; you currently have response #{showEventController.getResponse()}. 
+                               " rendered="#{showEventController.isInvited()}" />
+                <br />
+                <p:commandButton value="Participate" rendered="#{showEventController.isInvited()}" ajax="true" update="participantText" actionListener="#{showEventController.setInvited('YES')}" />
+                <p:commandButton value="Decline" rendered="#{showEventController.isInvited()}" ajax="true" update="participantText" actionListener="#{showEventController.setInvited('NO')}" />                 
             
 
             </div>
 
             <div id="rightEventForm">
-                <h1> Weather Preview</h1>
-
-
-                <p:chart type="line" model="#{showEventController.multiAxisModel}" style="height:400px;"/>
-
-                <h:panelGrid columns="2"  cellpadding="8px"> 
-
-                    <p:outputLabel for="color" value="Color Type:"/>
-                    <h:outputText id="color" value="#{showEventController.selectedEvent.color}" style="width:100px"/>
-
-                    <p:outputLabel for="privacy" value="Set Event Privacy to:"/>
-                    <h:outputText id="privacy" value="#{showEventController.selectedEvent.privacy}" style="width:100px"/>
+                <h1 class="weatherPreview"> Weather Preview</h1>
+                <h:panelGrid columns="3" cellpadding="10px" class="weatherGrid" >
+                    <p:outputLabel value="#{showEventController.city}"/>
+                    <h:outputText id="temperature" value="#{showEventController.temperature} C" style="width:100px"/>
+                    <img id="weatherImage" src="#{showEventController.weatherImage}"  name="weatherImage"  />
                 </h:panelGrid>
 
-            </div> 
+                <p:chart type="line" model="#{showEventController.multiAxisModel}" style="height:400px;" rendered="#{!showEventController.isWeatherNull}"/>
+                <p:outputLabel value="The weather preview is not available" rendered="#{showEventController.isWeatherNull}"/>
+                <h:panelGrid columns="2" cellpadding="10px" class="weatherGrid"> 
+                    <p:outputLabel for="wind" value="Wind speed:"/>
+                    <h:outputText id="wind" value="#{showEventController.wind}" />
+                    
+                    <p:outputLabel for="humidity" value="Humidity:"/>
+                    <h:outputText id="humidity" value="#{showEventController.humidity}" style="width:100px"/>
 
+                    <p:outputLabel for="clouds" value="Clouds:"/>
+                    <h:outputText id="clouds" value="#{showEventController.clouds} %" style="width:100px"/>
+
+                    <p:outputLabel for="precipitations" value="Precipitations:"/>
+                    <h:outputText id="precipitations" value="#{showEventController.precipitations} mm" style="width:100px"/>
+
+                    <p:outputLabel for="precipitationsType" value="Precipitations Type:"/>
+                    <h:outputText id="precipitationsType" value="#{showEventController.precipitationType}" style="width:100px"/>                 
+                </h:panelGrid>
+            </div> 
         </h:form>
 
     </body>
 </html>
+

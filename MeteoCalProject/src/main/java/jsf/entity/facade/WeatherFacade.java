@@ -33,6 +33,10 @@ public class WeatherFacade extends AbstractFacade<Weather> {
     public WeatherFacade() {
         super(Weather.class);
     }
+    
+    public Weather searchById(int id) {
+        return (Weather) em.createNamedQuery("Weather.findById").setParameter("id", id).getSingleResult();
+    }
 
     public Weather searchByCityAndDate(String city, Date date) {
         List<Weather> cityWeather = (List<Weather>) em.createNamedQuery("Weather.findByCity").setParameter("city", city).getResultList();

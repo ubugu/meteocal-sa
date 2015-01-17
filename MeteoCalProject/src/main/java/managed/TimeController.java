@@ -61,12 +61,9 @@ public class TimeController {
     
     List<Weather> allWeather;
     
-     @Schedule( hour = "1", persistent = false)
-     public void UpdateWeather() throws InterruptedException {
-         DateTime time = new DateTime();
-         
-         int hour =  time.getHourOfDay();
-
+     @Schedule( minute="*/1", persistent = false)
+     public void UpdateWeather()  {
+        DateTime time = new DateTime();
         System.out.println("Weather Update at  " + time);
         update();
         updateNull();
@@ -268,6 +265,8 @@ public class TimeController {
             }
             oldWeather.setPressure(forecast.getForecastInstance(dayForecast - 1).getPressure());
             oldWeather.setTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getDayTemperature());
+            oldWeather.setMaxTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getMaximumTemperature());
+            oldWeather.setMinTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getMinimumTemperature());
             oldWeather.setWind(forecast.getForecastInstance(dayForecast - 1).getWindSpeed());
             this.weatherFacade.edit(oldWeather);
 
@@ -335,8 +334,10 @@ public class TimeController {
                 }
                 weather.setPressure(forecast.getForecastInstance(dayForecast - 1).getPressure());
                 weather.setTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getDayTemperature());
+                weather.setMaxTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getMaximumTemperature());
+                weather.setMinTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getMinimumTemperature());
                 weather.setWind(forecast.getForecastInstance(dayForecast - 1).getWindSpeed());
-                
+
                 weather.setId(null);
                 this.weatherFacade.create(weather);
                 e.setWeatherID(weather);
