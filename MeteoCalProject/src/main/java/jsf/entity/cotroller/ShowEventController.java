@@ -5,6 +5,7 @@
  */
 package jsf.entity.cotroller;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -14,10 +15,13 @@ import jsf.entity.Event;
 import jsf.entity.Notification;
 import jsf.entity.Participant;
 import jsf.entity.User;
+import jsf.entity.Weather;
 import jsf.entity.facade.BadconditionsFacade;
 import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.ParticipantFacade;
 import jsf.entity.facade.UserFacade;
+import jsf.entity.facade.WeatherFacade;
+import org.joda.time.DateTime;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -41,6 +45,8 @@ public class ShowEventController {
     @EJB
     ParticipantFacade participantFacade;
     @EJB
+    WeatherFacade weatherFacade;
+    @EJB
     BadconditionsFacade badConditionsFacade;
     @EJB
     NotificationFacade notificationFacade;
@@ -49,9 +55,12 @@ public class ShowEventController {
     
     private List<Participant> participants;
     private List<Participant> invited;
+    
+    private Weather weather;
 
     private Badconditions badConditions;
     private User creator;
+    private boolean IsWeatherNull;
 
     public User getCreator() {
         return creator;
@@ -69,7 +78,49 @@ public class ShowEventController {
         this.multiAxisModel = multiAxisModel;
     }
 
+    public boolean isIsWeatherNull() {
+        return IsWeatherNull;
+    }
+
+    public void setIsWeatherNull(boolean IsWeatherNull) {
+        this.IsWeatherNull = IsWeatherNull;
+    }
+
+    public Weather getWeather() {
+        return weather;
+    }
+
+    public void setWeather(Weather weather) {
+        this.weather = weather;
+    }
     
+    public float getWind() {
+        return this.weather.getWind();
+    }
+
+    public float getTemperature() {
+        return this.weather.getTemperature();
+    }
+
+    public float getHumidity() {
+        return this.weather.getHumidity();
+    }
+
+    public float getPrecipitations() {
+        return this.weather.getPrecipitations();
+    }
+    
+    public String getCity() {
+        return this.weather.getCity();
+    }
+
+    public String getPrecipitationType() {
+        return this.weather.getPrecipitationType();
+    }
+
+    public float getClouds() {
+        return this.weather.getClouds();
+    }
     
     public List<Participant> getParticipants() {
         return participants;
@@ -90,7 +141,38 @@ public class ShowEventController {
     public Event getSelectedEvent() {
         return selectedEvent;
     }
+    
+    /**
+     * @return the date of the event formatted.
+     */
+    public String getDate() {
+        Date time = this.selectedEvent.getDate();
+        String[] date = time.toString().split(" ");
+        return date[0] + " " + date[1] + " " + date[2] + " " + date[5];
+    }
 
+    /**
+     * @return  starting time of the event formatted.
+     */
+    public String getStartingTime() {
+        DateTime date = new DateTime(this.selectedEvent.getStartingTime());
+        if (date.getMinuteOfHour() == 0) {
+            return date.getHourOfDay() + ":00:" + date.getSecondOfMinute();
+        }
+        return date.getHourOfDay() + ":" + date.getMinuteOfHour() + ":" + date.getSecondOfMinute();
+    }
+
+     /**
+     * @return  ending time of the event formatted.
+     */
+    public String getEndingTime() {
+        DateTime date = new DateTime(this.selectedEvent.getEndingTime());
+        if (date.getMinuteOfHour() == 0) {
+            return date.getHourOfDay() + ":00:" + date.getSecondOfMinute();
+        }
+        return date.getHourOfDay() + ":" + date.getMinuteOfHour() + ":" + date.getSecondOfMinute();
+    }
+    
     public void setSelectedEvent(Event selectedEvent) {
         this.selectedEvent = selectedEvent;
         int id = selectedEvent.getId();
@@ -112,62 +194,91 @@ public class ShowEventController {
     }
     
     public void initChart() {
-         multiAxisModel = new LineChartModel();
+        multiAxisModel = new LineChartModel();
+        this.weather = weatherFacade.searchById(this.selectedEvent.getWeatherID().getId());
+        
+        if (weather == null) {
+            this.IsWeatherNull = true;
+        }
+        
+        
+        //set precipitations chart
+        BarChartSeries precipitations = new BarChartSeries();
+        precipitations.setLabel("Precipitations");
+        precipitations.set(weather.getPrecipitationType(), weather.getPrecipitations());
+
+        //set temperature chart
+        LineChartSeries Temperature = new LineChartSeries();
+        Temperature.setLabel("Temperature");
+        Temperature.setXaxis(AxisType.X2);
+        Temperature.setYaxis(AxisType.Y2);
+        Temperature.set("min T", weather.getMinTemperature());
+        Temperature.set("day T", weather.getTemperature());
+        Temperature.set("max T", weather.getMaxTemperature());
+        
+
  
-        BarChartSeries boys = new BarChartSeries();
-        boys.setLabel("Boys");
- 
-        boys.set("2004", 120);
-        boys.set("2005", 100);
-        boys.set("2006", 44);
-        boys.set("2007", 150);
-        boys.set("2008", 25);
- 
-        LineChartSeries girls = new LineChartSeries();
-        girls.setLabel("Girls");
-        girls.setXaxis(AxisType.X2);
-        girls.setYaxis(AxisType.Y2);
+        multiAxisModel.addSeries(precipitations);
+        multiAxisModel.addSeries(Temperature);
          
-        girls.set("A", 52);
-        girls.set("B", 60);
-        girls.set("C", 110);
-        girls.set("D", 135);
-        girls.set("E", 120);
- 
-        multiAxisModel.addSeries(boys);
-        multiAxisModel.addSeries(girls);
-         
-        multiAxisModel.setTitle("Multi Axis Chart");
         multiAxisModel.setMouseoverHighlight(false);
          
-        multiAxisModel.getAxes().put(AxisType.X, new CategoryAxis("Years"));
-        multiAxisModel.getAxes().put(AxisType.X2, new CategoryAxis("Period"));
+        multiAxisModel.getAxes().put(AxisType.X, new CategoryAxis("Precipitation type"));
+        multiAxisModel.getAxes().put(AxisType.X2, new CategoryAxis("Temperature"));
          
         Axis yAxis = multiAxisModel.getAxis(AxisType.Y);
-        yAxis.setLabel("Birth");
+        yAxis.setLabel("Mm");
         yAxis.setMin(0);
-        yAxis.setMax(200);
+        yAxis.setMax(30);
                  
-        Axis y2Axis = new LinearAxis("Number");
-        y2Axis.setMin(0);
-        y2Axis.setMax(200);
+        Axis y2Axis = new LinearAxis("C°");
+        y2Axis.setMin(-20);
+        y2Axis.setMax(35);
          
         multiAxisModel.getAxes().put(AxisType.Y2, y2Axis);
     }
     
-    public String isInvited() {
+    public boolean isInvited() {
         User user = userFacade.getLoggedUser();
         
         for (Participant p : this.participants) {
             if (user.equals(p.getUser1())) {
                 if (user.equals(this.creator)) {
-                    return "none";
+                    return false;
                 } else {
-                    return "display";
+                    return true;
                 }
             }
         }
-        return "none";
+        return false;
+    }
+    
+    /**
+     * 
+     * @return the src of the image to be shown due to the weather type
+     */
+    public String getWeatherImage() {
+        if (weather.getPrecipitations() > 0) {
+            if (weather.getPrecipitationType().equals("SNOW")) {
+                return"Images/snow.png";
+            }
+            
+            if (weather.getPrecipitations() > 10) {
+                return"Images/rainHard.png";
+            } else {
+                return"Images/rainLow.png";
+            }
+        }
+        
+        if (weather.getClouds() > 50) {
+            return"Images/cloudyHard.png";
+        } 
+        
+        if (weather.getClouds() > 0) {
+            return"Images/cloudyLow.png";
+        }
+        return"Images/sun.png";
+        
     }
   
 

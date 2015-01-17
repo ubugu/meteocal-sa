@@ -102,6 +102,7 @@ public class NotificationsController {
             return "";
         } else {
             eventController.setSelectedEvent(event);
+            eventController.initChart();
             return "/showEvent?faces-redirect=true";
            
         }

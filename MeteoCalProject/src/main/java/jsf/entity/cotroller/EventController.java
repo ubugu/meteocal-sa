@@ -596,8 +596,10 @@ public class EventController implements Serializable{
                 weather.setPrecipitationType("SNOW");
             }
 
-             weather.setPressure(forecast.getForecastInstance(dayForecast-1).getPressure());
+            weather.setPressure(forecast.getForecastInstance(dayForecast-1).getPressure());
             weather.setTemperature(forecast.getForecastInstance(dayForecast-1).getTemperatureInstance().getDayTemperature());
+            weather.setMaxTemperature(forecast.getForecastInstance(dayForecast-1).getTemperatureInstance().getMaximumTemperature());
+            weather.setMinTemperature(forecast.getForecastInstance(dayForecast-1).getTemperatureInstance().getMinimumTemperature());       
             weather.setWind(forecast.getForecastInstance(dayForecast-1).getWindSpeed());
             weather.setId(null);
             this.weatherFacade.create(weather);
@@ -847,7 +849,7 @@ public class EventController implements Serializable{
      */
     private void prepareUpdateNotification() {
         notification.setType("UPDATE");
-        notification.setDescription("The event " + event.getTitle() + "that will be held on the " + event.getDate() + " has been modified by " + event.getCalendar().getOwner().getUsername() );
+        notification.setDescription("The event " + event.getTitle() + " that will be held on the " + event.getDate() + " has been modified by " + event.getCalendar().getOwner().getUsername() );
  
         for(Participant participants : participantFacade.searchByEvent(event.getId())){
             
