@@ -17,6 +17,8 @@ import jsf.entity.Participant;
 import jsf.entity.User;
 import jsf.entity.Weather;
 import jsf.entity.facade.BadconditionsFacade;
+import jsf.entity.facade.CalendarFacade;
+import jsf.entity.facade.EventFacade;
 import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.ParticipantFacade;
 import jsf.entity.facade.UserFacade;
@@ -52,6 +54,10 @@ public class ShowEventController {
     NotificationFacade notificationFacade;
     @EJB
     UserFacade userFacade;
+    @EJB
+    EventFacade eventFacade;
+    @EJB
+    CalendarFacade calendarFacade;
     
     private List<Participant> participants;
     private List<Participant> invited;
@@ -294,6 +300,13 @@ public class ShowEventController {
     
     public void setInvited(String response) {
         User user = this.userFacade.getLoggedUser();
+        
+        
+        if( (response.equals("YES")) && (eventFacade.dateAndTimeInTheMiddleCreate(selectedEvent.getDate(),selectedEvent.getDate(),selectedEvent.getStartingTime(),selectedEvent.getEndingTime(),calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(),userFacade.getLoggedUser().getUsername()) ) ){         
+            RequestContext.getCurrentInstance().execute("PF('EventInTheMiddle Error').show();");
+            return;
+        }
+        
          for (Participant u : this.participants) {
             if (u.getUser1().equals(user)) {
                 u.setParticipant(response);

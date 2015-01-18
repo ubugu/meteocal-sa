@@ -56,14 +56,7 @@ public class EventFacade extends AbstractFacade<Event> {
             List<Event> events = em.createNamedQuery("Event.findDateTimeInTheMiddle").setParameter("startSqlDate",startSqlDate).setParameter("endSqlDate",endSqlDate).setParameter("startSqlTime",startSqlTime).setParameter("endSqlTime",endSqlTime).setParameter("calendarId",CalendarID).setParameter("username",usern).getResultList();
 
             if(!events.isEmpty()){
-                if( events.get(0).getId()!= eventID ){
-                    System.out.println(eventID);
-                    System.out.println("ci sono risultati o mona");
-                    System.out.println(em.createNamedQuery("Event.findDateTimeInTheMiddle").setParameter("startSqlDate",startSqlDate).setParameter("endSqlDate",endSqlDate).setParameter("startSqlTime",startSqlTime).setParameter("endSqlTime",endSqlTime).setParameter("calendarId",CalendarID).setParameter("username",usern).getResultList());
-                    return true;
-                }else{
-                    return false;
-                }
+                return events.get(0).getId()!= eventID;
             }else{
                 return false;
             }
@@ -98,13 +91,7 @@ public class EventFacade extends AbstractFacade<Event> {
         try{
             List<Event> events = em.createNamedQuery("Event.findDateTimeInTheMiddle").setParameter("startSqlDate",startSqlDate).setParameter("endSqlDate",endSqlDate).setParameter("startSqlTime",startSqlTime).setParameter("endSqlTime",endSqlTime).setParameter("calendarId",CalendarID).setParameter("username",usern).getResultList();
 
-            if(!events.isEmpty()){
-                    System.out.println("ci sono risultati o mona");
-                    System.out.println(em.createNamedQuery("Event.findDateTimeInTheMiddle").setParameter("startSqlDate",startSqlDate).setParameter("endSqlDate",endSqlDate).setParameter("startSqlTime",startSqlTime).setParameter("endSqlTime",endSqlTime).setParameter("calendarId",CalendarID).setParameter("username",usern).getResultList());
-                    return true;
-            }else{
-                return false;
-            }
+            return !events.isEmpty();
             
         }catch(Exception e){
             //TODO

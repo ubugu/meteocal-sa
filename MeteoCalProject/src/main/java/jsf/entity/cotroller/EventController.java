@@ -285,7 +285,7 @@ public class EventController implements Serializable{
         setStyle("none");
         setEdit(false);
         setEndate(null);
-        setInvitations("");
+        setInvitations("Enter the Usernames separate with ';' Example: andrea;marco;lucia");
         setInviteSelect(false);
         setRejectedUsers("");
         setUntillDate(null);
