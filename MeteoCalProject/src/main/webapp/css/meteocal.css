@@ -51,11 +51,16 @@ body.noFrame {
 
 #searchHeader {
     width:100%; 
-    height: 45px;
+    height: 48px;
     background: #3D8AF7;
     border-bottom-color: #356e94; 
     border-bottom-style: none;
     border-bottom-width: 1px;
+}
+
+#search{
+    float:left; 
+    display:block;
 }
 
 /*Define meteocal logo */
@@ -107,7 +112,7 @@ ul.buttonList {
 div.loginForm {     
     padding-top: 20px;
     padding-left: 48%;
-    background-color:#3D8AF7;           
+    background-color:#3D8AF7; 
 } 
 
 div.rights  {     
@@ -154,7 +159,7 @@ div.guestFrame {
 div.logoutForm {     
     padding-top: 20px;
     padding-left: 90%;
-    background-color:#3D8AF7;           
+    background-color:#3D8AF7;    
 } 
 
 #userCalendar {  
@@ -164,6 +169,8 @@ div.logoutForm {
     background: #3D8AF7;
     font-family: "Comic Sans MS", cursive sans-serif;
     float : left;
+    margin-left: 52px;
+    margin-top: 6px
 }
 
 .schedule {
@@ -224,6 +231,15 @@ div.logoutForm {
 #descriptionLabel{
     position:relative;
     bottom: 70px;
+}
+
+#notificationForm{    
+    float:left; 
+    display:block; 
+    width:900px; 
+    height:600px; 
+    background-color: #FFFFFF; 
+    text-align: center;
 }
 
 .notResize {

@@ -14,13 +14,20 @@
         <div id="topHeader">
              <img id="logo" src="Images/meteocalsnow.png"  name="meteocalLogo" title="meteocallogo"/>
 
-                <h1 id="userCalendar">#{loginBean.loggedUser.username}'s Calendar</h1>   
+             <h1 id="userCalendar" style="margin-left: 52px;margin-top: 6px">#{loginBean.loggedUser.username}'s Calendar</h1>   
               
             <div class="logoutForm">         
                 <h:form>
                     <p:commandButton value="Logout" action="#{loginBean.logout()}"/>                     
                 </h:form>
             </div>
+        </div>
+        
+        <div id="searchHeader">
+            <h:form id="search">
+                <p:inputText id="searchText" value="#{SearchController.searchedUser}" />
+                <p:commandButton id="searchButton" value="Search"  action="#{SearchController.searchUser()}"/>    
+            </h:form>   
         </div>
         
         <div id="LeftHeader">
@@ -87,7 +94,7 @@
                         <p:message for="untillDate" />
                         
                         <p:outputLabel for="description" value="Description (optional):"/>
-                        <p:inputTextarea class="notResize"  id="description" autoResize="false" rows="6" cols="28" value="#{EventController.event.description}"    />
+                        <p:inputTextarea class="notResize"  id="description" autoResize="false" rows="5" cols="27" value="#{EventController.event.description}"    />
                         <p:message for="description" />
                         
                     </h:panelGrid>
@@ -149,9 +156,10 @@
                 
                     <h:panelGrid cellpadding="10px" width="450px" columns="4"> 
                         <p:selectBooleanCheckbox id="invitationcheck" value="#{EventController.inviteSelect}"/>     
-                        <h:outputText value="Send an Invitation to: "/>
-                        <p:ajax event="click" update="invitation"/>                      
-                        <p:inputTextarea class="notResize" id="invitation"  disabled="#{!EventController.inviteSelect}" autoResize="false" rows="4" cols="28" value="#{EventController.invitations}"/>
+                        <h:outputText value="Send an Invitation to:"/>
+                        <p:ajax event="click" update="invitation" />                      
+                        <p:inputTextarea class="notResize" id="invitation" counter="display" maxlength="1000" counterTemplate="Example (mar83;da87) {0} characters remaining." disabled="#{!EventController.inviteSelect}" autoResize="false" rows="4" cols="27"  onselect="value=''" value="#{EventController.invitations}"/>
+                        <h:outputText id="display" />
                     </h:panelGrid> 
                    
                     <h:panelGrid cellpadding="10px" width="450px" columns="6"> 
@@ -269,5 +277,6 @@
                 window.open(page, target);
             }
         </script>
+
     </body>
 </html>
