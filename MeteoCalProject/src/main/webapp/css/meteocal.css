@@ -195,7 +195,7 @@ div.logoutForm {
 #rightEventForm { 
     float:left;
     display:block; 
-    width:470px; 
+    width:170px; 
     height:500px; 
     background-color:#FFFFFF;    
     text-align: center;
@@ -260,7 +260,8 @@ div.logoutForm {
 
 .weatherPreview {
     position:relative;
-    right: 15px;
+    right: 20px;
+    width: 300px;
 }
 
 

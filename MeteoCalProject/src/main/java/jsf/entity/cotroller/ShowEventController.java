@@ -201,12 +201,10 @@ public class ShowEventController {
     
     public void initChart() {
         multiAxisModel = new LineChartModel();
-        this.weather = weatherFacade.searchById(this.selectedEvent.getWeatherID().getId());
-        
-        if (weather == null) {
-            this.IsWeatherNull = true;
+        if (this.selectedEvent.getWeatherID() == null) {
+            return;
         }
-        
+        this.weather = weatherFacade.searchById(this.selectedEvent.getWeatherID().getId());
         
         //set precipitations chart
         BarChartSeries precipitations = new BarChartSeries();

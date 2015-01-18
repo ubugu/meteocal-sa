@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:jsf="http://xmlns.jcp.org/jsf">
     <head jsf:id="head">     
-        <title>Home</title>
+        <title>Event Details</title>
         <link href="css/meteocal.css" rel="stylesheet" type="text/css"/>
     </head>
     <body jsf:id="body" class="noFrame">   
@@ -121,30 +121,35 @@
 
             <div id="rightEventForm">
                 <h1 class="weatherPreview"> Weather Preview</h1>
-                <h:panelGrid columns="3" cellpadding="10px" class="weatherGrid" >
-                    <p:outputLabel value="#{showEventController.city}"/>
-                    <h:outputText id="temperature" value="#{showEventController.temperature} C" style="width:100px"/>
-                    <img id="weatherImage" src="#{showEventController.weatherImage}"  name="weatherImage"  />
-                </h:panelGrid>
-
-                <p:chart type="line" model="#{showEventController.multiAxisModel}" style="height:400px;" rendered="#{!showEventController.isWeatherNull}"/>
+                
                 <p:outputLabel value="The weather preview is not available" rendered="#{showEventController.isWeatherNull}"/>
-                <h:panelGrid columns="2" cellpadding="10px" class="weatherGrid"> 
-                    <p:outputLabel for="wind" value="Wind speed:"/>
-                    <h:outputText id="wind" value="#{showEventController.wind}" />
-                    
-                    <p:outputLabel for="humidity" value="Humidity:"/>
-                    <h:outputText id="humidity" value="#{showEventController.humidity}" style="width:100px"/>
+                <p:panel rendered="#{!showEventController.isWeatherNull}" style="border: none; background-color: #FFFFFF">
+                    <h:panelGrid columns="3" cellpadding="10px" class="weatherGrid"  >
+                        <p:outputLabel value="#{showEventController.city}"/>
+                        <h:outputText id="temperature" value="#{showEventController.temperature} C" style="width:100px" />
+                        <img id="weatherImage" src="#{showEventController.weatherImage}"  name="weatherImage"  />
+                    </h:panelGrid>
 
-                    <p:outputLabel for="clouds" value="Clouds:"/>
-                    <h:outputText id="clouds" value="#{showEventController.clouds} %" style="width:100px"/>
+                    <p:chart type="line" model="#{showEventController.multiAxisModel}" style="height:400px; width:470px "/>
 
-                    <p:outputLabel for="precipitations" value="Precipitations:"/>
-                    <h:outputText id="precipitations" value="#{showEventController.precipitations} mm" style="width:100px"/>
+                    <h:panelGrid columns="2" cellpadding="10px" class="weatherGrid" > 
+                        <p:outputLabel for="wind" value="Wind speed:"/>
+                        <h:outputText id="wind" value="#{showEventController.wind}" />
 
-                    <p:outputLabel for="precipitationsType" value="Precipitations Type:"/>
-                    <h:outputText id="precipitationsType" value="#{showEventController.precipitationType}" style="width:100px"/>                 
-                </h:panelGrid>
+                        <p:outputLabel for="humidity" value="Humidity:"/>
+                        <h:outputText id="humidity" value="#{showEventController.humidity}" style="width:100px"/>
+
+                        <p:outputLabel for="clouds" value="Clouds:"/>
+                        <h:outputText id="clouds" value="#{showEventController.clouds}%" style="width:100px"/>
+
+                        <p:outputLabel for="precipitations" value="Precipitations:"/>
+                        <h:outputText id="precipitations" value="#{showEventController.precipitations}mm" style="width:100px"/>
+
+                        <p:outputLabel for="precipitationsType" value="Precipitations Type:"/>
+                        <h:outputText id="precipitationsType" value="#{showEventController.precipitationType}" style="width:100px"/>                 
+                    </h:panelGrid>
+                </p:panel>
+
             </div> 
         </h:form>
         
