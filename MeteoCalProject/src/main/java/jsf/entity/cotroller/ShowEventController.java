@@ -202,6 +202,7 @@ public class ShowEventController {
     public void initChart() {
         multiAxisModel = new LineChartModel();
         if (this.selectedEvent.getWeatherID() == null) {
+            this.IsWeatherNull = true;
             return;
         }
         this.weather = weatherFacade.searchById(this.selectedEvent.getWeatherID().getId());
@@ -240,6 +241,8 @@ public class ShowEventController {
         y2Axis.setMax(35);
          
         multiAxisModel.getAxes().put(AxisType.Y2, y2Axis);
+        
+        this.IsWeatherNull = false;
     }
     
     public boolean isInvited() {
