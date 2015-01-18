@@ -22,6 +22,13 @@
             </div>
         </div>
        
+        <div id="searchHeader">
+            <h:form id="search">
+                <p:inputText id="searchText" value="#{SearchController.searchedUser}" />
+                <p:commandButton id="searchButton" value="Search"  action="#{SearchController.searchUser()}"/>    
+            </h:form>   
+        </div>
+         
          <div id="LeftHeader">
              <ul class="buttonList">
                  <li><p:commandButton class="leftBarButton"  value="Home" action="#{scheduleController.loadOwnCalendar()}"/></li>   
@@ -31,36 +38,37 @@
              </ul>
         </div>
 
-         <h:form>
+        <div id="notificationForm">
+            <h:form>
                 <p:dataTable var="notification" value="#{notificationsController.userNotification}" rows="10"
-                         paginator="true"
-                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="5,10,15">
-                 <p:column headerText="Notification">                        
-                     <h:outputText id="text1" value="NEW! #{notification.type}  notification       "  style="font-weight: bolder; display: #{notificationsController.isNotVisualized(notification)}"/>
-                     <h:outputText id='text2' value="#{notification.type} notification       "  style="display: #{notificationsController.isVisualized(notification)}"/>
-                     <p:commandButton value="show" icon="ui-icon-extlink" update="text1, text2" >
-                         <f:setPropertyActionListener value="#{notification}" target="#{notificationsController.selectedNotification}" />
-                     </p:commandButton>
-                     
-                 </p:column>
-                </p:dataTable>  
+                            paginator="true"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="5,10,15">
+                    <p:column headerText="Notification">                        
+                        <h:outputText id="text1" value="NEW! #{notification.type}  notification       "  style="font-weight: bolder; display: #{notificationsController.isNotVisualized(notification)}"/>
+                        <h:outputText id='text2' value="#{notification.type} notification       "  style="display: #{notificationsController.isVisualized(notification)}"/>
+                        <p:commandButton value="show" icon="ui-icon-extlink" update="text1, text2" >
+                            <f:setPropertyActionListener value="#{notification}" target="#{notificationsController.selectedNotification}" />
+                        </p:commandButton>
 
-                <p:dialog id="dialog" header="Notification" widgetVar="notificationDialog" resizable="false" onShow="updateDialog()"  >
-                    <p:remoteCommand name="updateDialog" update="dialogContent, eventButton"/>
-                    <h:outputText id="dialogContent" value=" #{notificationsController.selectedNotification.description}"/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <p:commandButton id="eventButton" value="Go To Event" action="#{notificationsController.showEvent()}"  style="display: #{notificationsController.hasEvent()}"/>
-                    
+                    </p:column>
+                   </p:dataTable>  
+
+                   <p:dialog id="dialog" header="Notification" widgetVar="notificationDialog" resizable="false" onShow="updateDialog()"  >
+                       <p:remoteCommand name="updateDialog" update="dialogContent, eventButton"/>
+                       <h:outputText id="dialogContent" value=" #{notificationsController.selectedNotification.description}"/>
+                       <br/>
+                       <br/>
+                       <br/>
+                       <p:commandButton id="eventButton" value="Go To Event" action="#{notificationsController.showEvent()}"  style="display: #{notificationsController.hasEvent()}"/>
+
+                   </p:dialog>
+
+                <p:dialog id="eventDeleted" header="Error" widgetVar="eventDeleted" resizable="false">
+                    Error the event search was deleted.
                 </p:dialog>
-             
-             <p:dialog id="eventDeleted" header="Error" widgetVar="eventDeleted" resizable="false">
-                 Error the event search was deleted.
-             </p:dialog>
-         </h:form>
-          
+            </h:form>
+        </div>
 
 
 

@@ -21,11 +21,11 @@
             </div>
         </div>
         
-        <div id="topHeader">
-            <h:form>
+        <div id="searchHeader">
+            <h:form id="search">
                 <p:inputText id="searchText" value="#{SearchController.searchedUser}" />
-                <p:commandButton  value="Search" action="#{SearchController.searchUser()}"/>    
-            </h:form>
+                <p:commandButton id="searchButton" value="Search"  action="#{SearchController.searchUser()}"/>    
+            </h:form>   
         </div>
         
         <div id="LeftHeader">
