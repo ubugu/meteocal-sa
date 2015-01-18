@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Bean that manages the login.
  */
 package jsf.entity.cotroller;
 
@@ -49,6 +47,10 @@ public class LoginBean implements Serializable{
         this.password = password;
     }
 
+    /**
+     * Perform login.
+     * @return redirect to the user homepage.
+     */
     public String login() {
             FacesContext context = FacesContext.getCurrentInstance();
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -62,10 +64,17 @@ public class LoginBean implements Serializable{
         }          
     }
 
+    /**
+     * @return  the logged User
+     */
     public User getLoggedUser() {
         return facade.getLoggedUser();
     }
     
+    /**
+     * perfom logout.
+     * @return redirect to the guest homepage.
+     */
     public String logout() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
