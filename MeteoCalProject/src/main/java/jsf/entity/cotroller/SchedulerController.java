@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Bean that manages the schedule.
  */
 package jsf.entity.cotroller;
 import java.io.Serializable;
@@ -78,15 +76,21 @@ public class SchedulerController implements Serializable {
     @EJB
     WeatherFacade weatherFacade;
  
+    /**
+     * Contruct the schedule in the xhtml form, both for logged calendar and searched public calendar.
+     */
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();
         User user = null;
+        //set the user of the calendar.
         if (this.isPublic == false) {
            user = this.userFacade.getLoggedUser();
         } else {
             user = this.userFacade.searchForUser(this.searchController.getSearchedUser());
         }
+        
+        //collects data of event in created by the calendar owner and in which he has been invited to.
         events.clear();
         Calendar calendar = calendarFacade.searchByUser(user);
         List<Event> ownEvents = eventFacade.searchByCalendar(calendar);
@@ -94,6 +98,7 @@ public class SchedulerController implements Serializable {
         events.addAll(ownEvents);
         events.addAll(invitedEvents);
         
+        // add each event to the schedule.
         for (Event e : events) {
             Date startingDate = dataMerge(e.getDate(), e.getStartingTime());
             Date endingDate = dataMerge(e.getDate(), e.getEndingTime());
@@ -115,13 +120,6 @@ public class SchedulerController implements Serializable {
         }
     }
 
-    public Date dataMerge(Date date, Date time) {
-        DateTime dateTime = new DateTime(date);
-        DateTime timeTime = new DateTime(time);
-        DateTime finalTime = new DateTime(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth(), timeTime.getHourOfDay(), timeTime.getMinuteOfHour());
-        return finalTime.toDate();
-    }
-
       public ScheduleModel getEventModel() {
         return eventModel;
     }
@@ -137,7 +135,46 @@ public class SchedulerController implements Serializable {
     public void setEvent(ScheduleEvent event) {
         this.event = event;
     }
+    
+       public ShowEventController getShowEventController() {
+        return showEventController;
+    }
      
+    public EventController getEventController() {
+        return eventController;
+    }
+
+    public void setEventController(EventController eventController) {
+        this.eventController = eventController;
+    }
+    
+        
+    public SearchController getSearchController() {
+        return searchController;
+    }
+
+    public void setSearchController(SearchController searchController) {
+        this.searchController = searchController;
+    }
+    
+    
+        /**
+     * Merge the date and time into one date.
+     * @param date 
+     * @param time
+     * @return  the Date merged
+     */
+    public Date dataMerge(Date date, Date time) {
+        DateTime dateTime = new DateTime(date);
+        DateTime timeTime = new DateTime(time);
+        DateTime finalTime = new DateTime(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth(), timeTime.getHourOfDay(), timeTime.getMinuteOfHour());
+        return finalTime.toDate();
+    }
+
+     /**
+      * Set the selected event. Open the event details dialog.
+      * @param selectEvent with a mouse click.
+      */
     public void onEventSelect(SelectEvent selectEvent) {
         this.event = (ScheduleEvent) selectEvent.getObject();
         RequestContext requestContext = RequestContext.getCurrentInstance();
@@ -153,24 +190,15 @@ public class SchedulerController implements Serializable {
 
     }
 
-    public ShowEventController getShowEventController() {
-        return showEventController;
-    }
-     
-    public EventController getEventController() {
-        return eventController;
-    }
-
-    public void setEventController(EventController eventController) {
-        this.eventController = eventController;
-    }
-    
+    /**
+     * Set the event selected into ShowEventController and creat its chart.
+     */
     public void showEvent() {
         try {
             int id = eventMap.get(event.getId());
             for (Event e : events) {
-            if (e.getId() == id) {
-                showEventController.setSelectedEvent(e);
+                if (e.getId() == id) {
+                    showEventController.setSelectedEvent(e);
                 showEventController.initChart();
                 break;
             }
@@ -190,15 +218,12 @@ public class SchedulerController implements Serializable {
         
     }
     
-    
-    public SearchController getSearchController() {
-        return searchController;
-    }
 
-    public void setSearchController(SearchController searchController) {
-        this.searchController = searchController;
-    }
 
+    /**
+     * Delete an event.
+     * @return the redirect to the home page.
+     */
 
     public String delete() {
         try {
@@ -265,6 +290,11 @@ public class SchedulerController implements Serializable {
         }
     }
     
+    
+    /**
+     * Check if the logged user is invited to the event selected.
+     * @return "none" if the logged user is invitend to the event otherwise "display"
+     */
       public String isInvited() {
           int id;
           try {
@@ -292,12 +322,20 @@ public class SchedulerController implements Serializable {
         this.showEventController = showEventController;
     }
     
+    /**
+     * Creat the public calendar. 
+     * @return redirect to the homepage
+     */
     public String loadPublicCalendar() {
         setIsPublic(true);
         init();
         return "/publicCalendar?faces-redirect=true";
     }
     
+    /**
+     * Create the logged user calendar
+     * @return redirect to the homepage
+     */
     public String loadOwnCalendar() {
         setIsPublic(false);
         init();

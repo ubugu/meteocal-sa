@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Bean that manage notification showing and creation.
  */
 package jsf.entity.cotroller;
 
@@ -88,8 +86,8 @@ public class NotificationsController {
 
 
     /**
-     * 
-     * @return 
+     * Set the selected event for ShowEventController.
+     * @return the redirect to showEvent page.
      */
     public String showEvent() {
         if (this.selectedNotification == null) {

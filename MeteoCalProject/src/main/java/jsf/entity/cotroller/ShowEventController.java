@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Bean that manages the show event.
  */
 package jsf.entity.cotroller;
 
@@ -194,11 +192,17 @@ public class ShowEventController {
         }
     }
     
+    /**
+     * Show the participants in the dialog.
+     */
     public void loadParticipants() {
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("PF('participants').show();");
     }
     
+    /**
+     * create the chart. if no weather is assigned to the event, isWeatherNull is set to false.
+     */
     public void initChart() {
         multiAxisModel = new LineChartModel();
         if (this.selectedEvent.getWeatherID() == null) {
@@ -288,7 +292,7 @@ public class ShowEventController {
         
     }
   
-
+    
     public String getResponse() {
         User user = this.userFacade.getLoggedUser();
         for (Participant u : this.participants) {
@@ -299,6 +303,10 @@ public class ShowEventController {
         return "ERROR";
     }
     
+    /**
+     * set the response to the invitation, update the xhtml element, and create a new response notification.
+     * @param response made by the user
+     */
     public void setInvited(String response) {
         User user = this.userFacade.getLoggedUser();
         
@@ -318,6 +326,11 @@ public class ShowEventController {
         sendNotification(response, user);
     }
     
+    /**
+     * Create a new notification of response type
+     * @param response made by the user.
+     * @param user that has response to the event invitation
+     */
     public void sendNotification(String response, User user) {
         Notification notification = new Notification();
         notification.setEventID(selectedEvent);
@@ -337,6 +350,10 @@ public class ShowEventController {
         this.notificationFacade.create(notification);
     }
     
+    /**
+     * check if the selected event has bad conditions
+     * @return "none" if the selected event has not bad conditions otherwise "display"
+     */
     public String hasBadCondition() {
         this.badConditions = badConditionsFacade.searchByEvent(selectedEvent);
         if (badConditions == null) {
