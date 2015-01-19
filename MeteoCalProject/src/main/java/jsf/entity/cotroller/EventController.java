@@ -221,6 +221,23 @@ public class EventController implements Serializable {
     public void setPrec(Boolean prec) {
         this.prec = prec;
     }
+    
+    public Notification getNotification() {
+        return notification;
+    }
+
+    public void setNotification(Notification notification) {
+        this.notification = notification;
+    }
+
+    public Participant getParticipant() {
+        return participant;
+    }
+
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
+    }
+    
     // end variables
 
     /**
@@ -259,7 +276,10 @@ public class EventController implements Serializable {
             setTemp(false);
         }
 
+        setInvitations("");
+        setInvitatedUsers(null);
         setInviteSelect(false);
+        setRejectedUsers("");
         setEdit(true);
         setEndate(event.getDate());
 
@@ -431,9 +451,10 @@ public class EventController implements Serializable {
         setInvitatedUsers(getInvitations().split(";"));
 
         for (String invitatedUser : getInvitatedUsers()) {
-            if (invitatedUser != null) {
+            if ((invitatedUser != null) && (!invitatedUser.equals(""))) {
                 if (userFacade.searchForUser(invitatedUser) == null) {
                     setRejectedUsers(getRejectedUsers() + invitatedUser + " ;");
+                    setInvitations(getInvitations().replace(invitatedUser,""));
                     result = false;
                 }
             }
@@ -821,11 +842,7 @@ public class EventController implements Serializable {
 
         //we can delete it if it was the user decision or we can try to create the badconditions
         if ((!bad) && (badconditions.getId() != null)) {
-            try {
-                badconditionsFacade.remove(badconditions);
-            } catch (Exception e) {
-                //TODO
-            }
+            badconditionsFacade.remove(badconditions);
         } else {
             try {
                 if (edit && !editAddingBad) {
@@ -901,13 +918,18 @@ public class EventController implements Serializable {
      */
     private void prepareCreateParticipant() {
         //participants invited
+        Participant alreadyParticipant;
         participant.setEvent1(event);
         participant.setOrganiser("NO");
         participant.setParticipant("UNKNOWN");
         for (String invitatedUser : getInvitatedUsers()) {
-            participant.setUser1(userFacade.searchForUser(invitatedUser));
-            participant.setParticipantPK(new ParticipantPK(participant.getUser1().getUsername(), participant.getEvent1().getId()));
-            participantFacade.create(participant);
+            alreadyParticipant = participantFacade.searchByUser(invitatedUser);
+            
+            if((alreadyParticipant != null) && (!event.getParticipantList().contains(alreadyParticipant))){
+                participant.setUser1(userFacade.searchForUser(invitatedUser));
+                participant.setParticipantPK(new ParticipantPK(participant.getUser1().getUsername(), participant.getEvent1().getId()));
+                participantFacade.create(participant);
+            }
         }
     }
 
