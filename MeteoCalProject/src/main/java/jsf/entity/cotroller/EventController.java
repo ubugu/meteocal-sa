@@ -14,6 +14,8 @@ import jsf.entity.Event;
 import jsf.entity.facade.BadconditionsFacade;
 import jsf.entity.facade.EventFacade;
 import java.util.Date; 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import jsf.entity.Notification;
 import jsf.entity.Participant;
 import jsf.entity.ParticipantPK;
@@ -311,6 +313,7 @@ public class EventController implements Serializable {
         /*if there are simplier error we will return to the event creation page 
          showing the errors to avoid useless further computation */
         if (error) {
+            requestContext.execute("PF('creation').hide();");
             return "";
         }
 
@@ -321,6 +324,8 @@ public class EventController implements Serializable {
         String ret = prepareCreateEvent();
 
         if (ret.equals("")) {
+           
+            requestContext.execute("PF('creation').hide();");
             requestContext.execute("PF('complete').show();");
         }
 
@@ -569,7 +574,9 @@ public class EventController implements Serializable {
         Integer dayForecast = targetDate.getDayOfYear() - currentDate.getDayOfYear() + 1;
 
         if (dayForecast > 13) {
-            requestContext.execute("PF('weather').show();");
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "The weather was not inserted for one or more of the events created"));
+
             return null;
         }
 
@@ -586,7 +593,9 @@ public class EventController implements Serializable {
             forecast = owm.dailyForecastByCityName(event.getCity(), dayForecast.byteValue());
             //weather.setId(this.weatherFacade.getMaxNotificationID() + 1);
             if (forecast.getCityInstance().getCityName().equals("")) {
-                requestContext.execute("PF('weather').show();");
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "The weather was not inserted for one or more of the events created"));
+
                 return null;
             }
             weather.setCity(forecast.getCityInstance().getCityName());
@@ -617,7 +626,8 @@ public class EventController implements Serializable {
             //TODO
         }
 
-        requestContext.execute("PF('weather').show();");
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "The weather was not inserted for one or more of the events created"));
         return null;
     }
 

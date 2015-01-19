@@ -146,14 +146,14 @@
                             <h:inputHidden id="precipitations" value="#{EventController.badconditions.precipitations}" />
                             <h:outputText id="Plabel" value="%" />
                             <p:slider  for="precipitations" display="precipitationsoutput" style="width: 150px"  displayTemplate="{value}" />
-    
+
                         </h:panelGrid>
-                        
+
                     </p:panel>
                     <br />
                     <br />
-                    
-                
+
+
                     <h:panelGrid cellpadding="10px" width="450px" columns="4"> 
                         <p:selectBooleanCheckbox id="invitationcheck" value="#{EventController.inviteSelect}"/>     
                         <h:outputText value="Send an Invitation to:"/>
@@ -161,9 +161,9 @@
                         <p:inputTextarea class="notResize" id="invitation" counter="display" maxlength="1000" counterTemplate="Example (mar83;da87) {0} characters remaining." disabled="#{!EventController.inviteSelect}" autoResize="false" rows="4" cols="27"  onselect="value=''" value="#{EventController.invitations}"/>
                         <h:outputText id="display" />
                     </h:panelGrid> 
-                   
+
                     <h:panelGrid cellpadding="10px" width="450px" columns="6"> 
-                        
+
                         <h:outputText value="Event Color:"/>
                         <p:selectOneMenu id="color" value="#{EventController.event.color}" style="width:100px">
                             <f:selectItem itemLabel="Grey" itemValue="grey" />
@@ -182,101 +182,72 @@
                         <p:message for="privacy" />
 
                     </h:panelGrid>
-              
-                    <p:commandButton value="Create Event" ajax="true" validateClient="true" action="#{EventController.controlDataCreation()}" id="iconOnly" icon="ui-icon-calendar"/>
-                    <p:dialog widgetVar="complete" header="Success">
+
+                    <p:commandButton update="growl" value="Create Event" ajax="true" validateClient="true" onstart="PF('creation').show()" onsuccess="PF('creation').hide()"  action="#{EventController.controlDataCreation()}" id="iconOnly" icon="ui-icon-calendar"/>
+                    <p:dialog id="complete" widgetVar="complete" draggable="false" closable="false" resizable="false"  modal="true"  header="Success">
                         Event Created!
+                        <br />
+                        <br />
+                        <br />
+                        <p:commandButton value="New Event" action="#{EventController.newEvent}"/>
+                        <p:commandButton value="Home" action="mainUserPage?faces-redirect=true"/>
                     </p:dialog>
-                    
+
                 </div> 
-                
+
                 <!-- dialog error -->
-                
+
                 <p:dialog header="Error" widgetVar="NoPast Error" minHeight="40" resizable="false" >
-                <h:outputText value="The Starting Date is before Today" />
+                    <h:outputText value="The Starting Date is before Today" />
                 </p:dialog>
-                
+
                 <p:dialog header="Error" widgetVar="EndDate Error" minHeight="40" resizable="false" >
-                <h:outputText value="The ending date is before the starting date" />
+                    <h:outputText value="The ending date is before the starting date" />
                 </p:dialog>
-           
+
                 <p:dialog header="Error" widgetVar="EndTime Error" minHeight="40" resizable="false" >
-                <h:outputText value="The ending time is before the starting time" />
+                    <h:outputText value="The ending time is before the starting time" />
                 </p:dialog>
-                
+
                 <p:dialog header="Error" widgetVar="EndUntillDate Error" minHeight="40" resizable="false" >
-                <h:outputText value="The untill date is before the starting date" />
+                    <h:outputText value="The untill date is before the starting date" />
                 </p:dialog>
-           
+
                 <p:dialog header="Error" widgetVar="Repeat Error" minHeight="40" resizable="false" >
-                <h:outputText value="You can not repeat an event that last more than 1 day for now" />
+                    <h:outputText value="You can not repeat an event that last more than 1 day for now" />
                 </p:dialog>
-                
+
                 <p:dialog header="Error" widgetVar="Invite Error" minHeight="40" resizable="false" dynamic="true">
-                <h:outputText value="You haven't insert any User or these Users does not exist: #{EventController.rejectedUsers}" />
+                    <h:outputText value="You haven't insert any User or these Users does not exist: #{EventController.rejectedUsers}" />
                 </p:dialog>
-                
+
                 <p:dialog header="Error" widgetVar="StartTime Error" minHeight="40" resizable="false" >
-                <h:outputText value="The Starting Time is before the current Time!" />
+                    <h:outputText value="The Starting Time is before the current Time!" />
                 </p:dialog>
-                
+
                 <p:dialog header="Error" widgetVar="DateInTheMiddle Error" minHeight="40" resizable="false" >
-                <h:outputText value="There are some event in the middle of the one you want to create!!" />
+                    <h:outputText value="There are some event in the middle of the one you want to create!!" />
                 </p:dialog>
-              
+
                 <p:dialog header="Error" widgetVar="Untill Error" minHeight="40" resizable="false" >
-                <h:outputText value="Repeats is not 'no' but you did not chose an untill date !!" />
+                    <h:outputText value="Repeats is not 'no' but you did not chose an untill date !!" />
                 </p:dialog>
-                
+
                 <p:dialog header="Error" widgetVar="DateInTheMiddleRepeat Error" minHeight="40" resizable="false" >
-                <h:outputText value="There are some event in the middle of one of the events you want to create!!" />
+                    <h:outputText value="There are some event in the middle of one of the events you want to create!!" />
                 </p:dialog>
-                
-                
-                <p:dialog header="Info" widgetVar="weather" minHeight="40" resizable="false" >
-                <h:outputText value="The weather was not inserted for one or more of the events created" />
-                </p:dialog>
+
+
+
+                <p:growl id="growl"  showDetail="true" sticky="true" />  
                 <!-- dialog error -->
-                
+
+                <p:dialog  widgetVar="creation" appendTo="complete" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" >
+                    <h:outputText value="Creating your event" />
+                    
+                </p:dialog>
+
+
             </h:form>
-        
-            <!--Function to show element on click-->
-            <script type="text/javascript" language="javascript">
-                function show(id){
-                  if (document.getElementById){
-                    if(document.getElementById(id).style.display === 'none'){
-                      document.getElementById(id).style.display = 'block';
-                    }else{
-                      document.getElementById(id).style.display = 'none';
-                    }
-                  }
-                }
-            </script>
-            
-             <!--Function to enable text-->
-            <script type="text/javascript" language="javascript">
-                
-                function enable(id){
-                  if (document.getElementById){
-                    if(document.getElementById(id).disabled === true){
-                      document.getElementById(id).disabled = false;
-                    }else{
-                      document.getElementById(id).disabled = true;
-                    }
-                  }
-                }
-            </script>
-         
-         
-  
-
-        <script language="javascript" type="text/javascript">
-            <!--Function to load a page indicated with the string value.-->
-            function loadPage(page, target) 
-            {
-                window.open(page, target);
-            }
-        </script>
-
     </body>
 </html>
