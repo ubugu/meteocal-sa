@@ -543,9 +543,7 @@ public class EventController implements Serializable {
             }
 
             //badcondition creation if they are set
-            if (getBad()) {
-                prepareCreateBadConditions();
-            }
+            prepareCreateBadConditions();
 
             //invite & notify if there are invited
             if (getInviteSelect() || edit) {
@@ -783,9 +781,7 @@ public class EventController implements Serializable {
             }
 
             //badcondition creation if they are set
-            if (getBad()) {
-                prepareCreateBadConditions();
-            }
+            prepareCreateBadConditions();
 
             //invite & notify if there are invited
             if (getInviteSelect() || edit) {
@@ -841,7 +837,7 @@ public class EventController implements Serializable {
         }
 
         //we can delete it if it was the user decision or we can try to create the badconditions
-        if ((!bad) && (badconditions.getId() != null)) {
+        if ((!bad) && (badconditions.getId() != null)) {          
             badconditionsFacade.remove(badconditions);
         } else {
             try {
