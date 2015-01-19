@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Participant.findAll", query = "SELECT p FROM Participant p"),
     @NamedQuery(name = "Participant.findByUser", query = "SELECT p FROM Participant p WHERE p.participantPK.user = :user"),
     @NamedQuery(name = "Participant.findAcceptedEventByUser", query = "SELECT p.event1 FROM Participant p WHERE p.participant = 'YES' AND p.participantPK.user = :user"),
+    @NamedQuery(name = "Participant.findByUserEvent", query = "SELECT p FROM Participant p WHERE p.participantPK.user = :user AND p.participantPK.event = :event"),
     @NamedQuery(name = "Participant.findByEvent", query = "SELECT p FROM Participant p WHERE p.participantPK.event = :event"),
     @NamedQuery(name = "Participant.findByOrganiser", query = "SELECT p FROM Participant p WHERE p.organiser = :organiser"),
     @NamedQuery(name = "Participant.findByParticipant", query = "SELECT p FROM Participant p WHERE p.participant = :participant")})
