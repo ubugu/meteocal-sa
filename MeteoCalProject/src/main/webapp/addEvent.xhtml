@@ -190,7 +190,7 @@
                         <br />
                         <br />
                         <p:commandButton value="New Event" action="#{EventController.newEvent}"/>
-                        <p:commandButton value="Home" action="mainUserPage?faces-redirect=true"/>
+                        <p:commandButton value="Home" action="#{scheduleController.loadOwnCalendar()}"/>
                     </p:dialog>
 
                 </div> 
@@ -242,7 +242,7 @@
                 <p:growl id="growl"  showDetail="true" sticky="true" />  
                 <!-- dialog error -->
 
-                <p:dialog  widgetVar="creation" appendTo="complete" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" >
+                <p:dialog  widgetVar="creation" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" >
                     <h:outputText value="Creating your event" />
                     
                 </p:dialog>
