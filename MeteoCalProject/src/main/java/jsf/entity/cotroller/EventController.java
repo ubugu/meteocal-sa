@@ -123,6 +123,9 @@ public class EventController implements Serializable {
     }
 
     public void setInvitatedUsers(String[] invitatedUsers) {
+        for (int i = 0; i<invitatedUsers.length; i++) {
+            invitatedUsers[i] = invitatedUsers[i].replaceAll(" ", "");
+        }
         this.invitatedUsers = invitatedUsers;
     }
 
@@ -449,7 +452,7 @@ public class EventController implements Serializable {
         }
 
         setInvitatedUsers(getInvitations().split(";"));
-
+         
         for (String invitatedUser : getInvitatedUsers()) {
             if ((invitatedUser != null) && (!invitatedUser.equals(""))) {
                 if (userFacade.searchForUser(invitatedUser) == null) {
