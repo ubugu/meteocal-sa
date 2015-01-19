@@ -450,7 +450,7 @@ public class EventController implements Serializable {
         if (getInvitations() == null || getInvitations().equals("")) {
             return false;
         }
-
+ 
         setInvitatedUsers(getInvitations().split(";"));
          
         for (String invitatedUser : getInvitatedUsers()) {
@@ -917,19 +917,36 @@ public class EventController implements Serializable {
      */
     private void prepareCreateParticipant() {
         //participants invited
-        Participant alreadyParticipant;
         participant.setEvent1(event);
         participant.setOrganiser("NO");
         participant.setParticipant("UNKNOWN");
         for (String invitatedUser : getInvitatedUsers()) {
-            alreadyParticipant = participantFacade.searchByUser(invitatedUser);
-            
-            if((alreadyParticipant != null) && (!event.getParticipantList().contains(alreadyParticipant))){
+            if(!invitatedUser.equals(userFacade.getLoggedUser().getUsername())){
                 participant.setUser1(userFacade.searchForUser(invitatedUser));
                 participant.setParticipantPK(new ParticipantPK(participant.getUser1().getUsername(), participant.getEvent1().getId()));
                 participantFacade.create(participant);
             }
         }
+        
+        /* prima era così e forse funzionava ma son troppo andato per controllare.. prova tu!
+              //participants invited
+        Participant alreadyParticipant;
+        participant.setEvent1(event);
+        participant.setOrganiser("NO");
+        participant.setParticipant("UNKNOWN");
+        for (String invitatedUser : getInvitatedUsers()) {
+            if(!invitatedUser.equals("")){
+                
+                alreadyParticipant = participantFacade.searchByUserEvent(invitatedUser,event.getId());
+            
+                if(alreadyParticipant == null){
+                    participant.setUser1(userFacade.searchForUser(invitatedUser));
+                    participant.setParticipantPK(new ParticipantPK(participant.getUser1().getUsername(), participant.getEvent1().getId()));
+                    participantFacade.create(participant);
+                }
+            }
+        }
+        */
     }
 
     /**
