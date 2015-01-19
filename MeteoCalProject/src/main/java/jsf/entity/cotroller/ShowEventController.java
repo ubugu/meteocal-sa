@@ -3,6 +3,7 @@
  */
 package jsf.entity.cotroller;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -37,7 +38,7 @@ import org.primefaces.model.chart.LinearAxis;
  */
 @ManagedBean( name= "showEventController" , eager = true)
 @SessionScoped
-public class ShowEventController {
+public class ShowEventController implements Serializable{
 
     private LineChartModel multiAxisModel;
     Event selectedEvent;

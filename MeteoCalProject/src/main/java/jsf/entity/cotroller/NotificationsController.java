@@ -36,10 +36,10 @@ public class NotificationsController {
     private Notification selectedNotification;
     
     @EJB
-    private NotificationFacade facade;
+    NotificationFacade facade;
     
     @EJB
-    private UserFacade userFacade;
+    UserFacade userFacade;
     
     public Notification getSelectedNotification() {
         return selectedNotification;

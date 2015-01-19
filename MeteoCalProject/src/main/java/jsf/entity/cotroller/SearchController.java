@@ -3,6 +3,7 @@
  */
 package jsf.entity.cotroller;
 
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -18,7 +19,7 @@ import jsf.entity.facade.UserFacade;
 
 @ManagedBean(name = "SearchController", eager = true)
 @SessionScoped
-public class SearchController {
+public class SearchController implements Serializable{
         
     private User user;
     
