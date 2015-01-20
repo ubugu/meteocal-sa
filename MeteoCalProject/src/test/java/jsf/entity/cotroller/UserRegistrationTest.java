@@ -50,13 +50,23 @@ public class UserRegistrationTest {
         //register method
         registrationController.register();       
         
-        verify(registrationController.facade).create(user);
-        verify(registrationController.calendarFacade).create(calendar);
-
+        verify(registrationController.facade,times(1)).create(user);
+        verify(registrationController.calendarFacade,times(1)).create(calendar);
+        
         //try to register with the same user
-        registrationController.register();
-                
-        doThrow(new NullPointerException()).when(registrationController.facade).create(user);
+        try{
+            registrationController.register();
+        }catch(Exception e){
+                verify(registrationController.facade,times(1)).create(user);
+                verify(registrationController.calendarFacade,times(1)).create(calendar);
+        }        
+        
+        user.setUsername("pluto");
+        
+        registrationController.register();       
+        
+        verify(registrationController.facade,times(3)).create(user);
+        verify(registrationController.calendarFacade,times(3)).create(calendar);
         
     }
     

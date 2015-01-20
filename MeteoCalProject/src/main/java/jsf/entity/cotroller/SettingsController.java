@@ -131,6 +131,10 @@ public class SettingsController implements Serializable{
         this.sharedUsersString = sharedUsersString;
     }
 
+    public List<User> getOldSharedUsers() {
+        return oldSharedUsers;
+    }
+        
     /**
      * Check if the passowrd inserted is equals to the old one
      * @return  true if password matches otherwise false

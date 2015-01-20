@@ -11,6 +11,7 @@ import jsf.entity.Calendar;
 import jsf.entity.User;
 import jsf.entity.facade.CalendarFacade;
 import jsf.entity.facade.UserFacade;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -70,7 +71,8 @@ public class SearchController implements Serializable{
         
         user = userFacade.searchForUser(getSearchedUser());
         if(user == null){
-            //TODO error
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("PF('UserNotFound Error').show();");
             return "search?faces-redirect=true";
         }
         
