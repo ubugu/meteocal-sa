@@ -5,6 +5,7 @@
  */
 package jsf.entity.cotroller;
 
+import java.lang.NullPointerException;
 import java.util.Date;
 import jsf.entity.Badconditions;
 import jsf.entity.Calendar;
@@ -28,11 +29,15 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import org.mockito.Spy;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -41,13 +46,14 @@ import static org.mockito.Mockito.when;
 public class EventTest {
     
     private EventController eventController;
-    private Event event;
+    private Event event,newEvent;
     private User user;
     private Calendar calendar;
     private Badconditions badcond;
     private Participant participant;
     private Notification notification;
     private Date futureDate,startTime,endTime;
+    private RequestContext context;
     
     //we will cover only the mandatory functionality because we don't have much time
     @Before
@@ -59,9 +65,11 @@ public class EventTest {
         eventController.participantFacade = mock(ParticipantFacade.class);
         eventController.badconditionsFacade = mock(BadconditionsFacade.class);
         eventController.notificationFacade = mock(NotificationFacade.class);
+        context = mock(RequestContext.class);
         
         
         event = new Event();
+        newEvent = new Event();
         futureDate = new DateTime(2100,1,1,12,00).toDate();
         startTime = new DateTime(2100,1,1,14,00).toDate();
         endTime = new DateTime(2100,1,1,18,00).toDate();
@@ -73,6 +81,13 @@ public class EventTest {
         eventController.setEndate(futureDate);
         event.setStartingTime(startTime);
         event.setEndingTime(endTime);
+        
+        newEvent.setId(1);
+        newEvent.setTitle("test");
+        newEvent.setLocation("testinglocation");
+        newEvent.setDate(futureDate);
+        newEvent.setStartingTime(startTime);
+        newEvent.setEndingTime(endTime);
         
         user = new User();
         user.setUsername("testname");
@@ -86,7 +101,6 @@ public class EventTest {
         
         float flo = 3;
         badcond = new Badconditions();
-        badcond.setId(1);
         badcond.setEventID(event);
         badcond.setLayer("RAINY");
         badcond.setPrecipitations(flo);
@@ -107,26 +121,36 @@ public class EventTest {
     
     // the execute(eventcreated is called)
     @Test(expected=NullPointerException.class)
-    public void OkTest(){
+    public void OkWithBadInviteTest(){
         
         eventController.setEvent(event);
-        //mockare anche userfacade e calendarfacade, aggiungendo i falsi metodi anche li
-        eventController.userFacade.create(user);
+        eventController.setBad(Boolean.TRUE);
+        eventController.setBadconditions(badcond);
+        eventController.setInviteSelect(Boolean.TRUE);
+        eventController.setInvitations("testname;");
         
-        when(eventController.calendarFacade.searchByUser(any(User.class))).thenReturn(calendar);
+        Participant p = spy(eventController.getParticipant());
+        doReturn(newEvent).when(p).getEvent1();
+        
+        doThrow(new NullPointerException()).when(context).execute(anyString());
+        
         when(eventController.userFacade.getLoggedUser()).thenReturn(user);
-        when(eventController.eventFacade.dateAndTimeInTheMiddleCreate(any(Date.class),any(Date.class),any(Date.class),any(Date.class),anyInt(),anyString())).thenReturn(Boolean.FALSE);
+        when(eventController.calendarFacade.searchByUser(any(User.class))).thenReturn(calendar);
+        when(eventController.userFacade.searchForUser(anyString())).thenReturn(user);
+      
+        doReturn(Boolean.FALSE).when(eventController.eventFacade).dateAndTimeInTheMiddleCreate(any(Date.class),any(Date.class),any(Date.class),any(Date.class),anyInt(),anyString());
         
         eventController.controlDataCreation();
-        
-        verify(eventController.participantFacade).create(participant);
+       
+        verify(eventController.badconditionsFacade).create(badcond);
         verify(eventController.eventFacade).create(event);
         verify(eventController.eventFacade.count() , times(1));
+        verify(eventController.participantFacade).create(participant);
         
     }
-    
-        // the execute(eventcreated is called)
-    @Test(expected=NullPointerException.class)
+
+    // the execute(eventcreated is called)
+    @Test
     public void OkWithBadTest(){
         
         eventController.setEvent(event);
@@ -144,55 +168,52 @@ public class EventTest {
         when(eventController.userFacade.getLoggedUser()).thenReturn(user);
         when(eventController.eventFacade.dateAndTimeInTheMiddleCreate(any(Date.class),any(Date.class),any(Date.class),any(Date.class),anyInt(),anyString())).thenReturn(Boolean.FALSE);
         
-        eventController.controlDataCreation();
-       
-        verify(eventController.badconditionsFacade).create(badcond);
-        verify(eventController.eventFacade).create(event);
-        verify(eventController.eventFacade.count() , times(1));
-        verify(eventController.participantFacade).create(participant);
-        
+        try{
+            eventController.controlDataCreation();
+        }catch(Exception e){
+            verify(eventController.badconditionsFacade,times(1)).create(badcond);
+            verify(eventController.eventFacade, times(1)).create(event);
+        }
     }
     
     
-        // the execute(eventcreated is called)
-    @Test(expected=NullPointerException.class)
-    public void OkWithBadInviteTest(){
+        // the participantPK generate an error
+    @Test
+    public void OkTest(){
         
         eventController.setEvent(event);
-        eventController.setBad(Boolean.TRUE);
-        eventController.setBadconditions(badcond);
-        
         //mockare anche userfacade e calendarfacade, aggiungendo i falsi metodi anche li
         eventController.userFacade.create(user);
-        
         
         when(eventController.calendarFacade.searchByUser(any(User.class))).thenReturn(calendar);
         when(eventController.userFacade.getLoggedUser()).thenReturn(user);
         when(eventController.eventFacade.dateAndTimeInTheMiddleCreate(any(Date.class),any(Date.class),any(Date.class),any(Date.class),anyInt(),anyString())).thenReturn(Boolean.FALSE);
         
-        eventController.controlDataCreation();
-       
-        verify(eventController.notificationFacade).create(notification);
-        verify(eventController.badconditionsFacade).create(badcond);
-        verify(eventController.eventFacade).create(event);
-        verify(eventController.eventFacade.count() , times(1));
-        verify(eventController.participantFacade).create(participant);
+        try{
+            eventController.controlDataCreation();
+        }catch(Exception e){
+            verify(eventController.eventFacade,times(1)).create(event);
+        }
         
     }
     
     @Test(expected=NullPointerException.class)
     public void NotDateError() {
         futureDate = new DateTime(1990,1,1,12,00).toDate();
+        when(eventController.calendarFacade.searchByUser(any(User.class))).thenReturn(calendar);
+        when(eventController.userFacade.getLoggedUser()).thenReturn(user);
+        when(eventController.eventFacade.dateAndTimeInTheMiddleCreate(any(Date.class),any(Date.class),any(Date.class),any(Date.class),anyInt(),anyString())).thenReturn(Boolean.TRUE);
+
         event.setDate(futureDate);
         eventController.controlDataCreation();
     }
     
-    @Test
+    @Test(expected=NullPointerException.class)
     public void NotNullField(){
         event.setTitle(null);
         /*this is not exactly right because the exception is due to the requestcontext who can't be called, but
           since the requestcontext.execute is called only in case of error we can say that it will throw an exception*/
-        doThrow(new NullPointerException()).when(eventController.eventFacade).create(event);
+        eventController.controlDataCreation();
     }
     
 }

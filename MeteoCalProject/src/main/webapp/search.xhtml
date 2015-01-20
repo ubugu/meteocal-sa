@@ -52,5 +52,9 @@
             <p:commandButton id="goToHome" disabled="#{SearchController.privateCalendar}" value="#{SearchController.user.username} 's Calendar"  action="#{scheduleController.loadPublicCalendar()}" />            
         </p:panelGrid>
         
+        <p:dialog header="Error" widgetVar="UserNotFound Error" minHeight="40" resizable="false" >
+        <h:outputText value="The User you searched is not registered in our application" />
+        </p:dialog>
+        
     </body>
 </html>

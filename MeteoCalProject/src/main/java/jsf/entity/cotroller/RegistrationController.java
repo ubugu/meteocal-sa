@@ -69,7 +69,6 @@ public class RegistrationController {
             calendar.setOwner(user);
             calendarFacade.create(calendar);
         } catch (Exception e) {
-            e.getMessage();
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('usernameError').show();");
             return "";
