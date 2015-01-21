@@ -2,7 +2,7 @@
  * Entity class of the Event
  */
 package jsf.entity;
-
+ 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
