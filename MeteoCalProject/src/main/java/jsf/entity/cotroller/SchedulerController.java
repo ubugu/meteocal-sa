@@ -120,45 +120,7 @@ public class SchedulerController implements Serializable {
         }
     }
 
-      public ScheduleModel getEventModel() {
-        return eventModel;
-    }
-
-    public void setEventModel(ScheduleModel eventModel) {
-        this.eventModel = eventModel;
-    }
-    
-    public ScheduleEvent getEvent() {
-        return event;
-    }
- 
-    public void setEvent(ScheduleEvent event) {
-        this.event = event;
-    }
-    
-       public ShowEventController getShowEventController() {
-        return showEventController;
-    }
-     
-    public EventController getEventController() {
-        return eventController;
-    }
-
-    public void setEventController(EventController eventController) {
-        this.eventController = eventController;
-    }
-    
-        
-    public SearchController getSearchController() {
-        return searchController;
-    }
-
-    public void setSearchController(SearchController searchController) {
-        this.searchController = searchController;
-    }
-    
-    
-        /**
+    /**
      * Merge the date and time into one date.
      * @param date 
      * @param time
@@ -340,6 +302,45 @@ public class SchedulerController implements Serializable {
         setIsPublic(false);
         init();
         return "/mainUserPage?faces-redirect=true";
+    }
+ 
+    //getter and setter
+    
+          public ScheduleModel getEventModel() {
+        return eventModel;
+    }
+
+    public void setEventModel(ScheduleModel eventModel) {
+        this.eventModel = eventModel;
+    }
+    
+    public ScheduleEvent getEvent() {
+        return event;
+    }
+ 
+    public void setEvent(ScheduleEvent event) {
+        this.event = event;
+    }
+    
+       public ShowEventController getShowEventController() {
+        return showEventController;
+    }
+     
+    public EventController getEventController() {
+        return eventController;
+    }
+
+    public void setEventController(EventController eventController) {
+        this.eventController = eventController;
+    }
+    
+        
+    public SearchController getSearchController() {
+        return searchController;
+    }
+
+    public void setSearchController(SearchController searchController) {
+        this.searchController = searchController;
     }
     
     public boolean isIsPublic() {
