@@ -920,20 +920,7 @@ public class EventController implements Serializable {
         participant.setEvent1(event);
         participant.setOrganiser("NO");
         participant.setParticipant("UNKNOWN");
-        for (String invitatedUser : getInvitatedUsers()) {
-            if(!invitatedUser.equals(userFacade.getLoggedUser().getUsername())){
-                participant.setUser1(userFacade.searchForUser(invitatedUser));
-                participant.setParticipantPK(new ParticipantPK(participant.getUser1().getUsername(), participant.getEvent1().getId()));
-                participantFacade.create(participant);
-            }
-        }
-        
-        /* prima era così e forse funzionava ma son troppo andato per controllare.. prova tu!
-              //participants invited
-        Participant alreadyParticipant;
-        participant.setEvent1(event);
-        participant.setOrganiser("NO");
-        participant.setParticipant("UNKNOWN");
+        Participant alreadyParticipant = null;
         for (String invitatedUser : getInvitatedUsers()) {
             if(!invitatedUser.equals("")){
                 
@@ -946,7 +933,7 @@ public class EventController implements Serializable {
                 }
             }
         }
-        */
+
     }
 
     /**

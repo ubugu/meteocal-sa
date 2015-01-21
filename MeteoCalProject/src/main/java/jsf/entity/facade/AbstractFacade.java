@@ -2,6 +2,7 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+import java.util.List;
  */
 package jsf.entity.facade;
 
@@ -22,7 +23,12 @@ public abstract class AbstractFacade<T> {
     protected abstract EntityManager getEntityManager();
 
     public void create(T entity) {
+        try{
         getEntityManager().persist(entity);
+        } catch (javax.validation.ConstraintViolationException e) {
+               System.out.println(e.getConstraintViolations().toString());
+        }
+        
     }
 
     public void edit(T entity) {

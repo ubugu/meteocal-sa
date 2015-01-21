@@ -3,14 +3,19 @@
  */
 package jsf.entity.cotroller;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import jsf.entity.Calendar;
+import jsf.entity.Event;
 import jsf.entity.User;
 import jsf.entity.facade.CalendarFacade;
+import jsf.entity.facade.EventFacade;
 import jsf.entity.facade.UserFacade;
+import org.joda.time.DateTime;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -30,6 +35,9 @@ public class RegistrationController {
     
     @EJB
     CalendarFacade calendarFacade;
+    
+    @EJB
+    EventFacade eventFacade;
     
     
     public User getUser() {
@@ -73,6 +81,25 @@ public class RegistrationController {
             requestContext.execute("PF('usernameError').show();");
             return "";
         }
+        
+        Event registeringEvent = new Event();
+        registeringEvent.setCalendar(calendar);
+        DateTime today = new DateTime();
+        Date date = new Date(today.getMillis());
+        Date time = new Date(today.getMillis());
+        registeringEvent.setDate(date);
+        registeringEvent.setPrivacy("PRIVATE");
+        registeringEvent.setStartingTime(time);
+        registeringEvent.setEndingTime(time);
+        registeringEvent.setColor("grey");
+        registeringEvent.setTitle("Registration to meteocal!");
+        registeringEvent.setLocation("Meteocal website");
+        registeringEvent.setId(null);
+
+            eventFacade.create(registeringEvent);
+    
+        
+        
         return "index?faces-redirect=true";
     }
 
