@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
 import jsf.entity.Notification;
 import jsf.entity.Participant;
 import jsf.entity.ParticipantPK;
+import jsf.entity.User;
 import jsf.entity.Weather;
 import jsf.entity.facade.CalendarFacade;
 import jsf.entity.facade.NotificationFacade;
@@ -327,12 +328,6 @@ public class EventController implements Serializable {
      */
     public String controlDataCreation() {
 
-        try {
-            this.participantFacade.create(new Participant());
-        } catch(Exception e) {
-            System.out.println("eccepto");
-        }
-        
         Boolean error;
         RequestContext requestContext = RequestContext.getCurrentInstance();
 
@@ -934,7 +929,7 @@ public class EventController implements Serializable {
             
                 if(alreadyParticipant == null){
                     participant.setUser1(userFacade.searchForUser(invitatedUser));
-                    participant.setParticipantPK(new ParticipantPK(participant.getUser1().getUsername(), participant.getEvent1().getId()));
+                    participant.setParticipantPK(new ParticipantPK(userFacade.searchForUser(invitatedUser).getUsername(), event.getId()));
                     participantFacade.create(participant);
                 }
             }
@@ -950,7 +945,7 @@ public class EventController implements Serializable {
         participant.setOrganiser("YES");
         participant.setUser1(userFacade.getLoggedUser());
         participant.setParticipant("YES");
-        participant.setParticipantPK(new ParticipantPK(participant.getUser1().getUsername(), participant.getEvent1().getId()));
+        participant.setParticipantPK(new ParticipantPK(userFacade.getLoggedUser().getUsername(), event.getId()));
         participantFacade.create(participant);
     }
 
