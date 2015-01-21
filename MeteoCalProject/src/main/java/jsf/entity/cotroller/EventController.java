@@ -284,7 +284,7 @@ public class EventController implements Serializable {
         }
 
         setInvitations("");
-        setInvitatedUsers(null);
+        setInvitatedUsers(new String[0]);
         setInviteSelect(false);
         setRejectedUsers("");
         setEdit(true);
@@ -985,7 +985,6 @@ public class EventController implements Serializable {
         notification.setDescription("You have been invited to the event " + event.getTitle() + " by the user " + userFacade.getLoggedUser().getUsername() + " on the " + event.getDate());
 
         for (String invitatedUser : getInvitatedUsers()) {
-
             notification.setUser(userFacade.searchForUser(invitatedUser));
             notification.setId(null);
             notificationFacade.create(notification);
