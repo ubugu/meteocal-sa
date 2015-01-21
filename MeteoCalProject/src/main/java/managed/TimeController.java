@@ -61,7 +61,7 @@ public class TimeController {
     
     List<Weather> allWeather;
     
-     @Schedule( minute="*/1", persistent = false)
+     @Schedule( minute="*/1", hour="*", persistent = false)
      public void UpdateWeather()  {
         DateTime time = new DateTime();
         System.out.println("Weather Update at  " + time);
@@ -271,7 +271,7 @@ public class TimeController {
             this.weatherFacade.edit(oldWeather);
 
         } catch (IOException ex) {
-            System.out.println("ioExeneeip");
+            System.out.println("ioException");
         } catch (JSONException ex) {
             System.out.println("JSON EXCEPTIon");
         }
@@ -344,7 +344,7 @@ public class TimeController {
                 eventFacade.edit(e);
             } catch (IOException | JSONException ex) {
                 System.out.println(ex.getMessage());
-            } catch (NullPointerException ex) {
+            } catch (NullPointerException | IndexOutOfBoundsException ex) {
                 //TODO
             }
             
