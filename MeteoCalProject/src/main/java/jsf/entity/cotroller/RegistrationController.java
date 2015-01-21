@@ -81,25 +81,7 @@ public class RegistrationController {
             requestContext.execute("PF('usernameError').show();");
             return "";
         }
-        
-        Event registeringEvent = new Event();
-        registeringEvent.setCalendar(calendar);
-        DateTime today = new DateTime();
-        Date date = new Date(today.getMillis());
-        Date time = new Date(today.getMillis());
-        registeringEvent.setDate(date);
-        registeringEvent.setPrivacy("PRIVATE");
-        registeringEvent.setStartingTime(time);
-        registeringEvent.setEndingTime(time);
-        registeringEvent.setColor("grey");
-        registeringEvent.setTitle("Registration to meteocal!");
-        registeringEvent.setLocation("Meteocal website");
-        registeringEvent.setId(null);
-
-            eventFacade.create(registeringEvent);
     
-        
-        
         return "index?faces-redirect=true";
     }
 
