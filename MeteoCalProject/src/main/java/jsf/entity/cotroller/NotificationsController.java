@@ -3,6 +3,7 @@
  */
 package jsf.entity.cotroller;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -20,7 +21,7 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean(name = "notificationsController", eager = true)
 @SessionScoped
-public class NotificationsController {
+public class NotificationsController implements Serializable{
     @ManagedProperty(value="#{showEventController}")
     ShowEventController eventController;
 
