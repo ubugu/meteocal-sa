@@ -875,17 +875,19 @@ public class EventController implements Serializable {
                 prepareCreateNotification();
 
             }
+            
+            
+             //set the owner as a participant if it is not an update
+            if (!edit) {
+                setOwnerParticipant();
+            }
 
             if (getInviteSelect()) {
-
                 //create participant
                 prepareCreateParticipant();
             }
 
-            //set the owner as a participant if it is not an update
-            if (!edit) {
-                setOwnerParticipant();
-            }
+           
 
             //add one day and repeat
             if (days > 0) {
