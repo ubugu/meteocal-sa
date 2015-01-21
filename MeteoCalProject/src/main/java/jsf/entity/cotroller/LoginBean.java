@@ -73,7 +73,6 @@ public class LoginBean implements Serializable{
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         try {
             request.login(this.username, this.password);
-            resetParticipant();
             return "mainUserPage"; 
         } catch (ServletException ex) {
             RequestContext requestContext = RequestContext.getCurrentInstance();
@@ -82,41 +81,7 @@ public class LoginBean implements Serializable{
         }          
     }
 
-    
-    public void resetParticipant() {
-        System.out.println("Resitting participant");
-        Participant participant = new Participant();
-        ParticipantPK participantPK = new ParticipantPK();
-        User user = this.getLoggedUser();
-        Calendar calendar = user.getCalendar();
-        Event event = new Event();
-      
-        event.setCalendar(calendar);
-        DateTime today = new DateTime();
-        Date date = new Date(today.getMillis());
-        Time time = new Time(today.getMillis());
-        event.setDate(date);
-        event.setPrivacy("PRIVATE");
-        event.setStartingTime(time);
-        event.setEndingTime(time);
-        event.setColor("grey");
-        event.setTitle("Server Starting");
-        event.setLocation("Meteocal website");
-        event.setId(null);
-        eventFacade.create(event);
-        
-        participant.setEvent1(event);
-        participant.setOrganiser("YES");
-        participant.setParticipant("YES");
-        participant.setUser1(user);
-        participantPK.setEvent(event.getId());
-        participantPK.setUser(user.getUsername());
-        participant.setParticipantPK(participantPK);
-        
-     
-        participantFacade.create(participant);
-    }
-    
+ 
     /**
      * @return  the logged User
      */
