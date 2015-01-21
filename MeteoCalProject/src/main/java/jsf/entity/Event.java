@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "event")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Event.findDateTimeInTheMiddle", query="SELECT e FROM Event e LEFT JOIN Participant p ON E.id = p.participantPK.event WHERE (((e.date > :startSqlDate AND e.date < :endSqlDate) OR (((e.date = :startSqlDate) OR (e.date = :endSqlDate) ) AND (( (e.startingTime <= :startSqlTime) AND (e.endingTime >= :startSqlTime) ) OR ( (e.startingTime <= :endSqlTime) AND (e.endingTime >= :endSqlTime) ) OR ( (e.startingTime >= :startSqlTime) AND (e.endingTime <= :endSqlTime) ) OR ( (e.startingTime <= :startSqlTime) AND (e.endingTime >= :endSqlTime) )))) AND ( (e.calendar.id = :calendarId) OR ( (p.participantPK.user = :username) AND (p.participantPK.event = e.id) AND (p.participant = 'YES') ) ))"),
+    @NamedQuery(name = "Event.findDateTimeInTheMiddle", query="SELECT e FROM Event e LEFT JOIN Participant p ON E.id = p.participantPK.event WHERE (((e.date = :startSqlDate) AND (( (e.startingTime <= :startSqlTime) AND (e.endingTime >= :startSqlTime) ) OR ( (e.startingTime <= :endSqlTime) AND (e.endingTime >= :endSqlTime) ) OR ( (e.startingTime >= :startSqlTime) AND (e.endingTime <= :endSqlTime) ) OR ( (e.startingTime <= :startSqlTime) AND (e.endingTime >= :endSqlTime) ))) AND ( (e.calendar.id = :calendarId) OR ( (p.participantPK.user = :username) AND (p.participantPK.event = e.id) AND (p.participant = 'YES') ) ))"),
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
     @NamedQuery(name = "Event.findNullWeather", query = "SELECT E FROM Event e WHERE e.city IS NOT NULL AND e.weatherID IS NULL"),
     @NamedQuery(name = "Event.findByCalendar", query = "SELECT e FROM Event e WHERE e.calendar = :calendar"),
