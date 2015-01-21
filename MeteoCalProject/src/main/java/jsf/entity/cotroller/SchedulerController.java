@@ -14,12 +14,14 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import jsf.entity.Badconditions;
 import jsf.entity.Calendar;
 import jsf.entity.Event;
 import jsf.entity.Notification;
 import jsf.entity.Participant;
 import jsf.entity.User;
 import jsf.entity.Weather;
+import jsf.entity.facade.BadconditionsFacade;
 import jsf.entity.facade.CalendarFacade;
 import jsf.entity.facade.EventFacade;
 import jsf.entity.facade.NotificationFacade;
@@ -76,6 +78,8 @@ public class SchedulerController implements Serializable {
     @EJB
     WeatherFacade weatherFacade;
  
+    @EJB
+    BadconditionsFacade badConditionsFacade;
     /**
      * Contruct the schedule in the xhtml form, both for logged calendar and searched public calendar.
      */
@@ -217,6 +221,13 @@ public class SchedulerController implements Serializable {
                 this.participantFacade.remove(p);
                 
             }
+
+            //remove bad conditions if added
+            Badconditions conditions = this.badConditionsFacade.searchByEvent(event);
+            if (conditions != null) {
+                this.badConditionsFacade.remove(conditions);
+            }
+
 
             //Remove notifications about that event
             List<Notification> notifications = this.notificationFacade.searchByEventID(id);

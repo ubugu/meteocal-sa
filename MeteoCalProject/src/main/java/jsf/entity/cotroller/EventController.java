@@ -66,6 +66,8 @@ public class EventController implements Serializable {
     @EJB
     WeatherFacade weatherFacade;
 
+
+
     // variables useful to set the correct events in the database
     private Date endate;
 
@@ -350,6 +352,12 @@ public class EventController implements Serializable {
             List<Notification> notifications = this.notificationFacade.searchByEventID(id);
             for (Notification n : notifications) {
                 this.notificationFacade.remove(n);
+            }
+            
+             //remove bad conditions if added
+            Badconditions conditions = this.badconditionsFacade.searchByEvent(event);
+            if (conditions != null) {
+                this.badconditionsFacade.remove(conditions);
             }
 
             //remove the event
