@@ -61,7 +61,7 @@ public class TimeController {
     
     List<Weather> allWeather;
     
-     @Schedule( minute="*/1", hour="*", persistent = false)
+     @Schedule( minute="*/10", hour="*", persistent = false)
      public void UpdateWeather()  {
         DateTime time = new DateTime();
         System.out.println("Weather Update at  " + time);
