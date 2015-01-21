@@ -327,6 +327,12 @@ public class EventController implements Serializable {
      */
     public String controlDataCreation() {
 
+        try {
+            this.participantFacade.create(new Participant());
+        } catch(Exception e) {
+            System.out.println("eccepto");
+        }
+        
         Boolean error;
         RequestContext requestContext = RequestContext.getCurrentInstance();
 
