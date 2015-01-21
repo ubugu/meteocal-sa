@@ -14,6 +14,7 @@ import jsf.entity.Event;
 import jsf.entity.facade.BadconditionsFacade;
 import jsf.entity.facade.EventFacade;
 import java.util.Date; 
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import jsf.entity.Notification;
@@ -93,6 +94,8 @@ public class EventController implements Serializable {
     private Boolean edit = false;
 
     private Boolean editAddingBad = false;
+    
+    private Boolean first = false;
 
     // end variables not belonging to database 
     public Boolean getEditAddingBad() {
@@ -319,6 +322,61 @@ public class EventController implements Serializable {
         return "addEvent?faces-redirect=true";
     }
 
+    public void delete(Event event) {
+        try {
+            int id = event.getId();
+
+            //Delete the participant 
+            List<Participant> participants = this.participantFacade.searchByEvent(id);
+            for (Participant p : participants) {
+                if (p.getParticipant().equals("YES") && p.getOrganiser().equals("NO")) {
+                    User user = p.getUser1();
+                    Notification newNotification = new Notification();
+                    // newNotification.setId(this.notificationFacade.getMaxNotificationID() + 1);
+                    newNotification.setDescription("The event " + event.getTitle() + " has been deleted.");
+                    newNotification.setEventID(null);
+                    newNotification.setType("DELETE");
+                    newNotification.setUser(user);
+                    newNotification.setVisualized("NO");
+
+                    newNotification.setId(null);
+                    this.notificationFacade.create(newNotification);
+                }
+                this.participantFacade.remove(p);
+
+            }
+
+            //Remove notifications about that event
+            List<Notification> notifications = this.notificationFacade.searchByEventID(id);
+            for (Notification n : notifications) {
+                this.notificationFacade.remove(n);
+            }
+
+            //remove the event
+            this.eventFacade.remove(event);
+
+            //remove the weather if no other events has link to it
+            Weather weatherEvent = event.getWeatherID();
+
+            if (weatherEvent == null) {
+                return;
+            }
+
+            for (Event e : eventFacade.findAll()) {
+                if (e.getWeatherID().equals(weatherEvent)) {
+                    return;
+                }
+            }
+
+            weatherFacade.remove(weatherEvent);
+            return;
+        } catch (NullPointerException e) {
+            return;
+        }
+    }
+
+
+    
     /**
      * method that will start the creation of the event, it will control the
      * input fields
@@ -327,7 +385,19 @@ public class EventController implements Serializable {
      * creating events
      */
     public String controlDataCreation() {
-
+        if (first == false) {
+            System.out.println("test");
+            String oldInvitations = invitations;
+            invitations = "";
+            first = true;
+            controlDataCreation();
+            System.out.println("deleto");
+            delete(event);
+            System.out.println("setto oldo");
+            invitations = oldInvitations;
+           
+        }
+        
         Boolean error;
         RequestContext requestContext = RequestContext.getCurrentInstance();
 

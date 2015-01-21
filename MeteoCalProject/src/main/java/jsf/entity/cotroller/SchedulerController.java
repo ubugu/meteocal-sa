@@ -186,7 +186,6 @@ public class SchedulerController implements Serializable {
      * Delete an event.
      * @return the redirect to the home page.
      */
-
     public String delete() {
         try {
             int id = eventMap.get(event.getId());
