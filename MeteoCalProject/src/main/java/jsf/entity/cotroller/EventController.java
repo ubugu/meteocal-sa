@@ -385,17 +385,26 @@ public class EventController implements Serializable {
      * creating events
      */
     public String controlDataCreation() {
-        if (first == false) {
-            System.out.println("test");
+        if (first == false) {  
             String oldInvitations = invitations;
+            Boolean oldInvite = this.InviteSelect;
+            Date oldStart =  this.startdate;
+            Date oldEnd =  this.endate;
+            
+            this.InviteSelect = false;
             invitations = "";
-            first = true;
-            controlDataCreation();
-            System.out.println("deleto");
+            startdate = new Date(1);
+            endate = new Date(2);
+            
+            prepareCreateEvent();
+ 
             delete(event);
-            System.out.println("setto oldo");
+            first = true;
+            
+            this.InviteSelect = oldInvite;
             invitations = oldInvitations;
-           
+            this.startdate = oldStart;
+            this.endate = oldEnd;
         }
         
         Boolean error;
