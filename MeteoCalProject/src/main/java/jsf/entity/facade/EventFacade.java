@@ -53,7 +53,7 @@ public class EventFacade extends AbstractFacade<Event> {
         endSqlTime = new java.sql.Time(endTime.getTime());
         
         try{
-            List<Event> events = em.createNamedQuery("Event.findDateTimeInTheMiddle").setParameter("startSqlDate",startSqlDate).setParameter("endSqlDate",endSqlDate).setParameter("startSqlTime",startSqlTime).setParameter("endSqlTime",endSqlTime).setParameter("calendarId",CalendarID).setParameter("username",usern).getResultList();
+            List<Event> events = em.createNamedQuery("Event.findDateTimeInTheMiddle").setParameter("startSqlDate",startSqlDate).setParameter("startSqlTime",startSqlTime).setParameter("endSqlTime",endSqlTime).setParameter("calendarId",CalendarID).setParameter("username",usern).getResultList();
 
             if(!events.isEmpty()){
                 return events.get(0).getId()!= eventID;
@@ -89,7 +89,7 @@ public class EventFacade extends AbstractFacade<Event> {
         endSqlTime = new java.sql.Time(endTime.getTime());
         
         try{
-            List<Event> events = em.createNamedQuery("Event.findDateTimeInTheMiddle").setParameter("startSqlDate",startSqlDate).setParameter("endSqlDate",endSqlDate).setParameter("startSqlTime",startSqlTime).setParameter("endSqlTime",endSqlTime).setParameter("calendarId",CalendarID).setParameter("username",usern).getResultList();
+            List<Event> events = em.createNamedQuery("Event.findDateTimeInTheMiddle").setParameter("startSqlDate",startSqlDate).setParameter("startSqlTime",startSqlTime).setParameter("endSqlTime",endSqlTime).setParameter("calendarId",CalendarID).setParameter("username",usern).getResultList();
 
             return !events.isEmpty();
             

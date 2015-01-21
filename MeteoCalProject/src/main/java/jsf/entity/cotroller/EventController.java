@@ -788,12 +788,13 @@ public class EventController implements Serializable {
         endingTime = event.getEndingTime();
         RequestContext requestContext = RequestContext.getCurrentInstance();
 
+        
         //check error loop
         for (int i = 0; i <= days; i++) {
 
             //if the cycle is repeated then the successive starting date must be set to 00:00
             // we have to do this only one time in order to optimize the code.
-            if (i == 1) {
+            if (i != 0) {
                 event.setStartingTime(new Date(Time.valueOf("00:00:00").getTime()));
             }
             if (i + 1 > days && days > 0) {
@@ -983,11 +984,13 @@ public class EventController implements Serializable {
     private void prepareInviteNotification() {
         notification.setType("INVITED");
         notification.setDescription("You have been invited to the event " + event.getTitle() + " by the user " + userFacade.getLoggedUser().getUsername() + " on the " + event.getDate());
-
+        String currentUser = userFacade.getLoggedUser().getUsername();
         for (String invitatedUser : getInvitatedUsers()) {
-            notification.setUser(userFacade.searchForUser(invitatedUser));
-            notification.setId(null);
-            notificationFacade.create(notification);
+            if(!invitatedUser.equals("") && !invitatedUser.equals(currentUser)){
+                notification.setUser(userFacade.searchForUser(invitatedUser));
+                notification.setId(null);
+                notificationFacade.create(notification);
+            }
         }
     }
 
@@ -1003,12 +1006,13 @@ public class EventController implements Serializable {
         participant.setEvent1(event);
         participant.setOrganiser("NO");
         participant.setParticipant("UNKNOWN");
-        Participant alreadyParticipant = null;
+        Participant alreadyParticipant;
+        String currentUser = userFacade.getLoggedUser().getUsername();
         for (String invitatedUser : getInvitatedUsers()) {
-            if(!invitatedUser.equals("")){
+            if(!invitatedUser.equals("") && !invitatedUser.equals(currentUser)){
                 
                 alreadyParticipant = participantFacade.searchByUserEvent(invitatedUser,event.getId());
-            
+                
                 if(alreadyParticipant == null){
                     participant.setUser1(userFacade.searchForUser(invitatedUser));
                     participant.setParticipantPK(new ParticipantPK(userFacade.searchForUser(invitatedUser).getUsername(), event.getId()));
