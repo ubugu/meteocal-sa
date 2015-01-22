@@ -59,6 +59,9 @@ public class TimeController {
     
     List<Weather> allWeather;
     
+    /**
+     * update the weather every 5 minutes
+     */
      @Schedule(minute = "*/5", hour = "*", persistent = false)
      public void UpdateWeather()  {
         DateTime time = new DateTime();
@@ -69,6 +72,9 @@ public class TimeController {
     }
     
     
+     /**
+      * search fon bad conditions and check the three days or one day badconditions contrain.
+      */
     public void checkBadConditions() {
         List<Badconditions> badConditions = this.badConditionsFacade.findAll();
         Event associatedEvent;
@@ -87,6 +93,11 @@ public class TimeController {
         }
     }
     
+        
+    /**
+     * check conditions for one day badconditions
+     * @param badConditions to check
+     */
     public void oneDayAdvise(Badconditions badConditions) {
         Event associatedEvent = badConditions.getEventID();
         
@@ -110,7 +121,10 @@ public class TimeController {
        }
     }
     
-    
+    /**
+     * check conditions for three day badconditions
+     * @param badConditions to check
+     */
     public void threeDayAdvise(Badconditions badConditions) {
          Event associatedEvent = badConditions.getEventID();
          if (checkConditions(badConditions, associatedEvent.getWeatherID())) {
@@ -134,6 +148,12 @@ public class TimeController {
         }
     }
     
+    /**
+     * search fon an available day for the three day bad conditions
+     * @param city of the event
+     * @param badConditions of the event
+     * @return a string contaianing all the available days, divided by ';'
+     */
     public String availableDay(String city, Badconditions badConditions) {
         String days = "";
         DailyForecast forecast = null;
@@ -182,7 +202,7 @@ public class TimeController {
      * @param badConditions to check 
      * @return true if badConditions are violated, otherwis false. if no weather is available, is returned false.
      */
-    private boolean checkConditions(Badconditions badConditions,Weather associatedWeather) {
+    public boolean checkConditions(Badconditions badConditions,Weather associatedWeather) {
         
         if (associatedWeather == null) {
             return false;
@@ -207,7 +227,14 @@ public class TimeController {
         return false;
     }
     
-     private boolean checkPrecipitations(String layer, Weather associatedWeather, float maxValue) {
+    /**
+     * Check the precipitations
+     * @param layer of the badconditions
+     * @param associatedWeather to the event
+     * @param maxValue  of the badconditions 
+     * @return true if the badconditions constraint are violated. otherwise false.
+     */
+     public boolean checkPrecipitations(String layer, Weather associatedWeather, float maxValue) {
          if (layer.equals("snowy")
                 && associatedWeather.getPrecipitationType().equals("SNOW")
                 && associatedWeather.getPrecipitations() > maxValue) {
@@ -233,7 +260,10 @@ public class TimeController {
     }
 
      
-     
+     /**
+      * update existing weather
+      * @param oldWeather  to update
+      */
     private void updateWeather(Weather oldWeather) {
         System.out.println("updating " + oldWeather.getCity() + " on date " + oldWeather.getDate().toString());
         
