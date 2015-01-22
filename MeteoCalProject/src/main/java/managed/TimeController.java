@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
@@ -31,7 +30,6 @@ import net.aksingh.owmjapis.DailyForecast;
 import net.aksingh.owmjapis.OpenWeatherMap;
 import org.joda.time.DateTime;
 import org.json.JSONException;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -61,7 +59,7 @@ public class TimeController {
     
     List<Weather> allWeather;
     
-     @Schedule( minute="*/10", hour="*", persistent = false)
+     @Schedule(minute = "*/5", hour = "*", persistent = false)
      public void UpdateWeather()  {
         DateTime time = new DateTime();
         System.out.println("Weather Update at  " + time);
