@@ -109,12 +109,11 @@ public class EventFacade extends AbstractFacade<Event> {
         return (List<Event>) em.createNamedQuery("Event.findNullWeather").getResultList(); 
     }
 
-    public boolean isAlreadyThere(Event event) {
-        try{
-            return find(event.getId())!=null;
-        }catch(Exception n){
-            return false;
-        }
+    public boolean isAlreadyThere(Integer eventID) {
+            if(eventID==null){
+                return false;
+            }
+            return find(eventID)!=null;
     }
     
     

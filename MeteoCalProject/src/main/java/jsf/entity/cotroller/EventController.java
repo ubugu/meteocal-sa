@@ -69,7 +69,7 @@ public class EventController implements Serializable {
 
 
     // variables useful to set the correct events in the database
-    private Event oldevent;
+    private Integer oldEventID;
     
     private Date endate;
 
@@ -102,13 +102,6 @@ public class EventController implements Serializable {
     private Boolean first = false;
 
     // end variables not belonging to database 
-    public Event getOldevent() {
-        return oldevent;
-    }
-
-    public void setOldevent(Event oldevent) {
-        this.oldevent = oldevent;
-    }
     
     public Boolean getEditAddingBad() {
         return editAddingBad;
@@ -273,7 +266,7 @@ public class EventController implements Serializable {
         event = eventFacade.find(id);
         badconditions = badconditionsFacade.searchByEvent(event);
         
-        setOldevent(event);
+        this.oldEventID = event.getId();
 
         if (badconditions != null) {
 
@@ -645,12 +638,14 @@ public class EventController implements Serializable {
             //event creation
             try {
                 if (edit) {
-                    if(eventFacade.isAlreadyThere(getOldevent())){
-                        eventFacade.edit(event);
+                    if(eventFacade.isAlreadyThere(this.oldEventID)){
+                        eventFacade.edit(event); 
+                        oldEventID = null;
                     }else{
                         event.setId(null);
                         eventFacade.create(event);
-                    }                    
+                        setOwnerParticipant();
+                    }
                 } else {
                     event.setId(null);
                     eventFacade.create(event);
@@ -786,19 +781,41 @@ public class EventController implements Serializable {
 
         switch (getRepeats()) {
             case "everyday": {
-                newDate = (new DateTime(currentDate).plusDays(1).toDate());
+                newDate = (new DateTime(newDate).plusDays(1).toDate());
                 break;
             }
             case "everyweek": {
-                newDate = (new DateTime(currentDate).plusWeeks(1).toDate());
+                newDate = (new DateTime(newDate).plusWeeks(1).toDate());
                 break;
             }
             case "everymonth": {
-                newDate = (new DateTime(currentDate).plusMonths(1).toDate());
+                int numberOfAddingMonths = 1;
+                int oldDayOfMonth = new DateTime(newDate).getDayOfMonth();
+                while(true){                   
+                    if(oldDayOfMonth == new DateTime(newDate).plusMonths(numberOfAddingMonths).getDayOfMonth()){
+                        newDate = (new DateTime(newDate).plusMonths(numberOfAddingMonths).toDate());
+                        break;
+                    }else{
+                       numberOfAddingMonths++; 
+                    }                   
+                }
                 break;
             }
             case "everyyear": {
-                newDate = (new DateTime(currentDate).plusYears(1).toDate());
+                int numberOfAddingYears = 1;
+                int oldDayOfMonth = new DateTime(newDate).getDayOfMonth();
+                while(true){                   
+                    if(oldDayOfMonth == new DateTime(newDate).plusYears(numberOfAddingYears).getDayOfMonth()){
+                        newDate = (new DateTime(newDate).plusYears(numberOfAddingYears).toDate());
+                        break;
+                    }else{
+                        if(numberOfAddingYears ==1){
+                           numberOfAddingYears=4; 
+                        }else{
+                            numberOfAddingYears += 4; 
+                        }
+                    }                   
+                }
                 break;
             }
         }
@@ -894,21 +911,21 @@ public class EventController implements Serializable {
             event.setWeatherID(weather);
 
             //we can try to create the event 
-            try {
+            
                 if (edit) {
-                    if(eventFacade.isAlreadyThere(getOldevent())){
-                        eventFacade.edit(event);
+                    if(eventFacade.isAlreadyThere(this.oldEventID)){
+                        eventFacade.edit(event); 
+                        oldEventID = null;
                     }else{
                         event.setId(null);
                         eventFacade.create(event);
+                        setOwnerParticipant();
                     }
+                    
                 } else {
                     event.setId(null);
                     eventFacade.create(event);
                 }
-            } catch (Exception e) {
-                //TODO
-            }
 
             //badcondition creation if they are set
             prepareCreateBadConditions();
