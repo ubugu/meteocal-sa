@@ -248,6 +248,9 @@ public class SchedulerController implements Serializable {
             }
 
             for (Event e : eventFacade.findAll()) {
+                if (e.getWeatherID() == null) {
+                    continue;
+                }
                 if (e.getWeatherID().equals(weatherEvent)) {
                     init();
                     return "/mainUserPage?faces-redirect=true";
