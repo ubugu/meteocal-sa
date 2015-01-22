@@ -273,10 +273,10 @@ public class TimeController {
             oldWeather.setWind(forecast.getForecastInstance(dayForecast - 1).getWindSpeed());
             this.weatherFacade.edit(oldWeather);
 
-        } catch (IOException ex) {
-            System.out.println("ioException");
-        } catch (JSONException ex) {
-            System.out.println("JSON EXCEPTIon");
+        } catch (IOException | JSONException ex) {
+            System.out.println("Error while contacting the weather website");
+        } catch (NullPointerException | IndexOutOfBoundsException ex) {
+            System.out.println("No weather found for the city searched.");
         }
     }
     
@@ -351,13 +351,13 @@ public class TimeController {
                 e.setWeatherID(weather);
                 eventFacade.edit(e);
             } catch (IOException | JSONException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println("Error while contacting the weather website");
             } catch (NullPointerException | IndexOutOfBoundsException ex) {
-                //TODO
+                System.out.println("No weather found for the city searched.");
             }
-            
+
         }
     }
-    
+
     
 }
