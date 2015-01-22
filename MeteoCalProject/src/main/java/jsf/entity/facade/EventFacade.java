@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import jsf.entity.Calendar;
 import jsf.entity.Event;
@@ -106,6 +107,14 @@ public class EventFacade extends AbstractFacade<Event> {
     
     public List<Event> searchByNullWeather() {
         return (List<Event>) em.createNamedQuery("Event.findNullWeather").getResultList(); 
+    }
+
+    public boolean isAlreadyThere(Event event) {
+        try{
+            return find(event.getId())!=null;
+        }catch(Exception n){
+            return false;
+        }
     }
     
     

@@ -183,6 +183,9 @@ public class ShowEventController implements Serializable{
         this.selectedEvent = selectedEvent;
         int id = selectedEvent.getId();
         this.participants =  this.participantFacade.searchByEvent(id);
+        for(int i=0; i< participants.size();i++){
+            System.out.println(participants.get(i));
+        }
         setCreator();
     }
     
