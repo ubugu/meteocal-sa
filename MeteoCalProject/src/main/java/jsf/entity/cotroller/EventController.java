@@ -405,17 +405,22 @@ public class EventController implements Serializable {
      * creating events
      */
     public String controlDataCreation() {
-        
-        if (first == false) {  
+       //EVENT CREATION AND DELETING TO FIX BUX
             String oldInvitations = invitations;
             Boolean oldInvite = this.InviteSelect;
             Date oldStart =  this.startdate;
             Date oldEnd =  this.endate;
+            Boolean oldBad =  this.bad;
+            String oldRepeat = this.repeats;
+            Date oldUntillDate = this.untillDate;
             
             this.InviteSelect = false;
             invitations = "";
             startdate = new Date(1);
             endate = new Date(2);
+            bad = false;
+            repeats = "no";
+            untillDate = null;
             
             prepareCreateEvent();
  
@@ -426,7 +431,10 @@ public class EventController implements Serializable {
             invitations = oldInvitations;
             this.startdate = oldStart;
             this.endate = oldEnd;
-        }
+            this.bad = oldBad;
+            this.repeats = oldRepeat;
+            this.untillDate = oldUntillDate;
+        //END OF BUG FIX CODE
         
         Boolean error;
         RequestContext requestContext = RequestContext.getCurrentInstance();
@@ -756,9 +764,9 @@ public class EventController implements Serializable {
             this.weatherFacade.create(weather);
             return weather;
         } catch (IOException | JSONException ex) {
-            System.out.println(ex.getMessage());
-        } catch (NullPointerException e) {
-            //TODO
+            System.out.println("Error while contacting the weather website");
+        } catch (NullPointerException | IndexOutOfBoundsException ex) {
+            System.out.println("No weather found for the city searched.");
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
