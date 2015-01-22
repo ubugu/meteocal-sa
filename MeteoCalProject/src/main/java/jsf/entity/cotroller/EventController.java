@@ -685,7 +685,7 @@ public class EventController implements Serializable {
         DateTime targetDate = new DateTime(event.getDate());
         Integer dayForecast = targetDate.getDayOfYear() - currentDate.getDayOfYear() + 1;
 
-        if (dayForecast > 13) {
+        if (dayForecast > 13 || dayForecast < 0) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "The weather was not inserted for one or more of the events created"));
 
@@ -724,6 +724,11 @@ public class EventController implements Serializable {
                 weather.setPrecipitationType("SNOW");
             }
 
+            
+            if (rain == 0 && snow == 0) {
+                weather.setPrecipitationType("NONE");
+            }
+            
             weather.setPressure(forecast.getForecastInstance(dayForecast - 1).getPressure());
             weather.setTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getDayTemperature());
             weather.setMaxTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getMaximumTemperature());

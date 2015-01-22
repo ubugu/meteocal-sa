@@ -261,6 +261,11 @@ public class TimeController {
                 oldWeather.setPrecipitations(snow);
                 oldWeather.setPrecipitationType("SNOW");
             }
+
+            if (snow == 0 && rain == 0) {
+                oldWeather.setPrecipitationType("NONE");
+            }
+
             oldWeather.setPressure(forecast.getForecastInstance(dayForecast - 1).getPressure());
             oldWeather.setTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getDayTemperature());
             oldWeather.setMaxTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getMaximumTemperature());
@@ -330,6 +335,11 @@ public class TimeController {
                     weather.setPrecipitations(snow);
                     weather.setPrecipitationType("SNOW");
                 }
+                
+                if (snow == 0 && rain == 0) {
+                    weather.setPrecipitationType("NONE");
+                }
+                
                 weather.setPressure(forecast.getForecastInstance(dayForecast - 1).getPressure());
                 weather.setTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getDayTemperature());
                 weather.setMaxTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getMaximumTemperature());
