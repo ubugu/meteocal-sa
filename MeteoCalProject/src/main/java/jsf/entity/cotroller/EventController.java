@@ -69,6 +69,8 @@ public class EventController implements Serializable {
 
 
     // variables useful to set the correct events in the database
+    private Event oldevent;
+    
     private Date endate;
 
     private Date startdate;
@@ -100,6 +102,14 @@ public class EventController implements Serializable {
     private Boolean first = false;
 
     // end variables not belonging to database 
+    public Event getOldevent() {
+        return oldevent;
+    }
+
+    public void setOldevent(Event oldevent) {
+        this.oldevent = oldevent;
+    }
+    
     public Boolean getEditAddingBad() {
         return editAddingBad;
     }
@@ -262,6 +272,8 @@ public class EventController implements Serializable {
 
         event = eventFacade.find(id);
         badconditions = badconditionsFacade.searchByEvent(event);
+        
+        setOldevent(event);
 
         if (badconditions != null) {
 
@@ -393,6 +405,7 @@ public class EventController implements Serializable {
      * creating events
      */
     public String controlDataCreation() {
+        
         if (first == false) {  
             String oldInvitations = invitations;
             Boolean oldInvite = this.InviteSelect;
@@ -624,7 +637,12 @@ public class EventController implements Serializable {
             //event creation
             try {
                 if (edit) {
-                    eventFacade.edit(event);
+                    if(eventFacade.isAlreadyThere(getOldevent())){
+                        eventFacade.edit(event);
+                    }else{
+                        event.setId(null);
+                        eventFacade.create(event);
+                    }                    
                 } else {
                     event.setId(null);
                     eventFacade.create(event);
@@ -870,7 +888,12 @@ public class EventController implements Serializable {
             //we can try to create the event 
             try {
                 if (edit) {
-                    eventFacade.edit(event);
+                    if(eventFacade.isAlreadyThere(getOldevent())){
+                        eventFacade.edit(event);
+                    }else{
+                        event.setId(null);
+                        eventFacade.create(event);
+                    }
                 } else {
                     event.setId(null);
                     eventFacade.create(event);
