@@ -8,9 +8,13 @@ package jsf.entity.facade;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.transaction.UserTransaction;
 import jsf.entity.Calendar;
 import jsf.entity.Event;
 
@@ -115,7 +119,5 @@ public class EventFacade extends AbstractFacade<Event> {
             }
             return find(eventID)!=null;
     }
-    
-    
-    
+       
 }

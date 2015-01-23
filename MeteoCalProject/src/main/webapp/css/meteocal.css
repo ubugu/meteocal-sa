@@ -58,6 +58,14 @@ body.noFrame {
     border-bottom-width: 1px;
 }
 
+#searchGridHeader{   
+    margin-left: 20%;
+}
+
+#settingsForm{
+    margin-left: 15%;
+}
+
 #search{
     float:left; 
     display:block;
@@ -262,6 +270,7 @@ div.logoutForm {
     position:relative;
     right: 20px;
     width: 300px;
+    left: 20px;
 }
 
 

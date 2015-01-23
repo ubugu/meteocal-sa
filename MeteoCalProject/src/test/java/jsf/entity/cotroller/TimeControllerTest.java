@@ -8,10 +8,6 @@ package jsf.entity.cotroller;
 import jsf.entity.Badconditions;
 import jsf.entity.Weather;
 import managed.TimeController;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

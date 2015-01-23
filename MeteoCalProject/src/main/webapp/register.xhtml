@@ -41,7 +41,7 @@
 
         <h:form >
             <div class="guestFrame">
-                <p:messages autoUpdate="true"/>
+                <p:messages closable="true" showIcon="false" style="width:85%;" autoUpdate="true"/>
                 
                 <p:panelGrid columns="2" class="register"  >
                     <f:facet name="header">
@@ -66,7 +66,6 @@
                     <p:inputText id="email" value="#{registrationController.user.email}" required="true">
                         <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                     </p:inputText>
-
 
                     <p:outputLabel for="privacy" value="Privacy:" />
                     <p:selectOneRadio id="privacy" value="#{registrationController.calendar.privacy}" required="true" >

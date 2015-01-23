@@ -91,7 +91,7 @@ public class SchedulerController implements Serializable {
         if (this.isPublic == false) {
            user = this.userFacade.getLoggedUser();
         } else {
-            user = this.userFacade.searchForUser(this.searchController.getSearchedUser());
+            user = this.userFacade.searchForUser(this.searchController.getUser().getUsername());
         }
         
         //collects data of event in created by the calendar owner and in which he has been invited to.

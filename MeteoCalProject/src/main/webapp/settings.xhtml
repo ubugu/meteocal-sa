@@ -41,10 +41,10 @@
 
 
         
-            <h:form>
-                <p:messages autoUpdate="true"/>
-                <p:panel style="border: none;">
-                    <h:panelGrid columns="3"  >
+            <h:form id="settingsForm">
+                <p:messages autoUpdate="true" closable="true" showIcon="false" style="width: 85%"/>
+                <p:panel style="border: none;width: 94%">
+                    <h:panelGrid id="searchGridHeader" columns="3" >
                         <f:facet name="header">
                             Settings
                             <br/>
@@ -74,7 +74,7 @@
                         </p:password>
                         <p:message for="pwd1" />
 
-                        <h:outputLabel for="pwd2" value="Repeat New Passowrd: " />
+                        <h:outputLabel for="pwd2" value="Repeat New Password: " />
                         <p:password id="pwd2" value="#{settingsController.user.password}" disabled="#{!settingsController.setNewPassword}"/>
                         <p:message for="pwd2" />
 
