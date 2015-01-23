@@ -99,6 +99,7 @@ public class EventController implements Serializable {
     
     private Boolean first = false;
 
+    private List<Participant> oldParticipants = null;
     // end variables not belonging to database 
 
     /**
@@ -614,15 +615,13 @@ public class EventController implements Serializable {
             //event creation
             managerOfEvents();
 
-            //badcondition creation if they are set
-            prepareCreateBadConditions();
-
             //invite & notify if there are invited
             if (getInviteSelect() || edit) {
                 //create notification
                 prepareCreateNotification();
             }
 
+            //set the owner as a participant if it is not an update
             if (!edit) {
                 setOwnerParticipant();
             }
@@ -631,9 +630,9 @@ public class EventController implements Serializable {
                 //create participant
                 prepareCreateParticipant();
             }
-
-            //set the owner as a participant if it is not an update
-          
+         
+            //badcondition creation if they are set
+            prepareCreateBadConditions();
 
             //repetition & set of the new date
             nextDate = nextRepetitionDate(nextDate);
@@ -789,17 +788,13 @@ public class EventController implements Serializable {
             
             managerOfEvents();
 
-            //badcondition creation if they are set
-            prepareCreateBadConditions();
-
             //invite & notify if there are invited
             if (getInviteSelect() || edit) {
 
                 //create notification
                 prepareCreateNotification();
 
-            }
-            
+            }        
             
              //set the owner as a participant if it is not an update
             if (!edit) {
@@ -811,8 +806,9 @@ public class EventController implements Serializable {
                 prepareCreateParticipant();
             }
 
-           
-
+            //badcondition creation if they are set
+            prepareCreateBadConditions();
+            
             //add one day and repeat
             if (days > 0) {
                 DateTime datetime = new DateTime(event.getDate());
@@ -830,12 +826,37 @@ public class EventController implements Serializable {
      */
     private void managerOfEvents(){
         if (edit) {
+            if(oldEventID!=null){
+                this.oldParticipants = participantFacade.searchByEvent(oldEventID);
+            }
+            
             if(eventFacade.isAlreadyThere(this.oldEventID)){
                 eventFacade.edit(event); 
-            }else{
+                for(Participant p: this.oldParticipants){
+                    if(!p.getOrganiser().equals("YES")){
+                        p.setParticipant("UNKNOWN");
+                        participantFacade.edit(p);
+                    }                   
+                }
+            }else{ 
                 event.setId(null);
                 eventFacade.create(event);
-                setOwnerParticipant();       
+                
+                //participant creation
+                participant.setEvent1(event);
+                participant.setOrganiser("NO");
+                participant.setParticipant("UNKNOWN");
+                for (Participant p : this.oldParticipants) {
+                    if(!p.getOrganiser().equals("YES")){
+                        participant.setUser1(p.getUser1());
+                        participant.setParticipantPK(new ParticipantPK(p.getUser1().getUsername(),event.getId()));
+                        participantFacade.create(participant);
+                    }
+                }
+               
+                //owner creation
+                setOwnerParticipant();
+                
             }                   
         } else {
             event.setId(null);
@@ -868,18 +889,16 @@ public class EventController implements Serializable {
         if ((!bad) && (badconditions.getId() != null) && (oldEventID!=null)) {          
             badconditionsFacade.remove(badconditions);
         } else {
-            try {
                 if ( (edit) && (!editAddingBad) && (oldEventID!=null) ) {
+                    badconditions.setEventID(event);
                     badconditionsFacade.edit(badconditions);
+                    badconditions.setId(null);
                 } else {
                     if (bad) {
                         badconditions.setId(null);
                         badconditionsFacade.create(badconditions);
                     }
                 }
-            } catch (Exception e) {
-                //TODO
-            }
         }
         
         if(edit){
