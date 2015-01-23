@@ -73,7 +73,7 @@ public class LoginBean implements Serializable{
             HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         try {
             request.login(this.username, this.password);
-            return "mainUserPage"; 
+            return "mainUserPage?faces-redirect=true"; 
         } catch (ServletException ex) {
             RequestContext requestContext = RequestContext.getCurrentInstance();
             requestContext.execute("PF('loginFailed').show();");

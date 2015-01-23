@@ -11,7 +11,6 @@ import jsf.entity.Calendar;
 import jsf.entity.User;
 import jsf.entity.facade.CalendarFacade;
 import jsf.entity.facade.UserFacade;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -26,16 +25,68 @@ public class SearchController implements Serializable{
     
     private String searchedUser=null;
     
-    private Boolean privateCalendar = true; 
+    private Boolean privateCalendar = true;
     
-           
+    private String found="";
+              
     @EJB
     UserFacade userFacade;
     
     @EJB
     CalendarFacade calendarFacade;
-
+  
+    /**
+     * search for User
+     * @return the redirect to the search page.
+     */
+    public String searchUser(){
+        
+        user = userFacade.searchForUser(getSearchedUser());
+        
+        setSearchedUser("");
+        
+        if(user == null){
+            setFound("User Not Found");
+            return "search?faces-redirect=true";
+        }
+        
+        Calendar searchedCalendar = calendarFacade.searchByUser(user);
+        user.setCalendar(searchedCalendar);
+        
+         if(searchedCalendar.getPrivacy().equals("PRIVATE") ){
+            setPrivateCalendar(true);
+        }
+        
+        if(searchedCalendar.getPrivacy().equals("PUBLIC") ){
+            setPrivateCalendar(false);
+        }
+        
+        if(searchedCalendar.getPrivacy().equals("SHARED") ){
+            
+            User loggedUser = this.userFacade.getLoggedUser();
+            if (loggedUser.getCalendarList().contains(searchedCalendar)) {
+                setPrivateCalendar(false);
+            } else {
+                setPrivateCalendar(true);
+            }
+            
+            
+        }             
+        
+        setFound("User Found!");
+        
+        return("search?faces-redirect=true");
+    }
+    
     //getter & setter
+    
+    public String getFound() {
+        return found;
+    }
+
+    public void setFound(String found) {
+        this.found = found;
+    }
     
     public Boolean getPrivateCalendar() {
         return privateCalendar;
@@ -62,45 +113,4 @@ public class SearchController implements Serializable{
     }
     
     //end getter & setter
-    
-    /**
-     * search for User
-     * @return the redirect to the search page.
-     */
-    public String searchUser(){
-        
-        user = userFacade.searchForUser(getSearchedUser());
-        if(user == null){
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("PF('UserNotFound Error').show();");
-            return "search?faces-redirect=true";
-        }
-        
-        Calendar searchedCalendar = calendarFacade.searchByUser(user);
-        user.setCalendar(searchedCalendar);
-        
-         if(searchedCalendar.getPrivacy().equals("PRIVATE") ){
-            setPrivateCalendar(true);
-        }
-        
-        if(searchedCalendar.getPrivacy().equals("PUBLIC") ){
-            setPrivateCalendar(false);
-        }
-        
-        if(searchedCalendar.getPrivacy().equals("SHARED") ){
-            
-            User loggedUser = this.userFacade.getLoggedUser();
-            if (loggedUser.getCalendarList().contains(searchedCalendar)) {
-                setPrivateCalendar(false);
-            } else {
-                setPrivateCalendar(true);
-            }
-            
-            
-        }
-        
-        return("search?faces-redirect=true");
-    }
-    
-    
 }

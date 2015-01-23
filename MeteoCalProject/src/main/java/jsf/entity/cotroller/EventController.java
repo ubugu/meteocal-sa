@@ -66,8 +66,6 @@ public class EventController implements Serializable {
     @EJB
     WeatherFacade weatherFacade;
 
-
-
     // variables useful to set the correct events in the database
     private Integer oldEventID;
     
@@ -102,155 +100,6 @@ public class EventController implements Serializable {
     private Boolean first = false;
 
     // end variables not belonging to database 
-    
-    public Boolean getEditAddingBad() {
-        return editAddingBad;
-    }
-
-    public void setEditAddingBad(Boolean editAddingBad) {
-        this.editAddingBad = editAddingBad;
-    }
-
-    public Boolean getEdit() {
-        return edit;
-    }
-
-    public void setEdit(Boolean edit) {
-        this.edit = edit;
-    }
-
-    public String getStyle() {
-        return style;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
-    }
-
-    public String[] getInvitatedUsers() {
-        return invitatedUsers;
-    }
-
-    public void setInvitatedUsers(String[] invitatedUsers) {
-        for (int i = 0; i<invitatedUsers.length; i++) {
-            invitatedUsers[i] = invitatedUsers[i].replaceAll(" ", "");
-        }
-        this.invitatedUsers = invitatedUsers;
-    }
-
-    public String getRejectedUsers() {
-        return rejectedUsers;
-    }
-
-    public void setRejectedUsers(String rejectedUsers) {
-        this.rejectedUsers = rejectedUsers;
-    }
-
-    public Boolean getInviteSelect() {
-        return InviteSelect;
-    }
-
-    public void setInviteSelect(Boolean InviteSelect) {
-        this.InviteSelect = InviteSelect;
-    }
-
-    public Boolean getBad() {
-        return bad;
-    }
-
-    public void setBad(Boolean bad) {
-        this.bad = bad;
-    }
-
-    public Date getEndate() {
-        return endate;
-    }
-
-    public void setEndate(Date date) {
-        this.endate = date;
-    }
-
-    public String getRepeats() {
-        return repeats;
-    }
-
-    public void setRepeats(String rep) {
-        this.repeats = rep;
-    }
-
-    public String getInvitations() {
-        return invitations;
-    }
-
-    public void setInvitations(String invitations) {
-        this.invitations = invitations;
-    }
-
-    public Date getUntillDate() {
-        return untillDate;
-    }
-
-    public void setUntillDate(Date untillDate) {
-        this.untillDate = untillDate;
-    }
-
-    public Date getStartdate() {
-        return startdate;
-    }
-
-    public void setStartdate(Date startdate) {
-        this.startdate = startdate;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-
-    public Badconditions getBadconditions() {
-        return badconditions;
-    }
-
-    public void setBadconditions(Badconditions badconditions) {
-        this.badconditions = badconditions;
-    }
-
-    public Boolean getTemp() {
-        return temp;
-    }
-
-    public void setTemp(Boolean temp) {
-        this.temp = temp;
-    }
-
-    public Boolean getPrec() {
-        return prec;
-    }
-
-    public void setPrec(Boolean prec) {
-        this.prec = prec;
-    }
-    
-    public Notification getNotification() {
-        return notification;
-    }
-
-    public void setNotification(Notification notification) {
-        this.notification = notification;
-    }
-
-    public Participant getParticipant() {
-        return participant;
-    }
-
-    public void setParticipant(Participant participant) {
-        this.participant = participant;
-    }
-    
-    // end variables
 
     /**
      * method that will be called in order to set to the Edit Mode the class
@@ -268,6 +117,20 @@ public class EventController implements Serializable {
         
         this.oldEventID = event.getId();
 
+        setEditBadConditions();
+
+        resetUpdateFields();
+
+        return "addEvent?faces-redirect=true";
+    }
+
+    
+    /**
+     * UPDATE FUNCTION 
+     * method that will set some field based on the value of the previous bad conditions
+     */
+    private void setEditBadConditions(){
+        
         if (badconditions != null) {
 
             setBad(true);
@@ -289,17 +152,25 @@ public class EventController implements Serializable {
             setPrec(false);
             setTemp(false);
         }
-
+        
+    }
+    
+    /**
+     * EDIT FUNCTION
+     * method that will reset some fields of the add event page
+     */
+    private void resetUpdateFields(){
+        
         setInvitations("");
         setInvitatedUsers(new String[0]);
         setInviteSelect(false);
         setRejectedUsers("");
         setEdit(true);
         setEndate(event.getDate());
-
-        return "addEvent?faces-redirect=true";
+        setUntillDate(null);
+        setRepeats("NO");    
     }
-
+    
     /**
      * method that will be called in order to create new event and badconditions
      *
@@ -310,7 +181,17 @@ public class EventController implements Serializable {
         event = new Event();
         badconditions = new Badconditions();
 
-        //reset all the field
+        resetNewFields();
+
+        return "addEvent?faces-redirect=true";
+    }
+    
+    /**
+     * NEW EVENT
+     * method that will reset the fields in order to create a new event
+     */
+    private void resetNewFields(){
+
         setPrec(false);
         setTemp(false);
         setBad(false);
@@ -325,10 +206,12 @@ public class EventController implements Serializable {
         setEditAddingBad(false);
         setTemp(false);
         setPrec(false);
-
-        return "addEvent?faces-redirect=true";
     }
 
+    /**
+     * method that will delete (with dependencies) the event specified.
+     * @param event, that will be deleted
+     */
     public void delete(Event event) {
         try {
             int id = event.getId();
@@ -388,7 +271,90 @@ public class EventController implements Serializable {
         }
     }
 
+    /**
+     * Create a weather associated to the event. If a weather already exists
+     * with the same city and date of the event, that weather is chosen.
+     * Otherwise a new event will be provided throught the weather api.
+     *
+     * @return the weather created
+     */
+    private Weather createWeather() {
+        //if no city inserted return null weather
+        if (event.getCity() == null) {
+            return null;
+        }
 
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        OpenWeatherMap owm = new OpenWeatherMap("");
+
+        DailyForecast forecast = null;
+
+        DateTime currentDate = new DateTime();
+        DateTime targetDate = new DateTime(event.getDate());
+        Integer dayForecast = targetDate.getDayOfYear() - currentDate.getDayOfYear() + 1;
+
+        if (dayForecast > 13 || dayForecast < 0) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "The weather was not inserted for one or more of the events created"));
+
+            return null;
+        }
+
+        //check if meteo for inserted date and city already exixst in the database
+        Weather oldWeather = this.weatherFacade.searchByCityAndDate(event.getCity(), event.getDate());
+        if (oldWeather != null) {
+            return oldWeather;
+        }
+
+        //creates new weather
+        Weather weather = new Weather();
+        DailyForecast forescast;
+        try {
+            forecast = owm.dailyForecastByCityName(event.getCity(), dayForecast.byteValue());
+            //weather.setId(this.weatherFacade.getMaxNotificationID() + 1);
+            if (forecast.getCityInstance().getCityName().equals("")) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "The weather was not inserted for one or more of the events created"));
+
+                return null;
+            }
+            weather.setCity(forecast.getCityInstance().getCityName());
+            weather.setClouds(forecast.getForecastInstance(dayForecast - 1).getPercentageOfClouds());
+            weather.setDate(forecast.getForecastInstance(dayForecast - 1).getDateTime());
+            weather.setHumidity(forecast.getForecastInstance(dayForecast - 1).getHumidity());
+            int rain = (int) forecast.getForecastInstance(dayForecast - 1).getRain();
+            int snow = (int) forecast.getForecastInstance(dayForecast - 1).getSnow();
+            if (rain > snow) {
+                weather.setPrecipitations(rain);
+                weather.setPrecipitationType("RAIN");
+            } else {
+                weather.setPrecipitations(snow);
+                weather.setPrecipitationType("SNOW");
+            }
+
+            
+            if (rain == 0 && snow == 0) {
+                weather.setPrecipitationType("NONE");
+            }
+            
+            weather.setPressure(forecast.getForecastInstance(dayForecast - 1).getPressure());
+            weather.setTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getDayTemperature());
+            weather.setMaxTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getMaximumTemperature());
+            weather.setMinTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getMinimumTemperature());
+            weather.setWind(forecast.getForecastInstance(dayForecast - 1).getWindSpeed());
+            weather.setId(null);
+            this.weatherFacade.create(weather);
+            return weather;
+        } catch (IOException | JSONException ex) {
+            System.out.println("Error while contacting the weather website");
+        } catch (NullPointerException | IndexOutOfBoundsException ex) {
+            System.out.println("No weather found for the city searched.");
+        }
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "The weather was not inserted for one or more of the events created"));
+        return null;
+    }
     
     /**
      * method that will start the creation of the event, it will control the
@@ -397,8 +363,45 @@ public class EventController implements Serializable {
      * @return always a redirection to the current page, showing error or
      * creating events
      */
-    public String controlDataCreation() {
-       //EVENT CREATION AND DELETING TO FIX BUX
+    public String controlDataCreation() {       
+        
+        Boolean error;
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+
+        // here we control if there are input errors
+        error = checkInsertionErrors(requestContext);
+
+        /*if there are simplier error we will return to the event creation page 
+         showing the errors to avoid useless further computation */
+        if (error) {
+            requestContext.execute("PF('creation').hide();");
+            return "";
+        }
+
+        if(!edit){
+            resolvedBug();
+        }
+                
+        /*creationEvent will return the redirection to the page
+         if there are some error regarding a wrong insertion of the data,
+         like repeated event or event that last more than 1 day we will
+         return to the event page showing the errors*/
+        String ret = prepareCreateEvent();
+
+        if (ret.equals("")) {
+           
+            requestContext.execute("PF('creation').hide();");
+            requestContext.execute("PF('complete').show();");
+        }
+
+        return "";
+    }
+
+    /**
+     * method that we want to eliminate but is useful to delete a bug from the system
+     */
+    private void resolvedBug(){
+        //EVENT CREATION AND DELETING TO FIX BUX
             String oldInvitations = invitations;
             Boolean oldInvite = this.InviteSelect;
             Date oldStart =  this.startdate;
@@ -428,35 +431,8 @@ public class EventController implements Serializable {
             this.repeats = oldRepeat;
             this.untillDate = oldUntillDate;
         //END OF BUG FIX CODE
-        
-        Boolean error;
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-
-        // here we control if there are input errors
-        error = checkInsertionErrors(requestContext);
-
-        /*if there are simplier error we will return to the event creation page 
-         showing the errors to avoid useless further computation */
-        if (error) {
-            requestContext.execute("PF('creation').hide();");
-            return "";
-        }
-
-        /*creationEvent will return the redirection to the page
-         if there are some error regarding a wrong insertion of the data,
-         like repeated event or event that last more than 1 day we will
-         return to the event page showing the errors*/
-        String ret = prepareCreateEvent();
-
-        if (ret.equals("")) {
-           
-            requestContext.execute("PF('creation').hide();");
-            requestContext.execute("PF('complete').show();");
-        }
-
-        return "";
     }
-
+    
     /**
      * method that will control the input from the user and if the data are
      * feasible or not it will show the errors in the dialog executing them.
@@ -636,23 +612,7 @@ public class EventController implements Serializable {
             event.setWeatherID(weather);
 
             //event creation
-            try {
-                if (edit) {
-                    if(eventFacade.isAlreadyThere(this.oldEventID)){
-                        eventFacade.edit(event); 
-                        oldEventID = null;
-                    }else{
-                        event.setId(null);
-                        eventFacade.create(event);
-                        setOwnerParticipant();
-                    }
-                } else {
-                    event.setId(null);
-                    eventFacade.create(event);
-                }
-            } catch (Exception e) {
-                //TODO
-            }
+            managerOfEvents();
 
             //badcondition creation if they are set
             prepareCreateBadConditions();
@@ -683,92 +643,7 @@ public class EventController implements Serializable {
 
         return "";
     }
-
-    /**
-     * Create a weather associated to the event. If a weather already exists
-     * with the same city and date of the event, that weather is chosen.
-     * Otherwise a new event will be provided throught the weather api.
-     *
-     * @return the weather created
-     */
-    private Weather createWeather() {
-        //if no city inserted return null weather
-        if (event.getCity() == null) {
-            return null;
-        }
-
-        RequestContext requestContext = RequestContext.getCurrentInstance();
-        OpenWeatherMap owm = new OpenWeatherMap("");
-
-        DailyForecast forecast = null;
-
-        DateTime currentDate = new DateTime();
-        DateTime targetDate = new DateTime(event.getDate());
-        Integer dayForecast = targetDate.getDayOfYear() - currentDate.getDayOfYear() + 1;
-
-        if (dayForecast > 13 || dayForecast < 0) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "The weather was not inserted for one or more of the events created"));
-
-            return null;
-        }
-
-        //check if meteo for inserted date and city already exixst in the database
-        Weather oldWeather = this.weatherFacade.searchByCityAndDate(event.getCity(), event.getDate());
-        if (oldWeather != null) {
-            return oldWeather;
-        }
-
-        //creates new weather
-        Weather weather = new Weather();
-        DailyForecast forescast;
-        try {
-            forecast = owm.dailyForecastByCityName(event.getCity(), dayForecast.byteValue());
-            //weather.setId(this.weatherFacade.getMaxNotificationID() + 1);
-            if (forecast.getCityInstance().getCityName().equals("")) {
-                FacesContext context = FacesContext.getCurrentInstance();
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "The weather was not inserted for one or more of the events created"));
-
-                return null;
-            }
-            weather.setCity(forecast.getCityInstance().getCityName());
-            weather.setClouds(forecast.getForecastInstance(dayForecast - 1).getPercentageOfClouds());
-            weather.setDate(forecast.getForecastInstance(dayForecast - 1).getDateTime());
-            weather.setHumidity(forecast.getForecastInstance(dayForecast - 1).getHumidity());
-            int rain = (int) forecast.getForecastInstance(dayForecast - 1).getRain();
-            int snow = (int) forecast.getForecastInstance(dayForecast - 1).getSnow();
-            if (rain > snow) {
-                weather.setPrecipitations(rain);
-                weather.setPrecipitationType("RAIN");
-            } else {
-                weather.setPrecipitations(snow);
-                weather.setPrecipitationType("SNOW");
-            }
-
-            
-            if (rain == 0 && snow == 0) {
-                weather.setPrecipitationType("NONE");
-            }
-            
-            weather.setPressure(forecast.getForecastInstance(dayForecast - 1).getPressure());
-            weather.setTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getDayTemperature());
-            weather.setMaxTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getMaximumTemperature());
-            weather.setMinTemperature(forecast.getForecastInstance(dayForecast - 1).getTemperatureInstance().getMinimumTemperature());
-            weather.setWind(forecast.getForecastInstance(dayForecast - 1).getWindSpeed());
-            weather.setId(null);
-            this.weatherFacade.create(weather);
-            return weather;
-        } catch (IOException | JSONException ex) {
-            System.out.println("Error while contacting the weather website");
-        } catch (NullPointerException | IndexOutOfBoundsException ex) {
-            System.out.println("No weather found for the city searched.");
-        }
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "The weather was not inserted for one or more of the events created"));
-        return null;
-    }
-
+    
     /**
      * method that will calculate the nextdate based on the repeats user's input
      *
@@ -812,7 +687,7 @@ public class EventController implements Serializable {
                         if(numberOfAddingYears ==1){
                            numberOfAddingYears=4; 
                         }else{
-                            numberOfAddingYears += 4; 
+                            numberOfAddingYears += 4;
                         }
                     }                   
                 }
@@ -833,7 +708,7 @@ public class EventController implements Serializable {
         int days = 0;
         Date endingTime;
         Date startingTime;
-
+        
         //here we find the difference in days between the enddate and the startingdate
         if (getEndate().compareTo(event.getDate()) > 0) {
             days = Days.daysBetween(new DateTime(event.getDate()), new DateTime(getEndate())).getDays();
@@ -843,8 +718,7 @@ public class EventController implements Serializable {
         startingTime = event.getStartingTime();
         endingTime = event.getEndingTime();
         RequestContext requestContext = RequestContext.getCurrentInstance();
-
-        
+                
         //check error loop
         for (int i = 0; i <= days; i++) {
 
@@ -861,6 +735,7 @@ public class EventController implements Serializable {
                 }
             }
 
+            //control errors
             if (edit) {
                 if (eventFacade.dateAndTimeInTheMiddle(event.getDate(), getEndate(), event.getStartingTime(), event.getEndingTime(), calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(), userFacade.getLoggedUser().getUsername(), event.getId())) {
                     requestContext.execute("PF('DateInTheMiddle Error').show();");
@@ -884,7 +759,7 @@ public class EventController implements Serializable {
         event.setDate(controlDate);
         event.setStartingTime(startingTime);
         event.setEndingTime(endingTime);
-
+                
         //creation loop
         for (int i = 0; i <= days; i++) {
 
@@ -912,20 +787,7 @@ public class EventController implements Serializable {
 
             //we can try to create the event 
             
-                if (edit) {
-                    if(eventFacade.isAlreadyThere(this.oldEventID)){
-                        eventFacade.edit(event); 
-                        oldEventID = null;
-                    }else{
-                        event.setId(null);
-                        eventFacade.create(event);
-                        setOwnerParticipant();
-                    }
-                    
-                } else {
-                    event.setId(null);
-                    eventFacade.create(event);
-                }
+            managerOfEvents();
 
             //badcondition creation if they are set
             prepareCreateBadConditions();
@@ -964,9 +826,25 @@ public class EventController implements Serializable {
     }
 
     /**
+     * method that will update or create new events
+     */
+    private void managerOfEvents(){
+        if (edit) {
+            if(eventFacade.isAlreadyThere(this.oldEventID)){
+                eventFacade.edit(event); 
+            }else{
+                event.setId(null);
+                eventFacade.create(event);
+                setOwnerParticipant();       
+            }                   
+        } else {
+            event.setId(null);
+            eventFacade.create(event);
+        }
+    }
+    
+    /**
      * prepare and create the bad conditions associated to the event
-     *
-     * @param event in order to set the foreign key
      */
     private void prepareCreateBadConditions() {
 
@@ -985,12 +863,13 @@ public class EventController implements Serializable {
 
         }
 
+        
         //we can delete it if it was the user decision or we can try to create the badconditions
-        if ((!bad) && (badconditions.getId() != null)) {          
+        if ((!bad) && (badconditions.getId() != null) && (oldEventID!=null)) {          
             badconditionsFacade.remove(badconditions);
         } else {
             try {
-                if (edit && !editAddingBad) {
+                if ( (edit) && (!editAddingBad) && (oldEventID!=null) ) {
                     badconditionsFacade.edit(badconditions);
                 } else {
                     if (bad) {
@@ -1002,13 +881,17 @@ public class EventController implements Serializable {
                 //TODO
             }
         }
+        
+        if(edit){
+        //in order to modify correctly also the first bad conditions
+        oldEventID=null;
+        }
+        
     }
 
     /**
      * method that will create and send a notification to all the invited User
      * for the current Event
-     *
-     * @param event
      */
     private void prepareCreateNotification() {
         notification.setEventID(event);
@@ -1059,8 +942,6 @@ public class EventController implements Serializable {
      * method that will create a record in the participant table in which the
      * organiser is setted and the invited User are setted to "unknown" response
      * to the participation
-     *
-     * @param event
      */
     private void prepareCreateParticipant() {
         //participants invited
@@ -1079,6 +960,7 @@ public class EventController implements Serializable {
                     participant.setParticipantPK(new ParticipantPK(userFacade.searchForUser(invitatedUser).getUsername(), event.getId()));
                     participantFacade.create(participant);
                 }
+               
             }
         }
 
@@ -1096,4 +978,154 @@ public class EventController implements Serializable {
         participantFacade.create(participant);
     }
 
+    //getter&setter
+    
+    public Boolean getEditAddingBad() {
+        return editAddingBad;
+    }
+
+    public void setEditAddingBad(Boolean editAddingBad) {
+        this.editAddingBad = editAddingBad;
+    }
+
+    public Boolean getEdit() {
+        return edit;
+    }
+
+    public void setEdit(Boolean edit) {
+        this.edit = edit;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String[] getInvitatedUsers() {
+        return invitatedUsers;
+    }
+
+    public void setInvitatedUsers(String[] invitatedUsers) {
+        for (int i = 0; i<invitatedUsers.length; i++) {
+            invitatedUsers[i] = invitatedUsers[i].replaceAll(" ", "");
+        }
+        this.invitatedUsers = invitatedUsers;
+    }
+    
+    public String getRejectedUsers() {
+        return rejectedUsers;
+    }
+
+    public void setRejectedUsers(String rejectedUsers) {
+        this.rejectedUsers = rejectedUsers;
+    }
+
+    public Boolean getInviteSelect() {
+        return InviteSelect;
+    }
+
+    public void setInviteSelect(Boolean InviteSelect) {
+        this.InviteSelect = InviteSelect;
+    }
+
+    public Boolean getBad() {
+        return bad;
+    }
+
+    public void setBad(Boolean bad) {
+        this.bad = bad;
+    }
+
+    public Date getEndate() {
+        return endate;
+    }
+
+    public void setEndate(Date date) {
+        this.endate = date;
+    }
+
+    public String getRepeats() {
+        return repeats;
+    }
+
+    public void setRepeats(String rep) {
+        this.repeats = rep;
+    }
+
+    public String getInvitations() {
+        return invitations;
+    }
+
+    public void setInvitations(String invitations) {
+        this.invitations = invitations;
+    }
+
+    public Date getUntillDate() {
+        return untillDate;
+    }
+
+    public void setUntillDate(Date untillDate) {
+        this.untillDate = untillDate;
+    }
+
+    public Date getStartdate() {
+        return startdate;
+    }
+
+    public void setStartdate(Date startdate) {
+        this.startdate = startdate;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public Badconditions getBadconditions() {
+        return badconditions;
+    }
+
+    public void setBadconditions(Badconditions badconditions) {
+        this.badconditions = badconditions;
+    }
+
+    public Boolean getTemp() {
+        return temp;
+    }
+
+    public void setTemp(Boolean temp) {
+        this.temp = temp;
+    }
+
+    public Boolean getPrec() {
+        return prec;
+    }
+
+    public void setPrec(Boolean prec) {
+        this.prec = prec;
+    }
+    
+    public Notification getNotification() {
+        return notification;
+    }
+
+    public void setNotification(Notification notification) {
+        this.notification = notification;
+    }
+
+    public Participant getParticipant() {
+        return participant;
+    }
+
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
+    }
+    
+    // end getter&setter
 }

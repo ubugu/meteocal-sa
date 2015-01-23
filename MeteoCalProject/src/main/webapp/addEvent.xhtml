@@ -44,40 +44,32 @@
          
         <!-- Common Header -->
         
-            <h:form id="Event">
-              <p:messages autoUpdate="true"/>
+            <h:form>               
                 <div id="eventForm">
 
                     <h1> Event Creation</h1>
 
-                    <h:panelGrid columns="3"> 
+                    <h:panelGrid columns="2"> 
                         <p:outputLabel for="title" value="Title:"/>
                         <p:inputText id="title" value="#{EventController.event.title}" required="true" requiredMessage="The title is required." />
-                        <p:message for="title" />
                         
                         <p:outputLabel for="location" value="Location" />          
                         <p:inputText id="location" value="#{EventController.event.location}" required="true" requiredMessage="The location is required." />
-                        <p:message for="location" />
                         
                         <p:outputLabel for="city" value="City:"/>
                         <p:inputText id="city" value="#{EventController.event.city}"/>
-                        <p:message for="city" />
                         
                         <p:outputLabel for="startingDate" value="Starting Date:" />
                         <p:calendar id="startingDate" value="#{EventController.event.date}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true" requiredMessage="The Starting Date is required."/>
-                        <p:message for="startingDate" />
                         
                         <p:outputLabel for="endingDate" value="Ending Date:" />
                         <p:calendar id="endingDate" value="#{EventController.endate}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true" requiredMessage="The Ending Date is required." />
-                        <p:message for="endingDate" />
                         
                         <p:outputLabel for="startingTime" value="Starting Time:" />
                         <p:calendar id="startingTime" value="#{EventController.event.startingTime}" pattern="HH:mm a" timeOnly="true" required="true" requiredMessage="The Starting Time is required." />
-                        <p:message for="startingTime" />
                         
                         <p:outputLabel for="endingTime" value="Ending Time:" />
                         <p:calendar id="endingTime" value="#{EventController.event.endingTime}" pattern="HH:mm a" timeOnly="true" required="true" requiredMessage="The Ending Time is required." />
-                        <p:message for="endingTime" />
                         
                         <p:outputLabel for="repeat" value="Repeat Type:"/>
                         <p:selectOneMenu id="repeat" value="#{EventController.repeats}" style="width:125px" >
@@ -87,16 +79,13 @@
                             <f:selectItem itemLabel="EveryMonth" itemValue="everymonth" />
                             <f:selectItem itemLabel="EveryYear" itemValue="everyyear" />
                         </p:selectOneMenu>
-                        <p:message for="repeat" />
                         
                         <p:outputLabel for="untillDate" value="Untill:" />
                         <p:calendar id="untillDate" value="#{EventController.untillDate}" locale="it" navigator="true" pattern="dd-MM-yyyy" />
-                        <p:message for="untillDate" />
                         
-                        <p:outputLabel for="description" value="Description (optional):"/>
-                        <p:inputTextarea class="notResize"  id="description" autoResize="false" rows="5" cols="27" value="#{EventController.event.description}"    />
-                        <p:message for="description" />
-                        
+                        <p:outputLabel id="descriptionCounter" for="description" value="Description (optional):"/>
+                        <p:inputTextarea class="notResize" counter="descriptionCounter" maxlength="1000" counterTemplate="Description (optional) {0} characters remaining." id="description" autoResize="false" rows="5" cols="27" value="#{EventController.event.description}"    />
+
                     </h:panelGrid>
                   
                 </div>    
@@ -104,16 +93,15 @@
                     
                     <br />                    
                     <div id="badConditions"> 
-                        <p:outputLabel for="bad" value="Bad Conditions:  "/>
-                        <p:inputSwitch id="bad" value="#{EventController.bad}" >
+                        <p:outputLabel for="bad" value="Bad Conditions: &nbsp;&nbsp;"/>
+                        <p:inputSwitch id="bad" value="#{EventController.bad}">
                             <p:ajax update="badConditionsDiv" />
                         </p:inputSwitch>
-                        <p:message for="bad" />
                     </div>
                
                     <br />
                     
-                    <p:panel  style="width:450px;border:none;" id="badConditionsDiv" visible="#{EventController.bad}">
+                    <p:panel  style="width:450px;border:none" id="badConditionsDiv" visible="#{EventController.bad}">
                             
                         <!-- bad weather layer -->
                     
@@ -125,7 +113,6 @@
                                 <f:selectItem itemLabel="Cloudy" itemValue="cloudy" />
                                 <f:selectItem itemLabel="Snowy" itemValue="snowy" />
                             </p:selectOneMenu>
-                            <p:message for="layer" />
                             
                         </h:panelGrid>
                         
@@ -158,11 +145,11 @@
                         <p:selectBooleanCheckbox id="invitationcheck" value="#{EventController.inviteSelect}"/>     
                         <h:outputText value="Send an Invitation to:"/>
                         <p:ajax event="click" update="invitation" />                      
-                        <p:inputTextarea class="notResize" id="invitation" counter="display" maxlength="1000" counterTemplate="Example (mar83;da87) {0} characters remaining." disabled="#{!EventController.inviteSelect}" autoResize="false" rows="4" cols="27"  onselect="value=''" value="#{EventController.invitations}"/>
+                        <p:inputTextarea class="notResize" id="invitation" counter="display" maxlength="500" counterTemplate="Example (mar83;da87) {0} characters remaining." disabled="#{!EventController.inviteSelect}" autoResize="false" rows="4" cols="27"  onselect="value=''" value="#{EventController.invitations}"/>
                         <h:outputText id="display" />
                     </h:panelGrid> 
 
-                    <h:panelGrid cellpadding="10px" width="450px" columns="6"> 
+                    <h:panelGrid style="margin-left: 20px" cellpadding="5px" width="450px" columns="6"> 
 
                         <h:outputText value="Event Color:"/>
                         <p:selectOneMenu id="color" value="#{EventController.event.color}" style="width:100px">
@@ -171,6 +158,9 @@
                             <f:selectItem itemLabel="Pink" itemValue="pink" />
                             <f:selectItem itemLabel="Blue" itemValue="blue" />
                             <f:selectItem itemLabel="Green" itemValue="green" />
+                            <f:selectItem itemLabel="Violet" itemValue="violet" />
+                            <f:selectItem itemLabel="Orange" itemValue="orange" />
+                            <f:selectItem itemLabel="Brown" itemValue="brown" />
                         </p:selectOneMenu>
                         <p:message for="color" />
 
@@ -183,7 +173,10 @@
 
                     </h:panelGrid>
 
-                    <p:commandButton update="growl" value="Create Event" ajax="true" validateClient="true" onstart="PF('creation').show()" onsuccess="PF('creation').hide()"  action="#{EventController.controlDataCreation()}" id="iconOnly" icon="ui-icon-calendar"/>
+                    <h:panelGrid style="margin-left: 27px" cellpadding="5px" width="450px" columns="1"> 
+                         <p:commandButton update="growl" value="Create Event" ajax="true" validateClient="true" onstart="PF('creation').show()" onsuccess="PF('creation').hide()"  action="#{EventController.controlDataCreation()}" id="iconOnly" icon="ui-icon-calendar"/>
+                    </h:panelGrid>
+
                     <p:dialog id="complete" widgetVar="complete" draggable="false" closable="false" resizable="false"  modal="true"  header="Success">
                         Event Created!
                         <br />
@@ -192,6 +185,8 @@
                         <p:commandButton value="New Event" action="#{EventController.newEvent}"/>
                         <p:commandButton value="Home" action="#{scheduleController.loadOwnCalendar()}"/>
                     </p:dialog>
+                    
+                    
 
                 </div> 
 
