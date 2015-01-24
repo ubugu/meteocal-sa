@@ -112,7 +112,7 @@ public class EventController implements Serializable {
      * @return redirect to the addeventpage
      */
     public String changeEvent(int id) {
-
+        
         event = eventFacade.find(id);
         badconditions = badconditionsFacade.searchByEvent(event);
         

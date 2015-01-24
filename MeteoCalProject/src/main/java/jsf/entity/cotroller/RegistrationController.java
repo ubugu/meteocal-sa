@@ -81,7 +81,7 @@ public class RegistrationController {
             requestContext.execute("PF('usernameError').show();");
             return "";
         }
-    
+        
         return "index?faces-redirect=true";
     }
 
