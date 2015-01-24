@@ -834,7 +834,10 @@ public class EventController implements Serializable {
                 eventFacade.edit(event); 
                 for(Participant p: this.oldParticipants){
                     if(!p.getOrganiser().equals("YES")){
-                        p.setParticipant("UNKNOWN");
+                        if(eventFacade.dateAndTimeInTheMiddle(event.getDate(), event.getDate(), event.getStartingTime(),event.getEndingTime(),p.getUser1().getCalendar().getId(),p.getUser1().getUsername(),event.getId())){      
+                            p.setParticipant("UNKNOWN");
+                        }
+                        
                         participantFacade.edit(p);
                     }                   
                 }
