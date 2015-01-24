@@ -33,7 +33,7 @@
             <ul class="buttonList">
                 <li><p:commandButton class="leftBarButton"  value="Home" action="#{scheduleController.loadOwnCalendar()}"/></li>   
                 <li><p:commandButton class="leftBarButton"  value="AddEvent" action="#{EventController.newEvent}"/></li>       
-                <li><p:button class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
+                <li><p:button  class="leftBarButton"  value="Notifications" outcome="notifications"/></li>   
                 <li><p:button class="leftBarButton"  value="Settings" outcome="settings"/> </li>     
 
             </ul>
@@ -114,16 +114,16 @@
                                " rendered="#{showEventController.isInvited()}" />
                 <br />
                 <p:commandButton value="Participate" rendered="#{showEventController.isInvited()}" ajax="true" update="participantText" actionListener="#{showEventController.setInvited('YES')}" />
-                <p:commandButton value="Decline" rendered="#{showEventController.isInvited()}" ajax="true" update="participantText" actionListener="#{showEventController.setInvited('NO')}" />                 
+                <p:commandButton   value="Decline" rendered="#{showEventController.isInvited()}" ajax="true" update="participantText" actionListener="#{showEventController.setInvited('NO')}" />                 
             
 
             </div>
 
-            <div id="rightEventForm">
+            <div id="rightEventForm" >
                 <h1 class="weatherPreview"> Weather Preview</h1>
                 
                 <p:outputLabel value="The weather preview is not available" rendered="#{showEventController.isWeatherNull}"/>
-                <p:panel rendered="#{!showEventController.isWeatherNull}" style="border: none; background-color: #FFFFFF">
+                <p:panel rendered="#{!showEventController.isWeatherNull}" style="border: none; background: none;">
                     <h:panelGrid columns="3" cellpadding="10px" class="weatherGrid"  >
                         <p:outputLabel value="#{showEventController.city}"/>
                         <h:outputText id="temperature" value="#{showEventController.temperature} C" style="width:100px" />
