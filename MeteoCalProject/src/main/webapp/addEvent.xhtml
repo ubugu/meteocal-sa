@@ -132,7 +132,7 @@
                             <h:outputText id="precipitationsoutput" value="#{EventController.badconditions.precipitations} mm" />
                             <h:inputHidden id="precipitations" value="#{EventController.badconditions.precipitations}" />
                             <h:outputText id="Plabel" value="mm" />
-                            <p:slider  for="precipitations" display="precipitationsoutput" style="width: 150px"  displayTemplate="{value}" />
+                            <p:slider  for="precipitations" display="precipitationsoutput" minValue="0" maxValue="50" style="width: 150px"  displayTemplate="{value}" />
 
                         </h:panelGrid>
 
