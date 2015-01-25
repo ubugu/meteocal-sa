@@ -33,7 +33,6 @@ public class NotificationsController implements Serializable{
         THREEDAYS, ONEDAY
     }
     
-    private Notification notification;
     private Notification selectedNotification;
     
     @EJB

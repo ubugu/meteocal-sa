@@ -7,11 +7,8 @@ package jsf.entity.facade;
 
 import java.util.Date;
 import java.util.List;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import jsf.entity.Weather;
 import org.joda.time.DateTime;

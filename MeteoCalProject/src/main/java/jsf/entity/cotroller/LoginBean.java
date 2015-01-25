@@ -5,23 +5,16 @@
 package jsf.entity.cotroller;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Time;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import jsf.entity.Calendar;
-import jsf.entity.Event;
-import jsf.entity.Participant;
-import jsf.entity.ParticipantPK;
 import jsf.entity.User;
 import jsf.entity.facade.EventFacade;
 import jsf.entity.facade.ParticipantFacade;
 import jsf.entity.facade.UserFacade;
-import org.joda.time.DateTime;
 import org.primefaces.context.RequestContext;
 
 /**

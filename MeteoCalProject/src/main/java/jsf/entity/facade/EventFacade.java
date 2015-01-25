@@ -8,13 +8,8 @@ package jsf.entity.facade;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.transaction.UserTransaction;
 import jsf.entity.Calendar;
 import jsf.entity.Event;
 
@@ -47,11 +42,9 @@ public class EventFacade extends AbstractFacade<Event> {
      * @param eventID the id of the current event, usefull to check for the update
      * @return true, if there are other event, of the logged user or where the logged user want to participate, in the middle, false otherwise
      */
-    public Boolean dateAndTimeInTheMiddle(Date startDate,Date endDate,Date startTime, Date endTime,int CalendarID,String usern,int eventID) {
+    public Boolean dateAndTimeInTheMiddle(Date startDate,Date startTime, Date endTime,int CalendarID,String usern,int eventID) {
         java.sql.Date startSqlDate;
         startSqlDate = new java.sql.Date(startDate.getTime());
-        java.sql.Date endSqlDate;
-        endSqlDate = new java.sql.Date(endDate.getTime());
         java.sql.Time startSqlTime;
         startSqlTime = new java.sql.Time(startTime.getTime());
         java.sql.Time endSqlTime;
@@ -83,11 +76,9 @@ public class EventFacade extends AbstractFacade<Event> {
      * @param usern the username of the logged user
      * @return true, if there are other event, of the logged user or where the logged user want to participate, in the middle, false otherwise
      */
-    public Boolean dateAndTimeInTheMiddleCreate(Date startDate,Date endDate,Date startTime, Date endTime,int CalendarID,String usern) {
+    public Boolean dateAndTimeInTheMiddleCreate(Date startDate,Date startTime, Date endTime,int CalendarID,String usern) {
         java.sql.Date startSqlDate;
         startSqlDate = new java.sql.Date(startDate.getTime());
-        java.sql.Date endSqlDate;
-        endSqlDate = new java.sql.Date(endDate.getTime());
         java.sql.Time startSqlTime;
         startSqlTime = new java.sql.Time(startTime.getTime());
         java.sql.Time endSqlTime;
@@ -95,13 +86,10 @@ public class EventFacade extends AbstractFacade<Event> {
         
         try{
             List<Event> events = em.createNamedQuery("Event.findDateTimeInTheMiddle").setParameter("startSqlDate",startSqlDate).setParameter("startSqlTime",startSqlTime).setParameter("endSqlTime",endSqlTime).setParameter("calendarId",CalendarID).setParameter("username",usern).getResultList();
-
-            return !events.isEmpty();
-            
+            return !events.isEmpty();          
         }catch(Exception e){
             //TODO
-        }
-        
+        }     
         return false;
     }
 

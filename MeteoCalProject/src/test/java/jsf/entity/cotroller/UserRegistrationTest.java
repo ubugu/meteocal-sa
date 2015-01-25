@@ -7,10 +7,8 @@ package jsf.entity.cotroller;
 
 import jsf.entity.Calendar;
 import jsf.entity.User;
-import jsf.entity.cotroller.RegistrationController;
 import jsf.entity.facade.CalendarFacade;
 import jsf.entity.facade.UserFacade;
-import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.doThrow;
