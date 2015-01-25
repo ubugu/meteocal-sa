@@ -62,7 +62,7 @@ public class TimeController {
     /**
      * update the weather every 5 minutes
      */
-     @Schedule(minute = "*/5", hour = "*", persistent = false)
+     @Schedule(minute = "*/3", hour = "*", persistent = false)
      public void UpdateWeather()  {
         DateTime time = new DateTime();
         System.out.println("Weather Update at  " + time);
@@ -132,9 +132,9 @@ public class TimeController {
             String days = availableDay(associatedEvent.getCity(), badConditions);
             String[] daysString = days.split(";");
             String description = "The event " + associatedEvent.getTitle() + " scheduled for " 
-                    + associatedEvent.getDate() + " does not satisfy the event conditions. \n Possible suitable dates are : \n";
+                    + associatedEvent.getDate() + " does not satisfy the event conditions. Possible suitable dates are : </> ";
             for (String s : daysString) {
-                description += s + " \n";
+                description += s + " </> ";
             }
             Notification notification = new Notification();
             notification.setDescription(description);
@@ -158,11 +158,16 @@ public class TimeController {
         String days = "";
         DailyForecast forecast = null;
         Byte daysForecast = 13;
-        
+        DateTime oldDate = new DateTime(badConditions.getEventID().getDate());
+        DateTime currentDate;
         try {
             forecast = owm.dailyForecastByCityName(city, daysForecast);
             Weather weather = new Weather();
             for (int i = 0;  i < 13; i++) {
+                currentDate = new DateTime(forecast.getForecastInstance(i).getDateTime());
+                if (currentDate.getYear() == oldDate.getYear() && currentDate.getMonthOfYear() == oldDate.getMonthOfYear() && currentDate.getDayOfMonth() == oldDate.getDayOfMonth()) {
+                    continue;
+                }
                 weather.setClouds(forecast.getForecastInstance(i).getPercentageOfClouds());
                 weather.setTemperature(forecast.getForecastInstance(i).getTemperatureInstance().getDayTemperature());
                 int rain = (int) forecast.getForecastInstance(i).getRain();
@@ -174,6 +179,7 @@ public class TimeController {
                     weather.setPrecipitations(snow);
                     weather.setPrecipitationType("SNOW");
                 }
+                
                 if (!checkConditions(badConditions,weather)) {
                     DateTime date = new DateTime(forecast.getForecastInstance(i).getDateTime());
                     days += forecast.getForecastInstance(i).getDateTime().toString() + ";";
@@ -182,16 +188,14 @@ public class TimeController {
             }
  
             if (days.equals("")) {
-                return "No city Found";
+                return "No date Found";
             } else {
                 return days;
             }
 
-        } catch (IOException ex) {
+        } catch (IOException | JSONException| NullPointerException | IndexOutOfBoundsException ex) {
             Logger.getLogger(TimeController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JSONException ex) {
-            Logger.getLogger(TimeController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
             
         return null;
     }

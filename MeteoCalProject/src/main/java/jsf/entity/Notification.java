@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -47,8 +48,8 @@ public class Notification implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "type")
     private String type;
-    @Size(max = 1000)
-    @Column(name = "description")
+    @Lob  
+    @Column(name = "description", length=512)
     private String description;
     @Basic(optional = false)
     @NotNull

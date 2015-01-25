@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -84,8 +85,8 @@ public class Event implements Serializable {
     @Size(max = 40)
     @Column(name = "city")
     private String city;
-    @Size(max = 1000)
-    @Column(name = "description")
+    @Lob    
+    @Column(name = "description", length=512 )
     private String description;
     @Basic(optional = false)
     @NotNull
