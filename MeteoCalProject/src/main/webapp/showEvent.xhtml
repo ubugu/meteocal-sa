@@ -72,7 +72,8 @@
                     <h:outputText id="privacy" value="#{showEventController.selectedEvent.privacy}" style="width:100px"/>
                     
                     <p:outputLabel for="description" value="Description :"/>
-                    <h:outputText id="description" value="#{showEventController.selectedEvent.description}" /> 
+                    <p:inputTextarea class="notResize, noBackround"  readonly="true" maxlength="1000"  id="description"   autoResize="false" rows="5" cols="27" value="#{showEventController.selectedEvent.description}"    />
+                    
                 </h:panelGrid>
                 <br />
 

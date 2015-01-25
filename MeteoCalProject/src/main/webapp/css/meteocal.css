@@ -273,6 +273,12 @@ div.logoutForm {
     left: 20px;
 }
 
+.noBackround {
+    border: none;
+    resize: none;
+    background: #FFFFFF;
+    color: black;
+}
 
 /* ### schedule event color ### */
 .red {
