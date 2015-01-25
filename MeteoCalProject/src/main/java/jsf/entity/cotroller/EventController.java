@@ -415,6 +415,7 @@ public class EventController implements Serializable {
             Boolean oldBad =  this.bad;
             String oldRepeat = this.repeats;
             Date oldUntillDate = this.untillDate;
+            String city = event.getCity();
             
             Date oldEventDate;
             
@@ -425,6 +426,7 @@ public class EventController implements Serializable {
             bad = false;
             repeats = "no";
             untillDate = null;
+            event.setCity(null);
             
             oldEventDate = event.getDate();
             event.setDate(new Date(1));
@@ -435,6 +437,7 @@ public class EventController implements Serializable {
             first = true;
             
             event.setDate(oldEventDate);
+            event.setCity(city);
             this.InviteSelect = oldInvite;
             invitations = oldInvitations;
             this.startdate = oldStart;
