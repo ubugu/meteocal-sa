@@ -6,7 +6,6 @@
 package jsf.entity.facade;
 
 import java.security.Principal;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;

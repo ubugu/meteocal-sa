@@ -5,7 +5,6 @@
  */
 package jsf.entity.cotroller;
 
-import java.lang.NullPointerException;
 import java.util.Date;
 import jsf.entity.Badconditions;
 import jsf.entity.Calendar;
@@ -135,7 +134,7 @@ public class EventTest {
         when(eventController.calendarFacade.searchByUser(any(User.class))).thenReturn(calendar);
         when(eventController.userFacade.searchForUser(anyString())).thenReturn(user);
       
-        doReturn(Boolean.FALSE).when(eventController.eventFacade).dateAndTimeInTheMiddleCreate(any(Date.class),any(Date.class),any(Date.class),any(Date.class),anyInt(),anyString());
+        doReturn(Boolean.FALSE).when(eventController.eventFacade).dateAndTimeInTheMiddleCreate(any(Date.class),any(Date.class),any(Date.class),anyInt(),anyString());
         
         eventController.controlDataCreation();
        
@@ -165,7 +164,7 @@ public class EventTest {
         when(eventController.calendarFacade.searchByUser(any(User.class))).thenReturn(calendar);
         when(eventController.userFacade.searchForUser(anyString())).thenReturn(user);
         when(eventController.userFacade.getLoggedUser()).thenReturn(user);
-        when(eventController.eventFacade.dateAndTimeInTheMiddleCreate(any(Date.class),any(Date.class),any(Date.class),any(Date.class),anyInt(),anyString())).thenReturn(Boolean.FALSE);
+        when(eventController.eventFacade.dateAndTimeInTheMiddleCreate(any(Date.class),any(Date.class),any(Date.class),anyInt(),anyString())).thenReturn(Boolean.FALSE);
         
         try{
             eventController.controlDataCreation();
@@ -185,7 +184,7 @@ public class EventTest {
         
         when(eventController.calendarFacade.searchByUser(any(User.class))).thenReturn(calendar);
         when(eventController.userFacade.getLoggedUser()).thenReturn(user);
-        when(eventController.eventFacade.dateAndTimeInTheMiddleCreate(any(Date.class),any(Date.class),any(Date.class),any(Date.class),anyInt(),anyString())).thenReturn(Boolean.FALSE);
+        when(eventController.eventFacade.dateAndTimeInTheMiddleCreate(any(Date.class),any(Date.class),any(Date.class),anyInt(),anyString())).thenReturn(Boolean.FALSE);
         
         try{
             eventController.controlDataCreation();
@@ -200,7 +199,7 @@ public class EventTest {
         futureDate = new DateTime(1990,1,1,12,00).toDate();
         when(eventController.calendarFacade.searchByUser(any(User.class))).thenReturn(calendar);
         when(eventController.userFacade.getLoggedUser()).thenReturn(user);
-        when(eventController.eventFacade.dateAndTimeInTheMiddleCreate(any(Date.class),any(Date.class),any(Date.class),any(Date.class),anyInt(),anyString())).thenReturn(Boolean.TRUE);
+        when(eventController.eventFacade.dateAndTimeInTheMiddleCreate(any(Date.class),any(Date.class),any(Date.class),anyInt(),anyString())).thenReturn(Boolean.TRUE);
 
         event.setDate(futureDate);
         eventController.controlDataCreation();

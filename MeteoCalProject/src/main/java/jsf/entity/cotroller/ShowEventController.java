@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import jsf.entity.Badconditions;
@@ -60,7 +59,6 @@ public class ShowEventController implements Serializable{
     CalendarFacade calendarFacade;
     
     private List<Participant> participants;
-    private List<Participant> invited;
     
     private Weather weather;
 
@@ -313,7 +311,7 @@ public class ShowEventController implements Serializable{
         User user = this.userFacade.getLoggedUser();
         
         
-        if( (response.equals("YES")) && (eventFacade.dateAndTimeInTheMiddleCreate(selectedEvent.getDate(),selectedEvent.getDate(),selectedEvent.getStartingTime(),selectedEvent.getEndingTime(),calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(),userFacade.getLoggedUser().getUsername()) ) ){         
+        if( (response.equals("YES")) && (eventFacade.dateAndTimeInTheMiddleCreate(selectedEvent.getDate(),selectedEvent.getStartingTime(),selectedEvent.getEndingTime(),calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(),userFacade.getLoggedUser().getUsername()) ) ){         
             RequestContext.getCurrentInstance().execute("PF('EventInTheMiddle Error').show();");
             return;
         }

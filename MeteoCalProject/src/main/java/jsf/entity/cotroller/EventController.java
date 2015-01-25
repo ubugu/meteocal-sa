@@ -416,6 +416,8 @@ public class EventController implements Serializable {
             String oldRepeat = this.repeats;
             Date oldUntillDate = this.untillDate;
             
+            Date oldEventDate;
+            
             this.InviteSelect = false;
             invitations = "";
             startdate = new Date(1);
@@ -424,11 +426,15 @@ public class EventController implements Serializable {
             repeats = "no";
             untillDate = null;
             
+            oldEventDate = event.getDate();
+            event.setDate(new Date(1));
+            
             prepareCreateEvent();
  
             delete(event);
             first = true;
             
+            event.setDate(oldEventDate);
             this.InviteSelect = oldInvite;
             invitations = oldInvitations;
             this.startdate = oldStart;
@@ -450,19 +456,6 @@ public class EventController implements Serializable {
     private Boolean checkInsertionErrors(RequestContext requestContext) {
 
         Boolean error = false;
-
-        //control if there are event in the middle, if we are in the updateEvent case here we don't have to consider the current event in the query
-        if (getEdit()) {
-            if (eventFacade.dateAndTimeInTheMiddle(event.getDate(), getEndate(), event.getStartingTime(), event.getEndingTime(), calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(), userFacade.getLoggedUser().getUsername(), event.getId())) {
-                requestContext.execute("PF('DateInTheMiddle Error').show();");
-                error = true;
-            }
-        } else {
-            if (eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(), getEndate(), event.getStartingTime(), event.getEndingTime(), calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(), userFacade.getLoggedUser().getUsername())) {
-                requestContext.execute("PF('DateInTheMiddle Error').show();");
-                error = true;
-            }
-        }
 
         //control if the starting date is before today
         if (DateTimeComparator.getDateOnlyInstance().compare(new DateTime(event.getDate()), new DateTime()) < 0) {
@@ -585,12 +578,12 @@ public class EventController implements Serializable {
         while (nextDate.compareTo(getUntillDate()) < 0) {
 
             if (edit) {
-                if (eventFacade.dateAndTimeInTheMiddle(event.getDate(), getEndate(), event.getStartingTime(), event.getEndingTime(), calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(), userFacade.getLoggedUser().getUsername(), event.getId())) {
+                if (eventFacade.dateAndTimeInTheMiddle(event.getDate(), event.getStartingTime(), event.getEndingTime(), calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(), userFacade.getLoggedUser().getUsername(), event.getId())) {
                     requestContext.execute("PF('DateInTheMiddleRepeat Error').show();");
                     return "error";
                 }
             } else {
-                if (eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(), getEndate(), event.getStartingTime(), event.getEndingTime(), calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(), userFacade.getLoggedUser().getUsername())) {
+                if (eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(), event.getStartingTime(), event.getEndingTime(), calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(), userFacade.getLoggedUser().getUsername())) {
                     requestContext.execute("PF('DateInTheMiddleRepeat Error').show();");
                     return "error";
                 }
@@ -598,12 +591,15 @@ public class EventController implements Serializable {
 
             //repetition
             nextDate = nextRepetitionDate(nextDate);
+            
+            event.setDate(nextDate);
 
         }
 
         //reset to the initial date
         nextDate = controlDate;
-
+        event.setDate(nextDate);
+        
         //creation loop
         Weather weather;
         while (nextDate.compareTo(getUntillDate()) < 0) {
@@ -741,12 +737,12 @@ public class EventController implements Serializable {
 
             //control errors
             if (edit) {
-                if (eventFacade.dateAndTimeInTheMiddle(event.getDate(), getEndate(), event.getStartingTime(), event.getEndingTime(), calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(), userFacade.getLoggedUser().getUsername(), event.getId())) {
+                if (eventFacade.dateAndTimeInTheMiddle(event.getDate(), event.getStartingTime(), event.getEndingTime(), calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(), userFacade.getLoggedUser().getUsername(), event.getId())) {
                     requestContext.execute("PF('DateInTheMiddle Error').show();");
                     return "error";
                 }
             } else {
-                if (eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(), getEndate(), event.getStartingTime(), event.getEndingTime(), calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(), userFacade.getLoggedUser().getUsername())) {
+                if (eventFacade.dateAndTimeInTheMiddleCreate(event.getDate(), event.getStartingTime(), event.getEndingTime(), calendarFacade.searchByUser(userFacade.getLoggedUser()).getId(), userFacade.getLoggedUser().getUsername())) {
                     requestContext.execute("PF('DateInTheMiddle Error').show();");
                     return "error";
                 }
@@ -839,7 +835,7 @@ public class EventController implements Serializable {
                 eventFacade.edit(event); 
                 for(Participant p: this.oldParticipants){
                     if(!p.getOrganiser().equals("YES")){
-                        if(eventFacade.dateAndTimeInTheMiddle(event.getDate(), event.getDate(), event.getStartingTime(),event.getEndingTime(),p.getUser1().getCalendar().getId(),p.getUser1().getUsername(),event.getId())){      
+                        if(eventFacade.dateAndTimeInTheMiddle(event.getDate(), event.getStartingTime(),event.getEndingTime(),p.getUser1().getCalendar().getId(),p.getUser1().getUsername(),event.getId())){      
                             p.setParticipant("UNKNOWN");
                         }
                         

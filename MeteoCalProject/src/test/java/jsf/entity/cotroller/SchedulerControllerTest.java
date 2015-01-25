@@ -13,16 +13,10 @@ import jsf.entity.User;
 import jsf.entity.facade.CalendarFacade;
 import jsf.entity.facade.UserFacade;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeComparator;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  *

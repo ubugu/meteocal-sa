@@ -6,7 +6,6 @@
 package jsf.entity.cotroller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import jsf.entity.Badconditions;
 import jsf.entity.Calendar;
@@ -17,7 +16,6 @@ import jsf.entity.ParticipantPK;
 import jsf.entity.User;
 import jsf.entity.Weather;
 import jsf.entity.facade.BadconditionsFacade;
-import jsf.entity.facade.CalendarFacade;
 import jsf.entity.facade.EventFacade;
 import jsf.entity.facade.NotificationFacade;
 import jsf.entity.facade.ParticipantFacade;
@@ -158,7 +156,7 @@ public class ShowEventControllerTest {
         
         showEventController.setSelectedEvent(event);
         
-        when(showEventController.eventFacade.dateAndTimeInTheMiddleCreate(any(java.util.Date.class),any(java.util.Date.class),any(java.util.Date.class),any(java.util.Date.class),anyInt(),anyString())).thenReturn(Boolean.FALSE);   
+        when(showEventController.eventFacade.dateAndTimeInTheMiddleCreate(any(java.util.Date.class),any(java.util.Date.class),any(java.util.Date.class),anyInt(),anyString())).thenReturn(Boolean.FALSE);   
         when(showEventController.userFacade.getLoggedUser()).thenReturn(user2);
         
         showEventController.setInvited("NO");

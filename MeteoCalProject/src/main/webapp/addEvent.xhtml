@@ -51,13 +51,19 @@
 
                     <h:panelGrid columns="2"> 
                         <p:outputLabel for="title" value="Title:"/>
-                        <p:inputText id="title" value="#{EventController.event.title}" required="true" requiredMessage="The title is required." />
+                        <p:inputText id="title" value="#{EventController.event.title}" required="true" requiredMessage="The title is required.">
+                            <f:validateLength minimum="5" maximum="40"/>
+                        </p:inputText>
                         
                         <p:outputLabel for="location" value="Location" />          
-                        <p:inputText id="location" value="#{EventController.event.location}" required="true" requiredMessage="The location is required." />
+                        <p:inputText id="location" value="#{EventController.event.location}" required="true" requiredMessage="The location is required." >
+                            <f:validateLength minimum="2" maximum="40"/>
+                        </p:inputText>
                         
                         <p:outputLabel for="city" value="City:"/>
-                        <p:inputText id="city" value="#{EventController.event.city}"/>
+                        <p:inputText id="city" value="#{EventController.event.city}">
+                            <f:validateLength maximum="40"/>
+                        </p:inputText>
                         
                         <p:outputLabel for="startingDate" value="Starting Date:" />
                         <p:calendar id="startingDate" value="#{EventController.event.date}" locale="it" navigator="true" pattern="dd-MM-yyyy" required="true" requiredMessage="The Starting Date is required."/>
