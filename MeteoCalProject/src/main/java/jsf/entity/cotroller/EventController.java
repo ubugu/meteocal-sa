@@ -100,6 +100,9 @@ public class EventController implements Serializable {
     private Boolean first = false;
 
     private List<Participant> oldParticipants = null;
+    
+    private String formHeader;
+    
     // end variables not belonging to database 
 
     /**
@@ -169,7 +172,8 @@ public class EventController implements Serializable {
         setEdit(true);
         setEndate(event.getDate());
         setUntillDate(null);
-        setRepeats("NO");    
+        setRepeats("NO");  
+        setFormHeader("Update Event");
     }
     
     /**
@@ -207,6 +211,7 @@ public class EventController implements Serializable {
         setEditAddingBad(false);
         setTemp(false);
         setPrec(false);
+        setFormHeader("Create Event");
     }
 
     /**
@@ -1147,6 +1152,14 @@ public class EventController implements Serializable {
 
     public void setParticipant(Participant participant) {
         this.participant = participant;
+    }
+    
+    public String getFormHeader() {
+        return formHeader;
+    }
+
+    public void setFormHeader(String formHeader) {
+        this.formHeader = formHeader;
     }
     
     // end getter&setter
