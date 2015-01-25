@@ -47,7 +47,7 @@
             <h:form>               
                 <div id="eventForm">
 
-                    <h1> Event Creation</h1>
+                    <h1>Event Management</h1>
 
                     <h:panelGrid columns="2"> 
                         <p:outputLabel for="title" value="Title:"/>
@@ -174,7 +174,7 @@
                     </h:panelGrid>
 
                     <h:panelGrid style="margin-left: 27px" cellpadding="5px" width="450px" columns="1"> 
-                         <p:commandButton update="growl" value="Create Event" ajax="true" validateClient="true" onstart="PF('creation').show()" onsuccess="PF('creation').hide()"  action="#{EventController.controlDataCreation()}" id="iconOnly" icon="ui-icon-calendar"/>
+                        <p:commandButton update="growl" value="#{EventController.formHeader}" ajax="true" validateClient="true" onstart="PF('creation').show()" onsuccess="PF('creation').hide()"  action="#{EventController.controlDataCreation()}" id="iconOnly" icon="ui-icon-calendar"/>
                     </h:panelGrid>
 
                     <p:dialog id="complete" widgetVar="complete" draggable="false" closable="false" resizable="false"  modal="true"  header="Success">
