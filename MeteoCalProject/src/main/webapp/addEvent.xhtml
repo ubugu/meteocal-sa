@@ -101,7 +101,7 @@
                
                     <br />
                     
-                    <p:panel  style="width:450px;border:none" id="badConditionsDiv" visible="#{EventController.bad}">
+                    <p:panel  style="width:500px;border:none" id="badConditionsDiv" visible="#{EventController.bad}">
                             
                         <!-- bad weather layer -->
                     
@@ -122,16 +122,16 @@
                         
                             <p:selectBooleanCheckbox id="temperaturecheck" value="#{EventController.temp}"/>
                             <h:outputText value="Temperature"/>
-                            <h:outputText id="temperatureoutput" value="C #{EventController.badconditions.temperature}" />
+                            <h:outputText id="temperatureoutput" value="#{EventController.badconditions.temperature} C" />
                             <h:inputHidden id="temperature" value="#{EventController.badconditions.temperature}" />
                             <h:outputText id="Clabel" value="C" />
                             <p:slider for="temperature" display="temperatureoutput" minValue="-20" maxValue="50" style="width: 150px" displayTemplate="{value}" />
                             
                             <p:selectBooleanCheckbox id="precipitationscheck" value="#{EventController.prec}"/>
                             <h:outputText value="Precipitations"/>
-                            <h:outputText id="precipitationsoutput" value="% #{EventController.badconditions.precipitations}" />
+                            <h:outputText id="precipitationsoutput" value="#{EventController.badconditions.precipitations} mm" />
                             <h:inputHidden id="precipitations" value="#{EventController.badconditions.precipitations}" />
-                            <h:outputText id="Plabel" value="%" />
+                            <h:outputText id="Plabel" value="mm" />
                             <p:slider  for="precipitations" display="precipitationsoutput" style="width: 150px"  displayTemplate="{value}" />
 
                         </h:panelGrid>
@@ -178,7 +178,7 @@
                     </h:panelGrid>
 
                     <p:dialog id="complete" widgetVar="complete" draggable="false" closable="false" resizable="false"  modal="true"  header="Success">
-                        Event Created!
+                        Operation Successful!!
                         <br />
                         <br />
                         <br />
@@ -221,11 +221,11 @@
                 </p:dialog>
 
                 <p:dialog header="Error" widgetVar="DateInTheMiddle Error" minHeight="40" resizable="false" >
-                    <h:outputText value="There are some event in the middle of the one you want to create!!" />
+                    <h:outputText value="There are some event in the middle of this one!!" />
                 </p:dialog>
 
                 <p:dialog header="Error" widgetVar="Untill Error" minHeight="40" resizable="false" >
-                    <h:outputText value="Repeats is not 'no' but you did not chose an untill date !!" />
+                    <h:outputText value="You had chosen a repetition but you did not chose an untill date !!" />
                 </p:dialog>
 
                 <p:dialog header="Error" widgetVar="DateInTheMiddleRepeat Error" minHeight="40" resizable="false" >
@@ -238,7 +238,7 @@
                 <!-- dialog error -->
 
                 <p:dialog  widgetVar="creation" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" >
-                    <h:outputText value="Creating your event" />
+                    <h:outputText value="Managing your event" />
                     
                 </p:dialog>
 
