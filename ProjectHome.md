@@ -1,0 +1,2 @@
+This software, produced for the course of Software Engineering 2, provides an interactive calendar.
+People can create a personal calendar in which they can add events, invite other registered people, accept or decline invitations; in addition to that the system provides a punctual weather forecast in order to manage better every events.
